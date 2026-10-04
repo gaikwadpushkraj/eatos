@@ -1,0 +1,13 @@
+{
+  "name": "eatos",
+  "private": true,
+  "version": "0.1.0",
+  "description": "EatOS: an operating system that helps you decide what to eat",
+  "packageManager": "pnpm@10.28.0",
+  "scripts": {
+    "test": "pnpm -r --if-present test",
+    "typecheck": "pnpm -r --if-present typecheck",
+    "simulate": "pnpm --filter @eatos/core simulate",
+    "api": "pnpm --filter @eatos/api start"
+  }
+}
