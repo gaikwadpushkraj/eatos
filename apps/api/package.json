@@ -1,0 +1,20 @@
+{
+  "name": "@eatos/api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "tsx src/main.ts",
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@eatos/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.0",
+    "tsx": "^4.20.0",
+    "typescript": "~5.9.0",
+    "vitest": "^3.2.0"
+  }
+}
