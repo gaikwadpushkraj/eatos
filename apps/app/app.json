@@ -1,0 +1,14 @@
+{
+  "expo": {
+    "name": "EatOS",
+    "slug": "eatos",
+    "scheme": "eatos",
+    "version": "0.1.0",
+    "orientation": "default",
+    "userInterfaceStyle": "automatic",
+    "platforms": ["ios", "android", "web"],
+    "web": { "bundler": "metro", "output": "single" },
+    "plugins": ["expo-router", "expo-font"],
+    "experiments": { "typedRoutes": false }
+  }
+}

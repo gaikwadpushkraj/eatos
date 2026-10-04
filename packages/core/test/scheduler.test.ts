@@ -112,3 +112,26 @@ describe('progress and re-prioritisation', () => {
     expect(byId(tasks, 'meal:breakfast').overdue).toBe(true);
   });
 });
+
+describe('missed tasks', () => {
+  it('a meal past its window is missed, not active', () => {
+    const tasks = kernelWith().schedule(T('19:00'));
+    expect(byId(tasks, 'meal:breakfast').state).toBe('skipped');
+    expect(byId(tasks, 'meal:breakfast').reasons.join()).toMatch(/Missed/);
+    expect(tasks.find((t) => t.state === 'active')?.kind).not.toBe('meal');
+  });
+
+  it('missed medication stays active until taken', () => {
+    const profile = makeProfile({ routine: { ...DEFAULT_ROUTINE, medication: [{ name: 'Pill', slot: 'breakfast' }] } });
+    const med = byId(kernelWith([], profile).schedule(T('12:00')), 'med:Pill');
+    expect(med.state).toBe('active');
+    expect(med.overdue).toBe(true);
+  });
+
+  it('never asks for more than 500 ml of water at once', () => {
+    const tasks = kernelWith().schedule(T('19:00'));
+    for (const t of tasks.filter((x) => x.kind === 'hydration' && x.state !== 'done')) {
+      expect(Number(t.title.match(/(\d+) ml/)![1])).toBeLessThanOrEqual(500);
+    }
+  });
+});

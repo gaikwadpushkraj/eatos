@@ -140,6 +140,8 @@ export interface Food {
   ingredients: string[];
   /** Id of the dish this is a safer variant of. */
   variantOf?: string;
+  /** Cooking steps; generic steps are generated when missing. */
+  steps?: string[];
 }
 
 export type PantryLocation = 'fridge' | 'freezer' | 'cupboard' | 'counter';

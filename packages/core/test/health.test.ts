@@ -43,3 +43,13 @@ describe('health checks', () => {
     expect(floor.note).toMatch(/proper meal/);
   });
 });
+
+describe('missing data', () => {
+  it('treats a day with no logs as unknown, not as eating nothing', () => {
+    const k = kernelWith();
+    const checks = k.health(T('19:00'));
+    expect(checks.every((c) => c.status === 'ok')).toBe(true);
+    expect(checks.find((c) => c.key === 'hydration')!.note).toMatch(/Nothing logged/);
+    expect(k.now(T('19:00')).status).toBe('System steady');
+  });
+});

@@ -48,3 +48,48 @@ export const CATALOG: Food[] = [
 export function foodById(catalog: Food[], id: string): Food | undefined {
   return catalog.find((f) => f.id === id);
 }
+
+const STEPS: Record<string, string[]> = {
+  'lentil-spinach-bowl': [
+    'Rinse the lentils. Soften chopped onion and garlic in a little oil for 3 minutes.',
+    'Add the lentils, cumin and 3 cups of water. Simmer for 12 minutes until soft.',
+    'Stir in the spinach until it wilts, then season with salt and lemon.',
+    'Serve in bowls with a spoon of yogurt on top.',
+  ],
+  'egg-fried-rice': [
+    'Heat a pan with a little oil. Scramble the eggs, then set them aside.',
+    'Fry the peppers and peas for 3 minutes.',
+    'Add the cooked rice and soy sauce, and fry until hot.',
+    'Fold the eggs back in and serve.',
+  ],
+  'lentil-soup': [
+    'Soften chopped onion and garlic in a pot for 3 minutes.',
+    'Add lentils, chopped tomatoes and 4 cups of water.',
+    'Simmer for 10 minutes, then blend until smooth.',
+    'Season and serve warm.',
+  ],
+  'khichdi': [
+    'Rinse the dal and rice together.',
+    'Add 4 cups of water and turmeric, and bring to the boil.',
+    'Simmer for 20 minutes, stirring now and then, until soft.',
+    'Season gently and serve warm.',
+  ],
+};
+
+for (const food of CATALOG) {
+  const steps = STEPS[food.id];
+  if (steps) food.steps = steps;
+}
+
+/** Steps for a food, with a simple generic fallback. */
+export function stepsFor(food: Food): string[] {
+  if (food.steps?.length) return food.steps;
+  const list = food.ingredients.join(', ');
+  if (food.prepMin <= 3) return [`Get out: ${list}.`, 'Put it together and enjoy.'];
+  return [
+    `Gather the ingredients: ${list}.`,
+    'Wash and chop what needs it.',
+    `Cook or assemble, about ${Math.max(1, food.prepMin - 5)} minutes.`,
+    'Taste, season and serve.',
+  ];
+}

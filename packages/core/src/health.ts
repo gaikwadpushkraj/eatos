@@ -95,6 +95,14 @@ export function healthChecks(state: State, catalog: Food[], now: number): Health
     make('protein', 'Protein', intake.proteinG, t.proteinG, 'g'),
     make('fibre', 'Fibre', intake.fibreG, t.fibreG, 'g'),
   ];
+  // No logs today means "unknown", not "ate nothing": never alarm on missing data.
+  const hasData = eventsToday(state, now).some((e) => e.type === 'intake.logged' || e.type === 'water.logged');
+  if (!hasData) {
+    for (const c of checks) {
+      c.status = 'ok';
+      c.note = 'Nothing logged yet today';
+    }
+  }
   if (safe) {
     for (const c of checks) {
       if (c.key !== 'hydration') {
@@ -113,7 +121,7 @@ export function healthChecks(state: State, catalog: Food[], now: number): Health
     unit: 'kcal',
     status: 'ok',
   };
-  if (p >= 0.6 && intake.kcal < t.floorKcal * p * 0.5) {
+  if (hasData && p >= 0.6 && intake.kcal < t.floorKcal * p * 0.5) {
     floor.status = 'critical';
     floor.note = 'You have eaten very little today. A proper meal comes first.';
   }

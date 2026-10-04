@@ -21,6 +21,8 @@ const SLOT_PRIORITY: Record<MealSlot, Priority> = {
 
 /** How close (ms) a low-priority snack may sit before a main meal. */
 export const INVERSION_WINDOW = 2 * HOUR;
+/** Largest single hydration ask. */
+export const MAX_SIP_ML = 500;
 /** Closer than this, the snack is folded into the meal. */
 export const MERGE_WINDOW = 45 * MINUTE;
 
@@ -221,12 +223,22 @@ function applyProgress(state: State, catalog: Food[], tasks: Task[], now: number
   }
   for (const t of dueWater.slice(-1)) {
     if (t.state === 'queued' && t.waterMl !== undefined) {
-      t.title = `Drink ${Math.max(50, Math.round((t.waterMl - water) / 50) * 50)} ml water`;
+      // Never ask for more than a comfortable glass or two at once.
+      t.title = `Drink ${Math.min(MAX_SIP_ML, Math.max(50, Math.round((t.waterMl - water) / 50) * 50))} ml water`;
     }
   }
 
+  // A meal whose window has passed is missed, not active: the next meal
+  // makes up for it. Medication stays active until taken (P0).
+  for (const t of tasks) {
+    if (t.state !== 'queued' || t.deadline >= now) continue;
+    t.overdue = true;
+    if (t.kind === 'meal' || t.kind === 'routine') {
+      t.state = 'skipped';
+      t.reasons.push('Missed. The next meal makes up for it');
+    }
+  }
   const pending = tasks.filter((t) => t.state === 'queued');
-  for (const t of pending) if (t.deadline < now) t.overdue = true;
   const due = pending.filter((t) => t.at <= now).sort(compareTasks);
   if (due[0]) due[0].state = 'active';
   return tasks;
