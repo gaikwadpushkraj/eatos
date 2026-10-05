@@ -56,11 +56,21 @@ export function affinityScore(food: Food, aff: Affinity): number {
  * known) as possible, so each answer teaches the most.
  */
 export function nextTasteCards(state: State, catalog: Food[], member: Member | undefined, now: number, k = 8): Food[] {
+  const kitchen = state.profile?.kitchen ?? 'full';
   const answered = new Set(state.events.flatMap((e) => (e.type === 'feedback' ? [e.foodId] : [])));
   const known = new Set(Object.keys(tasteAffinity(state, catalog, now)));
-  const pool = catalog.filter((f) => !answered.has(f.id) && (!member || !hardProblem(f, member)));
-  const seen = new Set(known);
+  const pool = catalog.filter(
+    (f) => !answered.has(f.id) && (!member || !hardProblem(f, member)) && !f.variantOf && (kitchen !== 'none' || f.tags.includes('no-cook')) && (kitchen === 'full' || !f.tags.includes('oven')) && (member?.spice === undefined || (f.spice ?? 0) <= member.spice + 1),
+  );
+  // Start with the food they grew up with, then widen.
+  const own = (member?.cuisines ?? []).flatMap((c) => pool.filter((f) => f.cuisine === c).slice(0, 1));
   const chosen: Food[] = [];
+  for (const f of own.slice(0, Math.ceil(k / 3))) {
+    chosen.push(f);
+    pool.splice(pool.indexOf(f), 1);
+  }
+  const seen = new Set(known);
+  chosen.forEach((f) => featuresOf(f).forEach((x) => seen.add(x)));
   while (chosen.length < k && pool.length) {
     let best = -1;
     let bestGain = -1;

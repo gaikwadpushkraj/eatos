@@ -147,3 +147,84 @@ describe('persona specifics', () => {
     expect(k2.state.wishes.map((w) => w.wish)).toEqual(['chicken biryani']);
   });
 });
+
+describe('fixes from persona testing', () => {
+  const pregnant = () => kernelFor(PERSONAS[4]!);
+  it('pregnancy: sprouts are blocked, papaya wishes are skipped not rationed', () => {
+    const k = pregnant();
+    expect(k.recommend({ k: 300 }, base).some((r) => r.food.id === 'sprouts-salad')).toBe(false);
+    const a = k.wish('raw papaya salad', base);
+    expect(a.blockers.length).toBeGreaterThan(0);
+    expect(a.later).toMatch(/skipped|clinician/i);
+    expect(a.later).not.toMatch(/weekend/i);
+  });
+  it('wishes that EatOS does not know are never called "nothing in the way"', () => {
+    const k = kernelFor(PERSONAS[3]!);
+    const a = k.wish('mutton', base);
+    expect(a.blockers.some((b) => /vegetarian/i.test(b.detail))).toBe(true);
+    const u = k.wish('protein bar', base);
+    expect(u.food).toBeUndefined();
+    expect(u.unknown).toBe(true);
+    expect(u.later).toMatch(/does not know/i);
+  });
+  it('wish matching uses whole words', () => {
+    const k = kernelFor(PERSONAS[1]!);
+    expect(k.wish('ice cream', base).food?.id).not.toBe('dal-tadka-rice');
+    expect(k.wish('butter naan', base).food?.id).not.toBe('peanut-butter-banana');
+    expect(k.wish('mutton biryani', base).food?.id).toBe('mutton-biryani');
+    expect(k.wish('masala chai', base).food).toBeUndefined();
+  });
+  it('wish alternatives respect declared health conditions', () => {
+    const k = kernelFor(PERSONAS[1]!);
+    for (const w of ['samosa', 'gulab jamun', 'chicken biryani']) for (const rung of k.wish(w, base).ladder) for (const f of rung.foods) expect(f.tags, `${f.id} for ${w}`).not.toContain('sweet');
+  });
+  it('halal does not read "rum" inside drumstick', () => {
+    const k = kernelFor(PERSONAS[6]!);
+    const sambar = CATALOG.find((f) => f.id === 'sambar-rice')!;
+    expect(hardProblem(sambar, k.me()!)).toBeUndefined();
+  });
+  it('Ekadashi leaves out pav, bread and other grain products', () => {
+    const k = kernelFor({ name: 'e', member: { diet: 'vegetarian' }, wishes: [] });
+    k.submit({ type: 'fasting.set', at: base + 3_600_000, kind: 'ekadashi' });
+    const ids = k.recommend({ k: 300 }, base + 5 * 3_600_000).map((r) => r.food.id);
+    for (const bad of ['pav-bhaji-jain', 'pav-bhaji', 'upma', 'veg-pizza', 'maggi-veg']) expect(ids).not.toContain(bad);
+    expect(ids.length).toBeGreaterThan(3);
+  });
+  it('skipping meals or losing weight fast gets a kind note and regular meals, for anyone', () => {
+    const k = kernelFor(PERSONAS[7]!);
+    const a = k.wish('skip dinner to lose weight', base);
+    expect(a.later).toMatch(/regular meals/i);
+    expect(a.ladder[0]?.foods.length).toBeGreaterThan(0);
+    expect(k.ask('low calorie dinner for weight loss', base).caution).toMatch(/regular meals/i);
+  });
+  it('a night routine still gets water reminders and tasks that straddle midnight', () => {
+    const k = kernelFor({ name: 'night', member: { diet: 'omnivore' }, profile: { routine: { wake: 900, sleep: 540, meals: { breakfast: 960, lunch: 1260, snack: 120, dinner: 300 }, medication: [] } }, wishes: [] });
+    const tasks = k.schedule(base + 20 * 3_600_000); // 20:00 local
+    expect(tasks.filter((t) => t.kind === 'hydration').length).toBeGreaterThan(2);
+    expect(tasks.find((t) => t.id === 'meal:snack')!.at).toBeGreaterThan(tasks.find((t) => t.id === 'meal:lunch')!.at);
+  });
+  it('a hostel with no kitchen still has plenty to eat, and Quick Add keeps curd cold', () => {
+    const noCook = CATALOG.filter((f) => f.tags.includes('no-cook'));
+    expect(noCook.length).toBeGreaterThanOrEqual(25);
+    expect(noCook.filter((f) => f.slots.includes('dinner')).length).toBeGreaterThanOrEqual(5);
+  });
+  it('Ask words steer the ranking and protein minimums are understood', () => {
+    const k = kernelFor(PERSONAS[3]!);
+    const r = k.ask('dosa or paneer please', base);
+    expect(r.query.include).toEqual(expect.arrayContaining(['dosa', 'paneer']));
+    const p = k.ask('dinner with at least 30 g protein', base);
+    expect(p.query.minProteinG).toBe(30);
+    expect(p.results[0]!.food.nutrients.proteinG).toBeGreaterThanOrEqual(25);
+  });
+  it('a recovery snack brings protein', () => {
+    const k = kernelFor(PERSONAS[3]!);
+    const r = k.recommend({ slot: 'snack', need: 'recovery', k: 1 }, base + 17 * 3_600_000)[0]!;
+    expect(r.food.nutrients.proteinG).toBeGreaterThanOrEqual(10);
+  });
+  it('taste cards start with the food the person grew up with and respect no-kitchen', () => {
+    const k = kernelFor({ name: 'g', member: { diet: 'vegetarian', cuisines: ['punjabi'], spice: 3 }, wishes: [] });
+    expect(k.tasteCards(base, 8).some((c) => c.cuisine === 'punjabi')).toBe(true);
+    const h = kernelFor(PERSONAS[7]!);
+    for (const c of h.tasteCards(base, 8)) expect(c.tags).toContain('no-cook');
+  });
+});

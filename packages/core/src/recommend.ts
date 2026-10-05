@@ -3,7 +3,7 @@ import type { State } from './state';
 import { fitFor } from './household';
 import { preferences, recentlyEaten } from './memory';
 import { pantryNames, useSoon } from './housekeeping';
-import { FASTING, fastingGate, healthFit } from './rules';
+import { FASTING, fastingGate, hasWord, healthFit } from './rules';
 import { contextAt, contextFit } from './context';
 import { affinityScore, tasteAffinity } from './taste';
 import { dayStart } from './time';
@@ -19,6 +19,10 @@ export interface Query {
   memberIds?: string[];
   need?: NeedKind;
   light?: boolean;
+  /** Words that name a dish, ingredient or cuisine to favour. */
+  include?: string[];
+  /** Wanted protein in grams; dishes below it rank lower. */
+  minProteinG?: number;
   k?: number;
 }
 
@@ -47,7 +51,7 @@ function eaters(state: State, q: Query): Member[] {
 
 function matchesWord(food: Food, word: string): boolean {
   const w = word.toLowerCase();
-  return food.name.toLowerCase().includes(w) || food.tags.includes(w) || food.ingredients.some((i) => i.includes(w));
+  return hasWord(food.name, w) || food.tags.includes(w) || food.ingredients.some((i) => hasWord(i, w)) || food.cuisine?.replace('-indian', '') === w;
 }
 
 /**
@@ -61,7 +65,7 @@ export function recommend(state: State, catalog: Food[], q: Query, now: number):
   const have = pantryNames(state, now);
   const expiring = useSoon(state, now).map((p) => p.name.toLowerCase());
   const safe = state.safeModeSince !== undefined;
-  const ctx = contextAt(now, state.profile?.tzOffsetMin ?? 0);
+  const ctx = contextAt(now, state.profile?.tzOffsetMin ?? 0, state.profile?.routine);
   const aff = tasteAffinity(state, catalog, now);
   const fast = activeFast(state, members, now);
   const rule = fast.kind ? FASTING[fast.kind] : undefined;
@@ -89,10 +93,12 @@ export function recommend(state: State, catalog: Food[], q: Query, now: number):
     const everyone = members.length > 1 && soft.length === 0;
     if (everyone) score += 1;
 
+    const need = q.need;
     // Declared conditions, spice and cuisine: soft, never removing a food.
     for (const { m } of fits) {
       const h = healthFit(food, m);
-      score += h.delta / Math.max(1, members.length);
+      // Someone's health nudge is never diluted by the rest of the table; a good fit for one is shared.
+      score += h.delta < 0 ? h.delta : h.delta / Math.max(1, members.length);
       for (const r of h.reasons) if (members.length === 1 && !reasons.includes(r)) reasons.push(r);
       if (m.cuisines?.length && food.cuisine && m.cuisines.includes(food.cuisine)) {
         score += 1.5 / members.length;
@@ -108,11 +114,27 @@ export function recommend(state: State, catalog: Food[], q: Query, now: number):
     if (liked >= 1.5) reasons.push('Close to dishes you enjoy');
     if (rule && rule.label && !reasons.includes(`Fits your ${rule.label.toLowerCase()}`)) reasons.push(`Fits your ${rule.label.toLowerCase()}`);
 
+    for (const word of q.include ?? []) {
+      if (matchesWord(food, word)) {
+        score += 3;
+        if (!reasons.includes(`Matches “${word}”`)) reasons.push(`Matches “${word}”`);
+      }
+    }
+    if (q.minProteinG !== undefined && food.nutrients.proteinG < q.minProteinG) score -= (q.minProteinG - food.nutrients.proteinG) / 6;
+    // A recovery snack has to bring protein; water alone is not one.
+    if (need === 'recovery' && food.nutrients.proteinG < 10) score -= 4;
+    if (fast.kind === 'ramzan' && !fast.gate) {
+      if (q.slot === 'dinner' && food.tags.includes('iftar')) {
+        score += 3;
+        reasons.push('A gentle way to break the fast');
+      }
+      if (q.slot === 'breakfast' && (food.nutrients.fibreG >= 5 || food.nutrients.proteinG >= 12)) score += 1.5;
+    }
+
     for (const tag of q.tags ?? []) {
       if (food.tags.includes(tag)) score += 2;
     }
 
-    const need = q.need;
     if (need === 'protein' || need === 'recovery') {
       score += food.nutrients.proteinG / 8;
       if (food.nutrients.proteinG >= 20) reasons.push(`${food.nutrients.proteinG} g protein closes today's gap`);

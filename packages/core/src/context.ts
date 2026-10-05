@@ -18,10 +18,16 @@ export interface Context {
   lateNight: boolean;
 }
 
-export function contextAt(now: number, tzOffsetMin = 0): Context {
+export function contextAt(now: number, tzOffsetMin = 0, routine?: { wake: number; sleep: number }): Context {
   const d = new Date(now + tzOffsetMin * MINUTE);
   const hour = d.getUTCHours();
-  return { season: seasonOf(d.getUTCMonth()), hour, lateNight: hour >= 22 || hour < 5 };
+  const m = hour * 60 + d.getUTCMinutes();
+  // Late night means the hour before bed until waking, whenever that is for this person.
+  const sleep = routine?.sleep ?? 22 * 60 + 60;
+  const wake = routine?.wake ?? 5 * 60;
+  const from = (sleep - 60 + 1440) % 1440;
+  const lateNight = from <= wake ? m >= from && m < wake : m >= from || m < wake;
+  return { season: seasonOf(d.getUTCMonth()), hour, lateNight };
 }
 
 /** Score change and a plain reason for how well a food suits the season and the hour. */

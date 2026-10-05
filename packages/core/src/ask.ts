@@ -1,10 +1,13 @@
 import type { MealSlot } from './types';
 import type { Query } from './recommend';
+import { RESTRICTIVE, RESTRICTIVE_NOTE } from './rules';
 
 export interface ParsedAsk {
   query: Query;
   /** What the parser understood, for "Why these?". */
   understood: string[];
+  /** A kind note shown with the answer, for example about skipping meals. */
+  caution?: string;
 }
 
 const TAG_WORDS: Record<string, string> = {
@@ -20,6 +23,8 @@ const TAG_WORDS: Record<string, string> = {
   sick: 'gentle',
   easy: 'gentle',
 };
+
+const STOP = new Set(['something', 'anything', 'for', 'the', 'and', 'with', 'what', 'can', 'make', 'have', 'want', 'need', 'some', 'tonight', 'today', 'tomorrow', 'now', 'please', 'give', 'show', 'ideas', 'idea', 'meal', 'food', 'eat', 'eating', 'minutes', 'minute', 'mins', 'min', 'quick', 'fast', 'hurry', 'time', 'too', 'light', 'small', 'heavy', 'protein', 'fibre', 'fiber', 'workout', 'gym', 'just', 'only', 'myself', 'everyone', 'family', 'all', 'household', 'kids', 'that', 'this', 'are', 'you', 'got', 'good', 'nice', 'tasty', 'hungry', 'feel', 'feeling', 'like', 'least', 'grams', 'over', 'more', 'than']);
 
 const SLOT_WORDS: Record<string, MealSlot> = {
   breakfast: 'breakfast',
@@ -73,6 +78,12 @@ export function parseAsk(text: string, selfId = 'me'): ParsedAsk {
     query.need = 'fibre';
     understood.push('High in fibre');
   }
+  const minProtein = s.match(/(?:at least|over|min(?:imum)?|more than)\s*(\d{1,3})\s*g(?:rams?)?\s*(?:of\s*)?protein/);
+  if (minProtein) {
+    query.minProteinG = Math.min(120, Number(minProtein[1]));
+    query.need = 'protein';
+    understood.push(`At least ${query.minProteinG} g protein`);
+  }
   if (/\b(light|small|not too heavy)\b/.test(s)) {
     query.light = true;
     understood.push('Kept light');
@@ -84,6 +95,17 @@ export function parseAsk(text: string, selfId = 'me'): ParsedAsk {
     understood.push(`Without ${excludes.join(', ')}`);
   }
 
+  // Words that name a dish, an ingredient or a cuisine ("dosa", "paneer", "rice and dal") steer the ranking.
+  const known = new Set([...Object.keys(TAG_WORDS), ...Object.keys(SLOT_WORDS), ...(query.exclude ?? [])]);
+  const include = s
+    .replace(/(?:no|without|not|avoid)\s+[a-z]+/g, ' ')
+    .split(/[^a-z-]+/)
+    .filter((w) => w.length > 2 && !STOP.has(w) && !known.has(w));
+  if (include.length) {
+    query.include = [...new Set(include)].slice(0, 6);
+    understood.push(`With ${query.include.join(', ')}`);
+  }
+
   if (/\b(just me|only me|myself)\b/.test(s)) {
     query.memberIds = [selfId];
     understood.push('Just for you');
@@ -91,5 +113,6 @@ export function parseAsk(text: string, selfId = 'me'): ParsedAsk {
     understood.push('For everyone at home');
   }
 
-  return { query, understood };
+  const caution = RESTRICTIVE.test(s) ? RESTRICTIVE_NOTE : undefined;
+  return { query, understood, ...(caution ? { caution } : {}) };
 }

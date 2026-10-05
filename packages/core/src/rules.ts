@@ -9,7 +9,11 @@ import { DIET_RANK } from './types';
  * condition from what someone eats.
  */
 
-const has = (food: Food, words: string[]) => food.ingredients.find((i) => words.some((w) => i.toLowerCase().includes(w)));
+/** Whole-word match, plural-tolerant, so "rum" does not match "drumstick" or "ice" match "rice". */
+export function hasWord(text: string, word: string): boolean {
+  return new RegExp(`\\b${word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?:s|es)?\\b`, 'i').test(text);
+}
+const has = (food: Food, words: string[]) => food.ingredients.find((i) => words.some((w) => hasWord(i, w)));
 
 const MEAT = ['chicken', 'mutton', 'lamb', 'beef', 'pork', 'bacon', 'ham', 'fish', 'prawn', 'shrimp', 'crab', 'salmon', 'egg', 'gelatin'];
 
@@ -37,7 +41,7 @@ export const RULE_LABEL: Record<DietRule, string> = {
 };
 
 /** Ingredients that are unsafe in pregnancy. Everything else is left to the person's clinician. */
-const PREGNANCY_HAZARD = ['raw papaya', 'raw egg', 'unpasteurised', 'unpasteurized', 'alcohol', 'wine', 'beer', 'raw sprouts', 'raw fish', 'swordfish', 'shark', 'raw milk'];
+const PREGNANCY_HAZARD = ['raw papaya', 'raw egg', 'unpasteurised', 'unpasteurized', 'alcohol', 'wine', 'beer', 'raw sprouts', 'sprouts', 'raw fish', 'swordfish', 'shark', 'raw milk'];
 
 export function allergensOf(m: Member): Allergen[] {
   return m.conditions?.includes('celiac') && !m.allergens.includes('gluten') ? [...m.allergens, 'gluten'] : m.allergens;
@@ -130,10 +134,10 @@ export interface FastingRule {
 }
 
 const FAST_ALLOWED = ['samak rice', 'kuttu', 'rajgira', 'sabudana', 'singhara', 'water chestnut', 'sendha namak', 'makhana', 'amaranth'];
-const GRAIN_PULSE_ALLIUM = ['wheat', 'rice', 'dal', 'lentil', 'moong', 'chana', 'chickpea', 'rajma', 'beans', 'onion', 'garlic', 'egg', 'chicken', 'mutton', 'fish', 'prawn', 'bread', 'pasta', 'flour', 'atta', 'maida', 'besan', 'poha', 'semolina', 'suji', 'rava', 'oats', 'corn', 'millet', 'ragi', 'jowar', 'bajra', 'tofu', 'soy', 'pizza dough', 'tortilla', 'quinoa'];
+const GRAIN_PULSE_ALLIUM = ['wheat', 'rice', 'dal', 'lentil', 'moong', 'chana', 'chickpea', 'rajma', 'beans', 'onion', 'garlic', 'egg', 'chicken', 'mutton', 'fish', 'prawn', 'bread', 'pasta', 'flour', 'atta', 'maida', 'besan', 'poha', 'semolina', 'suji', 'rava', 'oats', 'corn', 'millet', 'ragi', 'jowar', 'bajra', 'tofu', 'soy', 'pizza dough', 'tortilla', 'quinoa', 'pav', 'bun', 'roti', 'naan', 'paratha', 'puri', 'noodles', 'biscuit', 'cake', 'dough', 'sooji', 'urad', 'toor', 'peas', 'gram'];
 
 function denyWords(words: string[]) {
-  return (food: Food) => food.ingredients.find((i) => !FAST_ALLOWED.some((a) => i.toLowerCase().includes(a)) && words.some((w) => i.toLowerCase().includes(w)));
+  return (food: Food) => food.ingredients.find((i) => !FAST_ALLOWED.some((a) => hasWord(i, a)) && words.some((w) => hasWord(i, w)));
 }
 
 export const FASTING: Record<FastingKind, FastingRule> = {
@@ -155,3 +159,51 @@ export function fastingGate(members: Member[]): string | undefined {
   }
   return undefined;
 }
+
+const TEXT_MEAT = ['chicken', 'mutton', 'lamb', 'beef', 'pork', 'bacon', 'ham', 'fish', 'prawn', 'shrimp', 'crab', 'salmon', 'keema', 'kebab', 'nihari', 'haleem', 'tikka', 'ilish', 'hilsa', 'egg', 'omelette', 'omelet', 'bhurji', 'meat'];
+const TEXT_ALLERGEN: Record<string, string[]> = {
+  nuts: ['almond', 'cashew', 'walnut', 'pistachio', 'pesto'],
+  peanuts: ['peanut', 'chikki'],
+  dairy: ['milk', 'cheese', 'paneer', 'curd', 'yogurt', 'yoghurt', 'ghee', 'butter', 'lassi', 'kheer', 'ice cream', 'raita', 'rasmalai', 'rasgulla', 'rosogolla', 'mishti doi'],
+  gluten: ['roti', 'naan', 'bread', 'pav', 'pasta', 'pizza', 'noodles', 'maida', 'paratha', 'cake', 'biscuit'],
+  egg: ['egg', 'omelette', 'omelet', 'bhurji', 'mayonnaise'],
+  soy: ['soy', 'tofu', 'soya'],
+  fish: ['fish', 'ilish', 'hilsa', 'salmon', 'surmai', 'pomfret'],
+  shellfish: ['prawn', 'shrimp', 'crab', 'lobster'],
+  sesame: ['sesame', 'til', 'tahini', 'hummus'],
+};
+
+/**
+ * A rule broken by something EatOS does not have in its catalogue, judged only from the words
+ * the person typed. Catches the obvious ("mutton" for a vegetarian) and says nothing otherwise.
+ */
+export function textProblem(text: string, m: Member): string | undefined {
+  const t = text.toLowerCase();
+  for (const [a, words] of Object.entries(TEXT_ALLERGEN)) if (allergensOf(m).includes(a as Allergen)) {
+    const w = words.find((x) => hasWord(t, x));
+    if (w) return `Contains ${a} (${w})`;
+  }
+  if (DIET_RANK[m.diet] < DIET_RANK.omnivore) {
+    const limit = m.diet === 'pescatarian' ? TEXT_MEAT.filter((x) => !['fish', 'ilish', 'hilsa', 'prawn', 'shrimp', 'crab', 'salmon'].includes(x) && x !== 'egg' && x !== 'omelette' && x !== 'omelet' && x !== 'bhurji') : TEXT_MEAT.filter((x) => !['egg', 'omelette', 'omelet', 'bhurji'].includes(x));
+    const hit = limit.find((x) => hasWord(t, x));
+    if (hit) return `Not ${m.diet} (${hit})`;
+    if (m.diet === 'vegan') {
+      const d = ['milk', 'paneer', 'curd', 'cheese', 'ghee', 'butter', 'egg', 'honey'].find((x) => hasWord(t, x));
+      if (d) return `Not vegan (${d})`;
+    }
+  }
+  for (const rule of m.rules ?? []) {
+    const hit = RULE_DENY[rule].find((w) => hasWord(t, w));
+    if (hit) return `Not ${RULE_LABEL[rule].toLowerCase()} (${hit})`;
+  }
+  if (m.conditions?.includes('pregnancy')) {
+    const hit = PREGNANCY_HAZARD.find((w) => hasWord(t, w));
+    if (hit) return `Not advised in pregnancy (${hit})`;
+  }
+  return undefined;
+}
+
+/** Wishes or requests about skipping meals, crash dieting or fast weight loss. EatOS never helps with these. */
+export const RESTRICTIVE = /\b(skip(ping)? (a )?(meal|dinner|lunch|breakfast)|lose weight|weight loss|slim|starv\w*|crash diet|detox|cleanse|low[- ]calorie|cut calories|burn fat|fat burn\w*|purge|binge)\b/i;
+
+export const RESTRICTIVE_NOTE = 'EatOS does not help with skipping meals or losing weight fast. Regular meals are the plan. If food, weight or eating is on your mind a lot, talking to someone you trust or a doctor can help.';

@@ -1,7 +1,7 @@
 import type { Blocker, Condition, DietRule, Food, Member } from './types';
 import type { State } from './state';
 import { selfMember } from './state';
-import { FASTING, hardProblem, healthFit } from './rules';
+import { FASTING, RESTRICTIVE, RESTRICTIVE_NOTE, hardProblem, hasWord, healthFit, textProblem } from './rules';
 import { activeFast } from './recommend';
 import { pantryNames } from './housekeeping';
 
@@ -24,6 +24,8 @@ export interface WishAnswer {
   wish: string;
   /** The catalog dish the wish matched, if any. */
   food?: Food;
+  /** True when EatOS does not know the dish, so it could not check it fully. */
+  unknown?: boolean;
   blockers: { kind: Blocker; detail: string }[];
   ladder: Rung[];
   /** Short practical tips, each marked with how well it is supported. */
@@ -58,22 +60,31 @@ const SWAPS: Swap[] = [
 const STOP = new Set(['i', 'wish', 'want', 'to', 'eat', 'some', 'a', 'an', 'the', 'my', 'with', 'and', 'of', 'have', 'could', 'can', 'like', 'craving']);
 const words = (s: string) => s.toLowerCase().replace(/[^a-z\s-]/g, ' ').split(/\s+/).filter((w) => w && !STOP.has(w));
 
-/** The catalog dish a wish is most likely about. */
+const GENERIC = new Set(['curry', 'with', 'sabzi', 'masala', 'fry', 'special', 'style']);
+
+/** The catalog dish a wish is about: every meaningful word of the wish must be a whole word of the dish. */
 export function findWishFood(catalog: Food[], text: string): Food | undefined {
-  const ws = words(text);
-  if (!ws.length) return undefined;
+  const ws = words(text).filter((w) => w.length > 2);
+  const core = ws.filter((w) => !GENERIC.has(w));
+  if (!core.length) return undefined;
   let best: Food | undefined;
   let bestScore = 0;
   for (const f of catalog) {
-    const hay = `${f.name} ${f.id}`.toLowerCase();
-    const hits = ws.filter((w) => w.length > 2 && hay.includes(w)).length;
-    const score = hits / ws.length + hits * 0.1;
-    if (hits && score > bestScore) {
+    const hay = `${f.name} ${f.id.replace(/-/g, ' ')}`;
+    if (!core.every((w) => hasWord(hay, w))) continue;
+    // Prefer the dish whose name is closest to what was typed.
+    const score = core.length / (words(f.name).length || 1) + (ws.length - core.length) * 0.01;
+    if (score > bestScore) {
       best = f;
       bestScore = score;
     }
   }
-  return bestScore >= 0.5 ? best : undefined;
+  return best;
+}
+
+function kindOf(reason: string, m: Member): Blocker {
+  if (/pregnan/i.test(reason) || (/gluten/i.test(reason) && m.conditions?.includes('celiac'))) return 'health';
+  return /^Contains/.test(reason) ? 'allergy' : 'religion';
 }
 
 const jaccard = (a: string[], b: string[]) => {
@@ -83,7 +94,10 @@ const jaccard = (a: string[], b: string[]) => {
 };
 
 function allowed(food: Food, m: Member | undefined, state: State, now: number): boolean {
-  if (m && hardProblem(food, m)) return false;
+  if (m && (hardProblem(food, m) || healthFit(food, m).delta <= -3)) return false;
+  const kitchen = state.profile?.kitchen ?? 'full';
+  if (kitchen === 'none' && !food.tags.includes('no-cook')) return false;
+  if (kitchen !== 'full' && food.tags.includes('oven')) return false;
   const fast = activeFast(state, m ? [m] : [], now);
   if (fast.kind && FASTING[fast.kind].deny(food)) return false;
   return true;
@@ -92,6 +106,10 @@ function allowed(food: Food, m: Member | undefined, state: State, now: number): 
 /** Alternatives for something the person wishes to eat but cannot. Never throws. */
 export function alternatives(state: State, catalog: Food[], wish: string, now: number): WishAnswer {
   const me = selfMember(state);
+  if (RESTRICTIVE.test(wish)) {
+    const meals = catalog.filter((f) => allowed(f, me, state, now) && f.slots.includes('dinner')).slice(0, 3);
+    return { wish, blockers: [{ kind: 'health', detail: 'EatOS keeps meals regular.' }], ladder: meals.length ? [{ kind: 'same-job', title: 'A proper meal instead', why: 'Regular, filling meals keep energy and mood steady.', foods: meals }] : [], tips: [], later: RESTRICTIVE_NOTE };
+  }
   const food = findWishFood(catalog, wish);
   const blockers: WishAnswer['blockers'] = [];
   const tips: WishAnswer['tips'] = [];
@@ -101,7 +119,7 @@ export function alternatives(state: State, catalog: Food[], wish: string, now: n
 
   if (food && me) {
     const hard = hardProblem(food, me);
-    if (hard) blockers.push({ kind: /pregnan/i.test(hard) || (/gluten/i.test(hard) && me.conditions?.includes('celiac')) ? 'health' : /^Contains/.test(hard) ? 'allergy' : 'religion', detail: hard });
+    if (hard) blockers.push({ kind: kindOf(hard, me), detail: hard });
     const h = healthFit(food, me);
     if (!hard && h.delta <= -3) blockers.push({ kind: 'health', detail: 'It does not sit well with what you told EatOS about your health, so it ranks low rather than being ruled out.' });
     const fast = activeFast(state, [me], now);
@@ -113,6 +131,10 @@ export function alternatives(state: State, catalog: Food[], wish: string, now: n
     if (others.length) blockers.push({ kind: 'household', detail: `${others.map((m) => m.name).join(' and ')} cannot eat it` });
   }
 
+  if (!food && me) {
+    const t = textProblem(wish, me);
+    if (t) blockers.push({ kind: kindOf(t, me), detail: t });
+  }
   const swaps = SWAPS.filter((s) => s.match.test(text) && s.when.some((w) => mine.has(w)));
   if (!blockers.length && swaps.length) blockers.push({ kind: swaps[0]!.when.some((w) => ['jain', 'satvik', 'no-onion-garlic', 'no-beef', 'halal'].includes(w) && mine.has(w)) ? 'religion' : 'health', detail: 'It conflicts with what you told EatOS about your food.' });
   for (const s of swaps) tips.push(...(s.tips ?? []));
@@ -159,12 +181,16 @@ export function alternatives(state: State, catalog: Food[], wish: string, now: n
 
   let later: string | undefined;
   const kinds = new Set(blockers.map((b) => b.kind));
-  if (kinds.has('allergy')) later = 'This is not safe for you. If a restaurant says they can make it without the allergen, EatOS cannot check that, so ask them directly.';
+  const skip = blockers.some((b) => /pregnan/i.test(b.detail) || /gluten/i.test(b.detail));
+  if (skip) later = 'This one is best skipped for now. If you are unsure about anything, ask your clinician.';
+  else if (kinds.has('allergy')) later = 'This is not safe for you. If a restaurant says they can make it without the allergen, EatOS cannot check that, so ask them directly.';
   else if (kinds.has('religion')) later = 'It stays out while the rule applies. Keep it for a day the rule allows, or ask the cook about the version above.';
   else if (kinds.has('health')) later = 'Keep the real thing for a weekend meal in a smaller portion, with vegetables and dal or curd alongside.';
   else if (kinds.has('equipment')) later = 'Keep it for when you have a kitchen, or look for a ready version from a place you trust.';
   else if (kinds.has('household')) later = 'Cook it on a day when the others eat out, or make the shared base and add it on the side.';
   else if (!blockers.length && food) later = 'Nothing is in the way. It can go on your plan.';
+  const unknown = !food && !blockers.length;
+  if (unknown) later = 'EatOS does not know this dish yet, so it cannot check it against your rules or health settings. Ask how it is made, or pick something from the list below.';
 
   // The pantry tells whether a "can't" is really "don't have the ingredients".
   if (food && !blockers.length) {
@@ -173,5 +199,5 @@ export function alternatives(state: State, catalog: Food[], wish: string, now: n
     if (missing.length && state.pantry && Object.keys(state.pantry).length) blockers.push({ kind: 'availability', detail: `Missing ${missing.slice(0, 4).join(', ')}` });
   }
 
-  return { wish, food, blockers, ladder, tips, later };
+  return { wish, food, unknown, blockers, ladder, tips, later };
 }
