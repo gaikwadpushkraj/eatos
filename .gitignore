@@ -8,3 +8,5 @@ apps/api/data/
 coverage/
 dist-shots/
 dist-pages/
+persona-shots/
+apps/app/scripts/_*.mjs
