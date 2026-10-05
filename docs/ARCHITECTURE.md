@@ -113,3 +113,16 @@ idempotent and lets it sync across devices like any other event.
 Safety rule for delivery: a dish with no allergen information is
 treated as unsafe for anyone with an allergy, and a dish with no diet
 stated is unsafe for anyone on a restricted diet.
+
+## Optional LLM for Ask (`llm-ask.ts`, app `src/llm.ts`)
+
+Off by default. The kernel stays free of network code: `parseAskWithLlm`
+takes a `completer` function from the shell. The app's completer calls
+the Claude API with the person's own key (`claude-sonnet-5-5`, low effort,
+a strict JSON schema, 400 max tokens). Only the sentence the person typed
+is sent. The reply is validated field by field (`sanitizeAsk`): unknown
+fields are dropped, tags and slots must come from fixed lists, numbers
+are clamped, exclusions must be single lowercase words. A missing key,
+error, refusal, timeout, bad JSON or empty answer all fall back to the
+rule parser. Allergies and diets are never part of the query the model
+shapes; the recommender enforces them afterwards for everyone eating.

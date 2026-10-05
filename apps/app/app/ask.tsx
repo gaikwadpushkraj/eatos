@@ -1,11 +1,13 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { TextInput, View } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
-import { chooseForMe } from '@eatos/core';
+import { chooseForMe, parseAskWithLlm } from '@eatos/core';
+import type { AskOutcome } from '@eatos/core';
 import type { MealSlot } from '@eatos/core';
 import { useKernel } from '../src/kernel';
 import { useTheme, fonts } from '../src/theme';
 import { Btn, Card, Chip, IconBtn, Row, Screen, Txt, TopBar } from '../src/ui';
+import { loadLlmConfig, makeCompleter } from '../src/llm';
 
 const PROMPTS = ['Something warm, 15 minutes', 'A light snack', 'High protein dinner', 'Comfort food for everyone', 'Gentle, I feel unwell'];
 
@@ -19,13 +21,28 @@ export default function Ask() {
   const [picked, setPicked] = useState<string | null>(null);
   const slot = (params.slot || undefined) as MealSlot | undefined;
 
+  // Parse the request: with the optional model when the person turned it on, else on-device rules.
+  const [parsed, setParsed] = useState<AskOutcome | null>(null);
+  const [thinking, setThinking] = useState(false);
+  useEffect(() => {
+    let cancelled = false;
+    setThinking(true);
+    loadLlmConfig()
+      .then((cfg) => parseAskWithLlm(asked, makeCompleter(cfg), { selfId: kernel.state.profile?.selfId }))
+      .then((p) => {
+        if (!cancelled) setParsed(p);
+      })
+      .finally(() => !cancelled && setThinking(false));
+    return () => {
+      cancelled = true;
+    };
+  }, [asked, kernel]);
+
   const result = useMemo(() => {
-    const r = kernel.ask(asked, now);
-    if (!asked && slot) {
-      return { ...r, query: { ...r.query, slot }, results: kernel.recommend({ ...r.query, slot, k: 3 }, now), understood: [`For ${slot}`, ...r.understood] };
-    }
-    return r;
-  }, [kernel, asked, now, slot, version]);
+    const base = parsed ?? { query: {}, understood: [], source: 'rules' as const };
+    const withSlot = !asked && slot ? { ...base, query: { ...base.query, slot }, understood: [`For ${slot}`, ...base.understood] } : base;
+    return { ...kernel.answer(withSlot, now), source: withSlot.source, fallbackReason: (withSlot as AskOutcome).fallbackReason };
+  }, [kernel, parsed, asked, now, slot, version]);
 
   const send = (q: string) => {
     setText(q);
@@ -64,8 +81,10 @@ export default function Ask() {
         </Row>
       )}
 
+      {thinking ? <Txt v="small">Thinking…</Txt> : asked && result.source === 'llm' ? <Txt v="small">Read with Claude</Txt> : null}
+      {!thinking && asked && result.fallbackReason ? <Txt v="small">{`Read on this device (${result.fallbackReason})`}</Txt> : null}
       <Txt v="body">
-        {result.results.length ? `${result.results.length} options that fit right now.` : 'Nothing fits those limits. Try a longer time or fewer exclusions.'}
+        {result.results.length ? `${result.results.length} ${result.results.length === 1 ? 'option fits' : 'options that fit'} right now.` : 'Nothing fits those limits. Try a longer time or fewer exclusions.'}
       </Txt>
 
       {result.results.map((r, i) => (
@@ -102,7 +121,7 @@ export default function Ask() {
       {why ? (
         <Card tone="soft">
           <Txt v="h3">What EatOS used</Txt>
-          {[...result.understood, result.query.need ? `Biggest need right now: ${result.query.need}` : 'No nutrient gap right now', 'Allergies and diets of everyone eating are always respected', 'Foods you marked "not for me" are left out'].map((l) => (
+          {[result.source === 'llm' ? 'Read with Claude (you turned this on in Profile)' : 'Read on this device, nothing sent anywhere', ...(result.fallbackReason ? [`Claude was not used: ${result.fallbackReason}`] : []), ...result.understood, result.query.need ? `Biggest need right now: ${result.query.need}` : 'No nutrient gap right now', 'Allergies and diets of everyone eating are always respected', 'Foods you marked "not for me" are left out'].map((l) => (
             <Txt key={l} v="small">{`• ${l}`}</Txt>
           ))}
         </Card>

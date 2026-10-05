@@ -8,6 +8,7 @@ import type { HealthCheck } from './health';
 import { recommend } from './recommend';
 import type { Query, Recommendation } from './recommend';
 import { parseAsk } from './ask';
+import type { ParsedAsk } from './ask';
 import { compact, housekeeping, pantryView } from './housekeeping';
 import { fitMatrix, resolveRequest } from './household';
 import { explainToday } from './explain';
@@ -107,7 +108,15 @@ export class Kernel {
   }
 
   ask(text: string, now: number) {
-    const parsed = parseAsk(text, this.s.profile?.selfId);
+    return this.answer(parseAsk(text, this.s.profile?.selfId), now);
+  }
+
+  /**
+   * Runs an already parsed request (from the rule parser or an LLM
+   * adapter). Whatever produced the query, allergies and diets are still
+   * enforced by the recommender, never by the parser.
+   */
+  answer(parsed: ParsedAsk, now: number) {
     const gap = biggestGap(this.health(now));
     const query: Query = { k: 3, ...parsed.query };
     if (!query.need && gap) query.need = gap.key as Query['need'];

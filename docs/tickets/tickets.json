@@ -405,11 +405,14 @@
           "key": "5.5",
           "sprint": 8,
           "area": "core",
-          "status": "todo",
+          "status": "done",
           "title": "Optional LLM adapter for Ask EatOS",
           "acceptance": [
-            "Same ParsedAsk shape",
-            "Off by default; the rule parser stays the fallback"
+            "Same ParsedAsk shape as the rule parser",
+            "Off by default; the person supplies their own key and model",
+            "Only the typed sentence is sent: no profile, allergies, pantry or health data",
+            "Model output is validated strictly; any error, refusal, timeout or bad JSON falls back to the on-device parser",
+            "Allergies and diets are enforced by the recommender, never by the model"
           ]
         }
       ]

@@ -7,6 +7,7 @@ import { useTheme } from '../src/theme';
 import type { ThemePref } from '../src/theme';
 import { Avatar, Btn, Card, Chip, Row, Screen, Section, Toggle, Txt, TopBar } from '../src/ui';
 import { SyncSettings } from '../src/SyncSettings';
+import { LlmSettings } from '../src/LlmSettings';
 
 const GOALS: { key: Goal; label: string }[] = [
   { key: 'more-protein', label: 'More protein' },
@@ -86,6 +87,8 @@ export default function ProfileScreen() {
       </Card>
 
       <SyncSettings />
+
+      <LlmSettings />
 
       <Section title="Your data">
         <Txt v="small">{`${kernel.events.length} events stored on this device.`}</Txt>
