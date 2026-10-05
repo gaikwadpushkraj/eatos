@@ -4,7 +4,8 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import type { AddressInfo } from 'node:net';
 import type { Server } from 'node:http';
-import { makeProfile, makeMember, hm } from '@eatos/core';
+import { Kernel, emptySyncState, makeProfile, makeMember, hm, syncOnce } from '@eatos/core';
+import type { SyncRequest, SyncResponse } from '@eatos/core';
 import { createApi } from '../src/server';
 
 const DAY0 = Date.UTC(2026, 9, 4);
@@ -116,5 +117,51 @@ describe('EatOS API', () => {
     const res = await fetch(base + '/v1/events', { method: 'POST', body: '{nope', headers: { 'x-user-id': 'me' } });
     expect(res.status).toBe(400);
     expect((await call('GET', '/v1/missing')).status).toBe(404);
+  });
+
+  describe('sync', () => {
+    const transport = (user: string) => async (req: SyncRequest) => (await call('POST', '/v1/sync', req, user)).body as SyncResponse;
+
+    it('syncs two devices through the server and survives a restart', async () => {
+      const phone = new Kernel();
+      phone.submit({ type: 'profile.set', at: DAY0, profile });
+      phone.submit({ type: 'water.logged', at: T('09:00'), ml: 400 });
+      let a = (await syncOnce(phone, emptySyncState(), transport('sam'))).state;
+
+      const laptop = new Kernel();
+      let b = (await syncOnce(laptop, emptySyncState(), transport('sam'))).state;
+      expect(laptop.events).toHaveLength(2);
+
+      laptop.submit({ type: 'water.logged', at: T('10:00'), ml: 250 });
+      b = (await syncOnce(laptop, b, transport('sam'))).state;
+      a = (await syncOnce(phone, a, transport('sam'))).state;
+      expect(phone.events).toHaveLength(3);
+      expect(a.cursor).toBe(3);
+
+      // The server's own kernel sees synced events too.
+      expect((await call('GET', '/v1/health', undefined, 'sam')).body.checks[0].actual).toBe(650);
+
+      await new Promise((r) => server.close(r));
+      await start();
+      const again = await syncOnce(phone, a, transport('sam'));
+      expect(again.received).toBe(0);
+      expect(again.state.cursor).toBe(3);
+      expect((await call('GET', '/v1/events', undefined, 'sam')).body.events).toHaveLength(3);
+    });
+
+    it('starts a new epoch after compaction so devices resync fully', async () => {
+      const phone = new Kernel();
+      phone.submit({ type: 'profile.set', at: DAY0, profile });
+      const a = (await syncOnce(phone, emptySyncState(), transport('kim'))).state;
+      await call('POST', '/v1/housekeeping', undefined, 'kim');
+      const res = (await call('POST', '/v1/sync', { since: a.cursor, epoch: a.epoch, events: [] }, 'kim')).body;
+      expect(res.reset).toBe(true);
+      expect(res.epoch).not.toBe(a.epoch);
+    });
+
+    it('rejects synced events without ids and bad cursors', async () => {
+      expect((await call('POST', '/v1/sync', { since: 0, events: [{ type: 'water.logged', at: DAY0, ml: 1 }] })).status).toBe(400);
+      expect((await call('POST', '/v1/sync', { since: 'a' })).status).toBe(400);
+    });
   });
 });

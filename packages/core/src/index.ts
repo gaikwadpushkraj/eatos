@@ -13,3 +13,4 @@ export * from './ask';
 export * from './plan';
 export * from './explain';
 export * from './kernel';
+export * from './sync';

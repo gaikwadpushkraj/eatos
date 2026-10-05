@@ -75,3 +75,23 @@
 - **API** (`apps/api`): `node:http`, one JSON event log per user on disk.
 - **App** (`apps/app`): Expo Router, kernel runs on the device, event log
   in local storage, responsive layout (dashboard on wide screens).
+
+## Sync (`packages/core/src/sync.ts`)
+
+Sync is off by default. When a device turns it on with a server address
+and a sync code, it runs one round shortly after every change and once a
+minute:
+
+1. The device sends the events the server does not have yet (tracked as
+   a set of known ids) together with its `cursor` and `epoch`.
+2. The server appends new events in arrival order, skipping ids it
+   already has. An event's position in that order is its sequence number.
+3. The server returns every event after the device's cursor, except the
+   ones the device just sent, plus the new cursor.
+4. The device merges them with `Kernel.merge`: a union by id, replayed in
+   time order. Both devices end with the same log, so the same schedule.
+
+When the server compacts a log it starts a new `epoch`; a device on an
+old epoch gets the full log back. Events loaded without an id get a
+stable id hashed from their content, so every device names them the
+same way. A second device can join from onboarding with the same code.

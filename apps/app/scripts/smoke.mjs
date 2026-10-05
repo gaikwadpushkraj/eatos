@@ -8,6 +8,9 @@ import { readFile, mkdir } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { extname, join, resolve } from 'node:path';
 import { chromium } from 'playwright';
+import { spawn } from 'node:child_process';
+import { mkdtempSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 
 const root = resolve('dist');
 const shots = resolve('dist-shots');
@@ -46,7 +49,7 @@ async function run(name, viewport, scheme, fn) {
 }
 
 const shot = (page, name) => page.screenshot({ path: join(shots, `${name}.png`), fullPage: true });
-const text = (page, t) => page.getByText(t, { exact: false }).first().waitFor({ timeout: 15000 });
+const text = (page, t) => page.getByText(t, { exact: false }).filter({ visible: true }).first().waitFor({ timeout: 15000 });
 
 async function onboard(page, household) {
   await page.goto(base + '/');
@@ -118,6 +121,43 @@ await run('wide-dark', { width: 1440, height: 1000 }, 'dark', async (page) => {
   await text(page, "Today's schedule");
   await shot(page, '11-dashboard-dark');
 });
+
+// Sync: device A turns sync on, device B joins with the same code.
+const apiPort = 8790 + Math.floor(Math.random() * 100);
+const api = spawn('npx', ['tsx', 'src/main.ts'], {
+  cwd: resolve('../api'),
+  env: { ...process.env, PORT: String(apiPort), EATOS_DATA: mkdtempSync(join(tmpdir(), 'eatos-smoke-')) },
+  stdio: 'ignore',
+});
+const apiUrl = `http://127.0.0.1:${apiPort}`;
+for (let i = 0; i < 50; i++) {
+  try {
+    if ((await fetch(apiUrl)).ok) break;
+  } catch {}
+  await new Promise((r) => setTimeout(r, 200));
+}
+const code = `smoke${Date.now().toString(36)}`;
+await run('sync-a', { width: 390, height: 844 }, 'light', async (page) => {
+  await onboard(page, false);
+  await page.goto(base + '/profile');
+  await page.getByLabel('Server address').fill(apiUrl);
+  await page.getByLabel('Sync code').fill(code);
+  await page.getByRole('button', { name: 'Turn on sync' }).click();
+  await text(page, 'Last synced');
+  await shot(page, '12-sync-on');
+});
+await run('sync-b', { width: 390, height: 844 }, 'light', async (page) => {
+  await page.goto(base + '/');
+  await text(page, 'Who is EatOS feeding?');
+  await page.getByRole('button', { name: 'Already use EatOS on another device? Connect' }).click();
+  await page.getByLabel('Server address').fill(apiUrl);
+  await page.getByLabel('Sync code').fill(code);
+  await page.getByRole('button', { name: 'Connect' }).click();
+  await text(page, 'Good');
+  await text(page, 'Asha');
+  await shot(page, '13-sync-joined');
+});
+api.kill();
 
 await browser.close();
 server.close();

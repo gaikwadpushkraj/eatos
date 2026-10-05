@@ -6,6 +6,7 @@ import { useKernel } from '../src/kernel';
 import { useTheme } from '../src/theme';
 import type { ThemePref } from '../src/theme';
 import { Avatar, Btn, Card, Chip, Row, Screen, Section, Toggle, Txt, TopBar } from '../src/ui';
+import { SyncSettings } from '../src/SyncSettings';
 
 const GOALS: { key: Goal; label: string }[] = [
   { key: 'more-protein', label: 'More protein' },
@@ -77,6 +78,8 @@ export default function ProfileScreen() {
         <Txt v="h3" color="okText">Safety floor is on</Txt>
         <Txt v="small" color="okText">{`EatOS never plans below ${profile.floorKcal} kcal a day and never suggests skipping meals. For a medical diet, follow your clinician's plan.`}</Txt>
       </Card>
+
+      <SyncSettings />
 
       <Section title="Your data">
         <Txt v="small">{`${kernel.events.length} events stored on this device.`}</Txt>

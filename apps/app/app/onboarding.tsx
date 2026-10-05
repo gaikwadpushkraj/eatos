@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { router } from 'expo-router';
 import { DEFAULT_ROUTINE, makeMember, makeProfile } from '@eatos/core';
@@ -8,6 +8,7 @@ import type { EventInput } from '../src/kernel';
 import { useTheme } from '../src/theme';
 import { Btn, Card, Check, Chip, Field, Row, Screen, Section, Toggle, Txt } from '../src/ui';
 import { capitalise, localOffset, shelfLifeDays } from '../src/format';
+import { SyncSettings } from '../src/SyncSettings';
 
 const WHO = [
   { key: 'me', title: 'Just me', hint: 'Everyday meals that fit my day' },
@@ -84,7 +85,12 @@ function MemberForm({ onAdd }: { onAdd: (m: Member) => void }) {
 }
 
 export default function Onboarding() {
-  const { submitMany, now } = useKernel();
+  const { submitMany, now, kernel, version } = useKernel();
+  const [joining, setJoining] = useState(false);
+  // A synced profile from another device finishes onboarding.
+  useEffect(() => {
+    if (kernel.state.profile) router.replace('/');
+  }, [kernel, version]);
   const { c } = useTheme();
   const [step, setStep] = useState(0);
   const [who, setWho] = useState<Who[]>(['me']);
@@ -159,6 +165,8 @@ export default function Onboarding() {
         <>
           <Txt v="h1">Who is EatOS feeding?</Txt>
           <Txt v="body" color="muted">Pick everything that applies. You can change it any time.</Txt>
+          <Btn small kind="ghost" label={joining ? 'Set up this device instead' : 'Already use EatOS on another device? Connect'} onPress={() => setJoining(!joining)} />
+          {joining ? <SyncSettings joining /> : null}
           <View style={{ gap: 10 }}>
             {WHO.map((w) => (
               <Card key={w.key} tone={who.includes(w.key) ? 'accent' : 'default'} padding={4}>

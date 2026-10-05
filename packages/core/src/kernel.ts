@@ -31,6 +31,21 @@ export interface KernelOptions {
   onEvent?: (event: EatEvent, state: State) => void;
 }
 
+/** FNV-1a hash, used to give id-less events a stable id on every device. */
+function hash(s: string): string {
+  let h = 0x811c9dc5;
+  for (let i = 0; i < s.length; i++) {
+    h ^= s.charCodeAt(i);
+    h = Math.imul(h, 0x01000193);
+  }
+  return (h >>> 0).toString(36);
+}
+
+/** Events loaded without an id get one derived from their content. */
+export function withId(e: EatEvent): EatEvent {
+  return e.id ? e : ({ ...e, id: `ev_h${hash(JSON.stringify(e))}` } as EatEvent);
+}
+
 /**
  * The EatOS kernel. Shells talk to it only through these syscalls, so the
  * web app, mobile app and API server behave the same.
@@ -42,8 +57,13 @@ export class Kernel {
 
   constructor(opts: KernelOptions = {}) {
     this.catalog = opts.catalog ?? CATALOG;
-    this.s = opts.events ? replay(opts.events) : emptyState();
+    this.s = opts.events ? replay(opts.events.map(withId)) : emptyState();
     this.onEvent = opts.onEvent;
+  }
+
+  /** Replaces the listener called after each new event. */
+  setListener(fn: KernelOptions['onEvent']): void {
+    this.onEvent = fn;
   }
 
   get state(): State {
@@ -60,6 +80,20 @@ export class Kernel {
     this.s = reduce(this.s, e);
     this.onEvent?.(e, this.s);
     return e;
+  }
+
+  /**
+   * syscall: merge events from another device. The log is append-only and
+   * every event has an id, so merging is a union by id followed by a
+   * replay in time order. Returns the events that were new here.
+   */
+  merge(events: EatEvent[]): EatEvent[] {
+    const have = new Set(this.s.events.map((e) => e.id));
+    const added = events.filter((e) => e.id && !have.has(e.id) && (have.add(e.id), true));
+    if (!added.length) return [];
+    this.s = replay([...this.s.events, ...added]);
+    for (const e of added) this.onEvent?.(e, this.s);
+    return added;
   }
 
   schedule(now: number): Task[] {
@@ -117,7 +151,8 @@ export class Kernel {
   }
 
   compact(now: number, keepDays = 90): void {
-    this.s = compact(this.s, now, keepDays);
+    const c = compact(this.s, now, keepDays);
+    this.s = c.events.every((e) => e.id) ? c : replay(c.events.map(withId));
   }
 
   household() {

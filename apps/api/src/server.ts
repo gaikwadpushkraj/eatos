@@ -1,6 +1,6 @@
 import { createServer } from 'node:http';
 import type { IncomingMessage, Server, ServerResponse } from 'node:http';
-import type { EatEvent, Query } from '@eatos/core';
+import type { EatEvent, Query, SyncRequest } from '@eatos/core';
 import { Store, validUserId } from './store';
 
 const EVENT_TYPES = new Set<EatEvent['type']>([
@@ -111,7 +111,7 @@ export function createApi({ dataDir, clock = Date.now }: ServerOptions): Server 
         case 'POST /v1/housekeeping': {
           const result = k.housekeep(now);
           k.compact(now);
-          store.flush(userId);
+          store.compacted(userId);
           return send(res, 200, result);
         }
         case 'GET /v1/week':
@@ -123,6 +123,19 @@ export function createApi({ dataDir, clock = Date.now }: ServerOptions): Server 
           const r = k.resolve(food);
           if (!r) throw new HttpError(404, `unknown food: ${food}`);
           return send(res, 200, r);
+        }
+        case 'POST /v1/sync': {
+          const body = (await readJson(req)) as Partial<SyncRequest>;
+          const since = body.since ?? 0;
+          if (typeof since !== 'number' || !Number.isInteger(since)) throw new HttpError(400, 'since must be an integer');
+          if (body.epoch !== undefined && typeof body.epoch !== 'string') throw new HttpError(400, 'epoch must be a string');
+          const raw = Array.isArray(body.events) ? body.events : [];
+          const events = raw.map((e) => {
+            const ev = validateEvent(e, now);
+            if (typeof ev.id !== 'string' || !ev.id) throw new HttpError(400, 'synced events need an id');
+            return ev;
+          });
+          return send(res, 200, store.sync(userId, { since, epoch: body.epoch, events }));
         }
         case 'GET /v1/catalog':
           return send(res, 200, { foods: k.catalog });

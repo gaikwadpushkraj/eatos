@@ -94,8 +94,8 @@ Sprint 6
 - 4.7 Responsive web layout (dashboard on wide screens)
 - 4.8 Local persistence of the event log
 
-### Phase 5: Sync and integrations (Sprints 7 and 8, future)
-- 5.1 Device to server sync of event logs
+### Phase 5: Sync and integrations (Sprints 7 and 8)
+- 5.1 Device to server sync of event logs (done)
 - 5.2 Calendar driver
 - 5.3 Health data and wearable drivers
 - 5.4 Grocery and delivery drivers
