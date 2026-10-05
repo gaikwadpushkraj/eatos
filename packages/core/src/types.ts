@@ -77,6 +77,37 @@ export type Allergen =
   | 'shellfish'
   | 'sesame';
 
+/** Religious, ethical or household rules that are always hard filters. */
+export type DietRule = 'jain' | 'satvik' | 'no-onion-garlic' | 'no-egg' | 'no-beef' | 'no-pork' | 'halal';
+
+/**
+ * Conditions a person chooses to declare. EatOS never infers or states a
+ * diagnosis; declared conditions only shape ranking and safety gates.
+ */
+export type Condition =
+  | 'diabetes'
+  | 'prediabetes'
+  | 'hypertension'
+  | 'high-cholesterol'
+  | 'pcos'
+  | 'thyroid'
+  | 'anaemia'
+  | 'lactose-intolerant'
+  | 'celiac'
+  | 'gout'
+  | 'kidney'
+  | 'pregnancy'
+  | 'insulin'
+  | 'eating-disorder-history'
+  | 'minor';
+
+export type FastingKind = 'navratri' | 'ekadashi' | 'shravan' | 'ramzan' | 'custom';
+
+/** Why a wished-for food is out of reach. */
+export type Blocker = 'health' | 'religion' | 'allergy' | 'time' | 'skill' | 'equipment' | 'availability' | 'household' | 'budget' | 'habit' | 'other';
+
+export type Kitchen = 'full' | 'basic' | 'none';
+
 export type Goal = 'more-protein' | 'hydration' | 'less-waste' | 'energy' | 'performance';
 
 export interface Member {
@@ -92,6 +123,14 @@ export interface Member {
   mild?: boolean;
   /** Id of the member who manages this one (child, cared-for person). */
   managedBy?: string;
+  /** Religious or household rules (hard filters). */
+  rules?: DietRule[];
+  /** Conditions this person chose to declare. */
+  conditions?: Condition[];
+  /** Spice tolerance, 0 (none) to 3 (loves it). */
+  spice?: 0 | 1 | 2 | 3;
+  /** Cuisines they grew up with or love, e.g. gujarati, south-indian. */
+  cuisines?: string[];
 }
 
 export interface Medication {
@@ -117,6 +156,8 @@ export interface Profile {
   /** Local time offset from UTC in minutes (e.g. +330 for India). */
   tzOffsetMin: number;
   hideNumbers?: boolean;
+  /** What the cook space allows: a PG or hostel may have no kitchen at all. */
+  kitchen?: Kitchen;
 }
 
 export interface Nutrients {
@@ -142,6 +183,10 @@ export interface Food {
   variantOf?: string;
   /** Cooking steps; generic steps are generated when missing. */
   steps?: string[];
+  /** Cuisine or region, e.g. gujarati, south-indian, hyderabadi. */
+  cuisine?: string;
+  /** How hot it is, 0 (none) to 3 (very spicy). */
+  spice?: 0 | 1 | 2 | 3;
 }
 
 export type PantryLocation = 'fridge' | 'freezer' | 'cupboard' | 'counter';
@@ -183,6 +228,10 @@ export type EatEvent =
   | (Base<'feedback'> & { foodId: string; verdict: Verdict })
   | (Base<'task.done'> & { taskId: string })
   | (Base<'task.skipped'> & { taskId: string })
-  | (Base<'medication.taken'> & { name: string });
+  | (Base<'medication.taken'> & { name: string })
+  /** Starts a fast for today (no kind ends it). It lapses at the end of the local day. */
+  | (Base<'fasting.set'> & { kind?: FastingKind })
+  /** Something the person wishes to eat but cannot, and why. */
+  | (Base<'wish.logged'> & { wish: string; blocker?: Blocker; foodId?: string });
 
 export type EventType = EatEvent['type'];

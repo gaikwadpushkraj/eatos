@@ -1,10 +1,12 @@
 import type { Food } from './types';
+import { INDIA_CATALOG } from './india';
 
 /**
  * Seed catalog. Nutrients are rough per-serving estimates, good enough for
  * recommendations; they are not medical data.
  */
 export const CATALOG: Food[] = [
+  ...INDIA_CATALOG,
   // Breakfast
   { id: 'oats-banana', name: 'Oats with banana and yogurt', slots: ['breakfast'], tags: ['warm', 'quick', 'fibre'], diet: 'vegetarian', allergens: ['dairy', 'gluten'], prepMin: 8, nutrients: { kcal: 420, proteinG: 18, fibreG: 8, waterMl: 150 }, ingredients: ['oats', 'banana', 'greek yogurt', 'milk'] },
   { id: 'overnight-oats', name: 'Overnight oats with berries', slots: ['breakfast'], tags: ['quick', 'fibre', 'cold'], diet: 'vegetarian', allergens: ['dairy', 'gluten'], prepMin: 5, nutrients: { kcal: 380, proteinG: 15, fibreG: 9, waterMl: 150 }, ingredients: ['oats', 'berries', 'milk', 'chia seeds'] },

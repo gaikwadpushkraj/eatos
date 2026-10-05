@@ -1,5 +1,5 @@
 import type { Food, Member } from './types';
-import { DIET_RANK } from './types';
+import { hardProblem } from './rules';
 
 export interface Fit {
   memberId: string;
@@ -11,12 +11,11 @@ export interface Fit {
 
 /** Does a food fit one member? Allergens and diet are hard; the rest soft. */
 export function fitFor(food: Food, member: Member): Fit {
-  const allergen = food.allergens.find((a) => member.allergens.includes(a));
-  if (allergen) return { memberId: member.id, ok: false, hard: true, reason: `Contains ${allergen}` };
-  if (DIET_RANK[food.diet] > DIET_RANK[member.diet]) return { memberId: member.id, ok: false, hard: true, reason: `Not ${member.diet}` };
+  const problem = hardProblem(food, member);
+  if (problem) return { memberId: member.id, ok: false, hard: true, reason: problem };
   const disliked = member.dislikes.find((d) => food.ingredients.some((i) => i.includes(d)) || food.tags.includes(d));
   if (disliked) return { memberId: member.id, ok: false, hard: false, reason: `Dislikes ${disliked}` };
-  if (member.mild && food.tags.includes('spicy')) return { memberId: member.id, ok: false, hard: false, reason: 'Too spicy' };
+  if ((member.mild && food.tags.includes('spicy')) || (member.spice !== undefined && (food.spice ?? 0) > member.spice + 1)) return { memberId: member.id, ok: false, hard: false, reason: 'Too spicy' };
   return { memberId: member.id, ok: true, hard: false, reason: 'Fits' };
 }
 

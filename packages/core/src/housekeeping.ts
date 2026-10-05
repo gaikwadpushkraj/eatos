@@ -50,7 +50,7 @@ export function housekeeping(state: State, now: number): HousekeepingResult {
 }
 
 /** Event types that must never be compacted away. */
-const KEEP_FOREVER = new Set<EatEvent['type']>(['profile.set', 'member.added', 'member.removed', 'feedback']);
+const KEEP_FOREVER = new Set<EatEvent['type']>(['profile.set', 'member.added', 'member.removed', 'feedback', 'wish.logged']);
 
 /**
  * Compaction: drops routine events older than `keepDays` but keeps what
