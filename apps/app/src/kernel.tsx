@@ -1,4 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { AppState, Platform } from 'react-native';
 import type { ReactNode } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Kernel, Vault, isEnvelope } from '@eatos/core';
@@ -64,6 +65,7 @@ export function KernelProvider({ children }: { children: ReactNode }) {
   const [version, setVersion] = useState(0);
   const [now, setNow] = useState(() => Date.now());
   const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const kernelRef = useRef<Kernel | null>(null);
   const vaultRef = useRef<Vault | null>(null);
   const envelopeRef = useRef<Envelope | null>(null);
   const [lastWipe, setLastWipe] = useState<{ serverDeleted: boolean | null } | null>(null);
@@ -112,6 +114,31 @@ export function KernelProvider({ children }: { children: ReactNode }) {
       })
       .catch(() => setKernel(make([])));
   }, [make]);
+
+  kernelRef.current = kernel;
+
+  // Save at once when the tab is hidden or the app goes to the background, so a quick close never loses an entry.
+  useEffect(() => {
+    const flush = () => {
+      const k = kernelRef.current;
+      if (!k) return;
+      if (saveTimer.current) clearTimeout(saveTimer.current);
+      persist(k.events).catch(() => {});
+    };
+    const sub = AppState.addEventListener('change', (state) => state !== 'active' && flush());
+    const onHide = () => document.visibilityState === 'hidden' && flush();
+    if (Platform.OS === 'web' && typeof window !== 'undefined') {
+      window.addEventListener('pagehide', flush);
+      document.addEventListener('visibilitychange', onHide);
+    }
+    return () => {
+      sub.remove();
+      if (Platform.OS === 'web' && typeof window !== 'undefined') {
+        window.removeEventListener('pagehide', flush);
+        document.removeEventListener('visibilitychange', onHide);
+      }
+    };
+  }, [persist]);
 
   // Sync settings may be encrypted, so load them once the kernel is available.
   useEffect(() => {
@@ -185,6 +212,11 @@ export function KernelProvider({ children }: { children: ReactNode }) {
 
   const value = useMemo<KernelValue | null>(() => {
     if (!kernel) return null;
+    /** Writes the log now. Used after every user action; the debounce only batches bursts like sync. */
+    const save = () => {
+      if (saveTimer.current) clearTimeout(saveTimer.current);
+      persist(kernel.events).catch(() => {});
+    };
     const bump = (t = Date.now()) => {
       setLastWipe(null);
       setNow(t);
@@ -197,12 +229,14 @@ export function KernelProvider({ children }: { children: ReactNode }) {
       submit: (e) => {
         const t = Date.now();
         const ev = kernel.submit({ ...e, at: e.at ?? t } as EatEvent);
+        save();
         bump(t);
         return ev;
       },
       submitMany: (events) => {
         const t = Date.now();
         for (const e of events) kernel.submit({ ...e, at: e.at ?? t } as EatEvent);
+        save();
         bump(t);
       },
       restore: (events) => {

@@ -34,8 +34,12 @@ const errors = [];
 let failed = false;
 
 async function run(name, viewport, scheme, fn) {
+  // SMOKE_ONLY=journey,security runs just those tests.
+  if (process.env.SMOKE_ONLY && !process.env.SMOKE_ONLY.split(',').includes(name)) return;
   const ctx = await browser.newContext({ viewport, colorScheme: scheme });
   const page = await ctx.newPage();
+  // SMOKE_CPU_THROTTLE=4 makes a fast machine behave like a slow CI runner, to catch timing races.
+  if (process.env.SMOKE_CPU_THROTTLE) await (await ctx.newCDPSession(page)).send('Emulation.setCPUThrottlingRate', { rate: Number(process.env.SMOKE_CPU_THROTTLE) });
   page.on('pageerror', (e) => errors.push(`${name}: ${e.message}`));
   page.on('console', (m) => m.type() === 'error' && errors.push(`${name} console: ${m.text()}`));
   try {
@@ -68,6 +72,8 @@ async function onboard(page, household) {
   }
   await page.getByRole('button', { name: 'Start EatOS' }).click();
   await text(page, 'Asha');
+  // The profile must be on disk before the next test navigates away and reloads the app.
+  await page.waitForFunction(() => (localStorage.getItem('eatos.events.v1') || '').includes('profile.set'), null, { timeout: 5000 });
 }
 
 await run('mobile', { width: 390, height: 844 }, 'light', async (page) => {
@@ -127,6 +133,9 @@ await run('wide-dark', { width: 1440, height: 1000 }, 'dark', async (page) => {
 await run('journey', { width: 390, height: 844 }, 'light', async (page) => {
   await onboard(page, true);
   await text(page, 'NEXT UP');
+  // An action must be on disk the moment it happens, so a quick reload or close never loses it.
+  await page.getByRole('button', { name: '+ 250 ml water' }).click();
+  if (!(await stored(page, 'eatos.events.v1')).includes('water.logged')) throw new Error('the logged water was not saved immediately');
   const nextUp = async () => (await page.getByText(/^(NEXT UP ·|ALL DONE FOR TODAY)/).filter({ visible: true }).first().textContent()) ?? '';
   const before = await nextUp();
   await page.getByRole('button', { name: 'Start cooking' }).click();
@@ -325,7 +334,8 @@ await run('llm', { width: 390, height: 844 }, 'light', async (page) => {
 
 // Sync: device A turns sync on, device B joins with the same code.
 const apiPort = 8790 + Math.floor(Math.random() * 100);
-const api = spawn('npx', ['tsx', 'src/main.ts'], {
+// Run node directly (not npx/tsx wrappers) so killing it really stops the server.
+const api = spawn(process.execPath, ['--import', 'tsx', 'src/main.ts'], {
   cwd: resolve('../api'),
   env: { ...process.env, PORT: String(apiPort), EATOS_DATA: mkdtempSync(join(tmpdir(), 'eatos-smoke-')) },
   stdio: 'ignore',
