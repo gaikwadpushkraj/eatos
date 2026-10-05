@@ -27,6 +27,8 @@ publishes a GitHub release with the web build attached.
 
 ## Web app
 
+Live at **https://gaikwadpushkraj.github.io/eatos/** (GitHub Pages, deployed from `main`).
+
 **GitHub Pages (automatic).** In the repository go to Settings > Pages and
 set the source to *GitHub Actions*. Every push to `main` then builds with
 `EXPO_BASE_URL=/<repo>` and publishes. The build copies `index.html` to

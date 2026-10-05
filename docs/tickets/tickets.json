@@ -472,7 +472,8 @@
             "Web build deploys to GitHub Pages and works under a sub-path",
             "A tagged release re-runs every check and attaches the web build",
             "API ships as a Docker image with encrypted storage required",
-            "docs/RELEASE.md lists every step, including the ones only the account owner can do"
+            "docs/RELEASE.md lists every step, including the ones only the account owner can do",
+            "Web app is live on GitHub Pages: https://gaikwadpushkraj.github.io/eatos/"
           ]
         },
         {
@@ -480,9 +481,8 @@
           "sprint": 9,
           "area": "release",
           "status": "todo",
-          "title": "Publish to the app stores and turn on Pages (owner action)",
+          "title": "Publish to the app stores (owner action)",
           "acceptance": [
-            "Repository: Settings > Pages > Source: GitHub Actions",
             "Expo account, eas init, and the EXPO_TOKEN secret",
             "Apple Developer and Google Play accounts, signing credentials, store listings and privacy policy",
             "Answer Apple's export-compliance and Google's data-safety questionnaires",
