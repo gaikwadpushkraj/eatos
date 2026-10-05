@@ -87,6 +87,10 @@ EATOS_DATA_KEY='a long random secret' docker compose up -d
 - Data lives in the `eatos-data` volume (`/data` in the container).
 - The container listens on port 8787 over plain HTTP. **Put it behind HTTPS** (a reverse proxy such as Caddy or nginx) before using it outside your home network, and read the known limits in [SECURITY.md](SECURITY.md): the sync code identifies a user, it is not a login.
 
+The image runs as a non-root user, keeps files owner-only, and has a health check. Behind a TLS-inspecting proxy, build with your CA bundle: `docker build --secret id=ca,src=/path/to/ca-bundle.crt -f apps/api/Dockerfile .`
+
+The image build, a container restart (data survives) and the health check were verified end to end.
+
 Without Docker: `EATOS_DATA_KEY=... HOST=0.0.0.0 pnpm api`.
 
 Back up the volume, or ask each device for a backup (Profile > Back up).

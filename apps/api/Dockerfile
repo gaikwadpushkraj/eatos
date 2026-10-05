@@ -11,7 +11,11 @@ COPY packages/core/package.json packages/core/
 COPY apps/api/package.json apps/api/
 COPY apps/app/package.json apps/app/
 # Only what the API needs; the Expo app is not installed.
-RUN pnpm install --frozen-lockfile --filter @eatos/api...
+# Behind a TLS-inspecting proxy, pass its CA bundle:
+#   docker build --secret id=ca,src=/path/to/ca-bundle.crt ...
+RUN --mount=type=secret,id=ca,required=false \
+    if [ -f /run/secrets/ca ]; then export NODE_EXTRA_CA_CERTS=/run/secrets/ca; fi; \
+    pnpm install --frozen-lockfile --filter @eatos/api...
 
 FROM base
 ENV NODE_ENV=production PORT=8787 EATOS_DATA=/data HOST=0.0.0.0
