@@ -29,7 +29,8 @@ type Row = [
 
 const ROWS: Row[] = [
   // Breakfast
-  ['idli-sambar', 'Idli with sambar', 'south-indian', 'B', 'vegan', 'warm gentle ferment low-sodium', [], 15, 1, 260, 10, 6, 250, 'rice, urad dal, toor dal, tomatoes, drumstick, sambar powder, tamarind'],
+  ['idli-sambar', 'Idli with sambar', 'south-indian', 'B', 'vegan', 'warm gentle ferment low-sodium', [], 15, 1, 260, 10, 6, 250, 'rice, urad dal, toor dal, tomatoes, onion, drumstick, sambar powder, tamarind'],
+  ['idli-chutney-jain', 'Idli with coconut chutney and tomato-free sambar', 'south-indian', 'B', 'vegan', 'warm gentle ferment low-sodium', [], 15, 1, 250, 9, 5, 200, 'rice, urad dal, toor dal, coconut, green chilli, drumstick, hing, tamarind', 'idli-sambar'],
   ['masala-dosa', 'Masala dosa', 'south-indian', 'B', 'vegan', 'warm comfort high-gi fried', [], 25, 1, 380, 8, 4, 100, 'rice, urad dal, potatoes, onion, mustard seeds, curry leaves'],
   ['pesarattu', 'Pesarattu (green moong dosa)', 'andhra', 'B', 'vegan', 'warm high-protein fibre low-gi', [], 20, 2, 280, 15, 7, 100, 'green moong, ginger, green chilli, cumin'],
   ['ragi-dosa', 'Ragi dosa with chutney', 'karnataka', 'B', 'vegan', 'warm fibre low-gi iron', [], 20, 1, 230, 6, 5, 100, 'ragi, urad dal, coconut, green chilli'],

@@ -53,7 +53,7 @@ const SWAPS: Swap[] = [
   { match: /samosa|vada pav|kachori|pakora|bhajiya|fried/i, when: ['diabetes', 'prediabetes', 'high-cholesterol', 'hypertension'], picks: ['roasted-chana', 'dhokla', 'sprouts-salad', 'murmura-bhel', 'idli-sambar'], why: 'Same snack hour with less oil and refined flour.' },
   { match: /jalebi|gulab|mithai|halwa|sweet|ladoo|barfi|cake|ice cream/i, when: ['diabetes', 'prediabetes', 'pcos'], picks: ['sweet-curd-mango', 'fruit-curd-bowl', 'makhana-kheer'], why: 'A small sweet after a meal beats a large one alone; fruit and curd keep the sweetness.', tips: [{ text: 'Have mithai after a meal, in a small portion, rather than on an empty stomach.', evidence: 'guideline' }] },
   { match: /mutton|liver|prawn|crab|organ|keema/i, when: ['gout'], picks: ['boiled-eggs', 'paneer-tikka-salad', 'dal-tadka-rice'], why: 'Lower-purine proteins that still fill you up.' },
-  { match: /whey|protein|chicken|gym/i, when: ['no-beef', 'jain', 'satvik'], picks: ['paneer-tikka-salad', 'soya-chunk-curry', 'sprouts-salad', 'besan-chilla', 'fruit-curd-bowl'], why: 'Whole-food vegetarian protein; ICMR-NIN 2024 advises food over protein supplements.' },
+  { match: /whey|protein (bar|shake|powder)|supplement/i, when: [], picks: ['paneer-tikka-salad', 'soya-chunk-curry', 'sprouts-salad', 'besan-chilla', 'fruit-curd-bowl'], why: 'Whole-food vegetarian protein; ICMR-NIN 2024 advises food over protein supplements.' },
   { match: /chaat|pani puri|gol gappa|street|raw|sushi|cheese|papaya/i, when: ['pregnancy'], picks: ['murmura-bhel', 'fruit-chaat', 'dhokla', 'curd-rice'], why: 'Freshly cooked or home-made versions of the same cravings. Street food hygiene cannot be checked.' },
 ];
 
@@ -95,6 +95,8 @@ const jaccard = (a: string[], b: string[]) => {
 
 function allowed(food: Food, m: Member | undefined, state: State, now: number): boolean {
   if (m && (hardProblem(food, m) || healthFit(food, m).delta <= -3)) return false;
+  // Alternatives are for the table: nothing that breaks a rule for anyone in the household.
+  if ((state.profile?.members ?? []).some((o) => hardProblem(food, o))) return false;
   const kitchen = state.profile?.kitchen ?? 'full';
   if (kitchen === 'none' && !food.tags.includes('no-cook')) return false;
   if (kitchen !== 'full' && food.tags.includes('oven')) return false;
@@ -135,8 +137,8 @@ export function alternatives(state: State, catalog: Food[], wish: string, now: n
     const t = textProblem(wish, me);
     if (t) blockers.push({ kind: kindOf(t, me), detail: t });
   }
-  const swaps = SWAPS.filter((s) => s.match.test(text) && s.when.some((w) => mine.has(w)));
-  if (!blockers.length && swaps.length) blockers.push({ kind: swaps[0]!.when.some((w) => ['jain', 'satvik', 'no-onion-garlic', 'no-beef', 'halal'].includes(w) && mine.has(w)) ? 'religion' : 'health', detail: 'It conflicts with what you told EatOS about your food.' });
+  const swaps = SWAPS.filter((s) => s.match.test(text) && (s.when.length === 0 || s.when.some((w) => mine.has(w))));
+  if (!blockers.length && swaps.some((x) => x.when.length)) blockers.push({ kind: swaps.find((x) => x.when.length)!.when.some((w) => ['jain', 'satvik', 'no-onion-garlic', 'no-beef', 'halal'].includes(w) && mine.has(w)) ? 'religion' : 'health', detail: 'It conflicts with what you told EatOS about your food.' });
   for (const s of swaps) tips.push(...(s.tips ?? []));
 
   const ladder: Rung[] = [];

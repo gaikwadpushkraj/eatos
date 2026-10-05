@@ -60,7 +60,7 @@ export function nextTasteCards(state: State, catalog: Food[], member: Member | u
   const answered = new Set(state.events.flatMap((e) => (e.type === 'feedback' ? [e.foodId] : [])));
   const known = new Set(Object.keys(tasteAffinity(state, catalog, now)));
   const pool = catalog.filter(
-    (f) => !answered.has(f.id) && (!member || !hardProblem(f, member)) && !f.variantOf && (kitchen !== 'none' || f.tags.includes('no-cook')) && (kitchen === 'full' || !f.tags.includes('oven')) && (member?.spice === undefined || (f.spice ?? 0) <= member.spice + 1),
+    (f) => !answered.has(f.id) && (!member || !hardProblem(f, member)) && !(state.profile?.members ?? []).some((o) => hardProblem(f, o)) && !f.variantOf && (kitchen !== 'none' || f.tags.includes('no-cook')) && (kitchen === 'full' || !f.tags.includes('oven')) && (member?.spice === undefined || (f.spice ?? 0) <= member.spice + 1),
   );
   // Start with the food they grew up with, then widen.
   const own = (member?.cuisines ?? []).flatMap((c) => pool.filter((f) => f.cuisine === c).slice(0, 1));

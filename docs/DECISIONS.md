@@ -23,3 +23,10 @@ mostly snippet-level, so numbers are directional).
 | D14 | A kitchen setting (full, basic, none) is one profile switch; "none" allows only dishes tagged no-cook | PG and hostel life is common in metros | Add a kettle/microwave level |
 | D15 | Group meals average soft health nudges across everyone eating; hard rules apply per person | Simple and predictable | Review with household personas |
 | D16 | Persona agents test through the real web build with a seeded profile, not the live Pages site | Deterministic, no network, same code | Re-run after each release |
+| D17 | Alternatives and taste cards are filtered to dishes safe for everyone in the household, not only the person asking | A suggestion that another member cannot eat is a safety miss | Option to show per-person versions |
+| D18 | A health nudge is never diluted by household size; positive fits are shared | Persona test: dilution made an insulin user's penalty vanish | Review with real households |
+| D19 | Wishes EatOS does not know are labelled unknown, never "nothing in the way"; obvious rule breaks in the typed words (meat for a vegetarian) are still caught | Persona tests: unknown dishes read as approval | A larger dish catalogue and ingredient inference |
+| D20 | Skipping meals, crash dieting and fast weight loss get a kind refusal for everyone; no calories by default | Research on tracking harms; a minor tried it in testing | Clinician review of wording |
+| D21 | Night routines are supported by wrapping times before waking into the next morning; the day still turns over at midnight | Cheapest change that keeps water and meals sensible; a true "day from wake" model is bigger | Day anchored to wake time |
+| D22 | No kettle or microwave level; "no kitchen" allows only no-cook dishes | Needs a new setting and tags | Add a third kitchen level |
+| D23 | Not built: Ramzan iftar and suhoor timing, Paryushan and chauvihar (no eating after sunset), price and budget, regional-language UI, cook-page method steps for new dishes, Quick Add receipt gaps (egg counts, dahi, chips) | Out of reach in this pass; listed by the personas | Next phase |

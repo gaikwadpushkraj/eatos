@@ -28,7 +28,7 @@ export default function Taste() {
         <Card padding={20} style={{ gap: 14 }}>
           <Txt v="label">Would you eat this?</Txt>
           <Txt v="h1">{food.name}</Txt>
-          <Txt v="small">{[food.cuisine ? capitalise(food.cuisine.replace('-', ' ')) : '', food.spice !== undefined ? SPICE[food.spice] : '', `${food.prepMin} min`].filter(Boolean).join(' · ')}</Txt>
+          <Txt v="small">{[food.cuisine ? food.cuisine.split('-').map(capitalise).join(' ') : '', food.spice !== undefined ? SPICE[food.spice] : '', `${food.prepMin} min`].filter(Boolean).join(' · ')}</Txt>
           <Row wrap>
             <Btn label="Yes, love it" kind="primary" onPress={() => answer('liked')} style={{ flexGrow: 1 }} />
             <Btn label="Not today" kind="outline" onPress={() => answer('skip')} style={{ flexGrow: 1 }} />

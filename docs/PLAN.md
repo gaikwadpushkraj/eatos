@@ -108,6 +108,17 @@ Sprint 6
 - 6.4 Release pipeline: app config, icons, EAS, Pages, Docker, release guide (done)
 - 6.5 Publish to the app stores and turn on Pages (owner action: needs your accounts)
 
+### Phase 7: Food intelligence for the Indian metro (Sprints 10 to 12, done)
+- 7.1 Research: wants, needs and blocked wishes (docs/research)
+- 7.2 Indian dish catalogue
+- 7.3 Constraint engine and safety gates
+- 7.4 Fasting days
+- 7.5 Context: season, hour, kitchen, night routines
+- 7.6 Taste profile and taste cards
+- 7.7 Wishes and alternatives
+- 7.8 App: Your food, fasting, wish list, taste cards, household rules
+- 7.9 Persona agents and fixes (persona_reports)
+
 ## Definition of done
 - Code is typed, tested with Vitest and passes `pnpm -r typecheck` and `pnpm -r test`.
 - Behaviour matches the rules in this file.

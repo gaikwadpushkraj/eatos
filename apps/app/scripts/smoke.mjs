@@ -138,7 +138,7 @@ await run('journey', { width: 390, height: 844 }, 'light', async (page) => {
   if (!(await stored(page, 'eatos.events.v1')).includes('water.logged')) throw new Error('the logged water was not saved immediately');
   const nextUp = async () => (await page.getByText(/^(NEXT UP ·|ALL DONE FOR TODAY)/).filter({ visible: true }).first().textContent()) ?? '';
   const before = await nextUp();
-  await page.getByRole('button', { name: 'Start cooking' }).click();
+  await page.getByRole('button', { name: /Start cooking|Show me how/ }).click();
   await text(page, 'STEP 1 OF');
   const total = Number((await page.getByText(/STEP 1 OF \d+/).first().textContent()).match(/OF (\d+)/)[1]);
   for (let i = 1; i < total; i++) {
@@ -323,7 +323,7 @@ await run('indian', { width: 390, height: 844 }, 'light', async (page) => {
   await page.goto(base + '/ask');
   await page.getByLabel('Message EatOS').fill('dinner something warm');
   await page.getByRole('button', { name: 'Send' }).click();
-  await text(page, 'Ready in');
+  await text(page, 'options that fit');
   const body = await page.evaluate(() => document.body.innerText);
   for (const bad of ['biryani', 'Pav bhaji with', 'Aloo paratha']) if (body.includes(bad)) throw new Error(`a Jain rule was broken: ${bad}`);
 
@@ -355,6 +355,19 @@ await run('indian', { width: 390, height: 844 }, 'light', async (page) => {
   const after = await stored(page, 'eatos.events.v1');
   if (!after.includes('"verdict":"liked"') || !after.includes('"verdict":"never"')) throw new Error('taste answers were not saved');
   await shot(page, '24-taste-cards');
+
+  // Things EatOS does not know are never waved through; skipping meals gets a kind answer; a night routine can be set.
+  await page.goto(base + '/wishes');
+  await page.getByLabel('What do you wish you could eat?').fill('protein bar');
+  await page.getByRole('button', { name: 'Find alternatives' }).click();
+  await text(page, 'does not know this dish yet');
+  await page.getByLabel('What do you wish you could eat?').fill('skip dinner to lose weight');
+  await page.getByRole('button', { name: 'Find alternatives' }).click();
+  await text(page, 'Regular meals are the plan');
+  await page.goto(base + '/profile');
+  await page.getByRole('button', { name: 'Night shift' }).click();
+  const night = await stored(page, 'eatos.events.v1');
+  if (!night.includes('"wake":900')) throw new Error('night routine not saved');
 });
 
 // Privacy: device encryption, unlock, encrypted backup, restore on a fresh device.

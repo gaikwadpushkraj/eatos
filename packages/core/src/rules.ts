@@ -152,9 +152,9 @@ export const FASTING: Record<FastingKind, FastingRule> = {
 export function fastingGate(members: Member[]): string | undefined {
   for (const m of members) {
     const c = m.conditions ?? [];
-    if (c.includes('insulin')) return `Fasting with insulin or sulfonylureas needs your doctor’s plan, so EatOS will not plan a fast${members.length > 1 ? ` for ${m.name}` : ''}.`;
+    if (c.includes('insulin')) return `Fasting with insulin or sulfonylureas needs your doctor’s plan, so EatOS will not plan a fast${members.length > 1 ? ` for ${m.name}` : ''}. Your doctor can agree timings with you; meanwhile EatOS keeps to steady, regular meals.`;
     if (c.includes('pregnancy')) return 'Fasting in pregnancy is for your clinician to advise, so EatOS will not plan a fast.';
-    if (c.includes('minor')) return 'EatOS does not plan fasts for children and teens.';
+    if (c.includes('minor')) return 'EatOS keeps meals regular for children and teens, so it does not plan fasts. Talk to a parent or doctor if you want to fast for a festival.';
     if (c.includes('eating-disorder-history')) return 'EatOS keeps meals regular and will not plan a fast.';
   }
   return undefined;

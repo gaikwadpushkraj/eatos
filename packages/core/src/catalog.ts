@@ -87,6 +87,7 @@ for (const food of CATALOG) {
 export function stepsFor(food: Food): string[] {
   if (food.steps?.length) return food.steps;
   const list = food.ingredients.join(', ');
+  if (food.tags.includes('no-cook')) return [`Get out: ${list}.`, 'Nothing to cook. Chop or portion what needs it.', 'Put it together and enjoy.'];
   if (food.prepMin <= 3) return [`Get out: ${list}.`, 'Put it together and enjoy.'];
   return [
     `Gather the ingredients: ${list}.`,

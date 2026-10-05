@@ -59,16 +59,16 @@ export default function Wishes() {
 
       {answer ? (
         <View style={{ gap: 12 }} accessibilityLiveRegion="polite">
-          <Card tone={answer.blockers.length ? 'warn' : 'ok'} style={{ gap: 8 }}>
-            <Txt v="h3" color={answer.blockers.length ? 'warnText' : 'okText'}>{answer.food ? answer.food.name : capitalise(answer.wish)}</Txt>
+          <Card tone={answer.blockers.length || answer.unknown ? 'soft' : 'ok'} style={{ gap: 8 }}>
+            <Txt v="h3" color={answer.blockers.length || answer.unknown ? 'text' : 'okText'}>{answer.food ? answer.food.name : capitalise(answer.wish)}</Txt>
             {answer.blockers.length ? (
               answer.blockers.map((b) => (
-                <Txt key={b.detail} v="small" color="warnText">{`${BLOCKER_LABEL[b.kind] ?? 'Other'}: ${b.detail}`}</Txt>
+                <Txt key={b.detail} v="small">{`${BLOCKER_LABEL[b.kind] ?? 'Other'}: ${b.detail}`}</Txt>
               ))
             ) : (
-              <Txt v="small" color="okText">Nothing is in the way.</Txt>
+              answer.unknown ? null : <Txt v="small" color="okText">Nothing is in the way.</Txt>
             )}
-            {answer.later ? <Txt v="small" color={answer.blockers.length ? 'warnText' : 'okText'}>{answer.later}</Txt> : null}
+            {answer.later ? <Txt v="small" color={answer.blockers.length || answer.unknown ? 'text' : 'okText'}>{answer.later}</Txt> : null}
           </Card>
 
           {answer.ladder.map((rung) => (
@@ -92,7 +92,7 @@ export default function Wishes() {
             </Card>
           ) : null}
 
-          {!answer.ladder.length && answer.blockers.length ? <Txt v="small">EatOS found nothing safe to offer for this one. That is the rule doing its job, not a gap in you.</Txt> : null}
+          {!answer.ladder.length && answer.blockers.length && !answer.unknown ? <Txt v="small">EatOS found nothing safe to offer for this one. That is the rule doing its job, not a gap in you.</Txt> : null}
           <Btn kind="outline" label={saved ? 'Saved to your wish list' : 'Save to my wish list'} disabled={saved} onPress={save} />
         </View>
       ) : null}
