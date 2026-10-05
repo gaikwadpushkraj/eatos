@@ -3,7 +3,7 @@
 //   import { start } from './persona-kit.mjs';
 //   const s = await start({ member: { name: 'Priya', diet: 'vegetarian', rules: ['jain'] }, profile: { kitchen: 'basic' } });
 //   await s.go('/wishes'); await s.page.getByLabel('What do you wish you could eat?').fill('pav bhaji'); ...
-//   await s.shot('wish'); await s.close();
+//   (pass time: '2026-10-14T13:00:00+05:30' to pin the clock)  await s.shot('wish'); await s.close();
 //
 // Run from apps/app after `pnpm build:web`. No network is needed (everything runs in the browser).
 import { createServer } from 'node:http';
@@ -15,7 +15,7 @@ import { chromium } from 'playwright';
 const root = resolve('dist');
 const types = { '.html': 'text/html', '.js': 'text/javascript', '.json': 'application/json', '.ttf': 'font/ttf', '.png': 'image/png', '.ico': 'image/x-icon' };
 
-export async function start({ member = {}, profile = {}, events = [], viewport = { width: 390, height: 844 }, scheme = 'light', shots = resolve('persona-shots'), at } = {}) {
+export async function start({ member = {}, profile = {}, events = [], viewport = { width: 390, height: 844 }, scheme = 'light', shots = resolve('persona-shots'), at, time } = {}) {
   const server = createServer(async (req, res) => {
     const path = decodeURIComponent(new URL(req.url, 'http://x').pathname);
     let file = join(root, path);
@@ -35,7 +35,9 @@ export async function start({ member = {}, profile = {}, events = [], viewport =
   page.on('console', (m) => m.type() === 'error' && errors.push(`console: ${m.text()}`));
 
   // Seed the person's profile straight into local storage, as onboarding would.
-  const t = at ?? Date.now() - 86_400_000;
+  // `time` pins the app's clock (a Date or ISO string), e.g. '2026-10-14T13:00:00+05:30' for a Wednesday lunch in IST.
+  if (time) await page.clock.setFixedTime(new Date(time));
+  const t = at ?? (time ? new Date(time).getTime() : Date.now()) - 86_400_000;
   const me = { id: 'me', name: 'You', diet: 'omnivore', allergens: [], dislikes: [], goals: [], ...member };
   const prof = {
     selfId: 'me',
