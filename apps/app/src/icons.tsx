@@ -17,6 +17,8 @@ export type IconName =
   | 'chat'
   | 'user'
   | 'close'
+  | 'camera'
+  | 'image'
   | 'sparkle';
 
 /** Stroke icons from the design, drawn with the current text colour. */
@@ -65,6 +67,19 @@ export function Icon({ name, size = 22, color, strokeWidth = 2 }: { name: IconNa
       {name === 'chat' && <Path d="M4 5h16v11H9l-5 4z" {...p} />}
       {name === 'close' && <Path d="M6 6l12 12M18 6L6 18" {...p} />}
       {name === 'sparkle' && <Path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8zM19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8z" {...p} />}
+      {name === 'camera' && (
+        <>
+          <Path d="M4 8h3l2-3h6l2 3h3v11H4z" {...p} />
+          <Circle cx={12} cy={13} r={3.5} {...p} />
+        </>
+      )}
+      {name === 'image' && (
+        <>
+          <Rect x={4} y={5} width={16} height={14} rx={2} {...p} />
+          <Circle cx={9} cy={10} r={1.5} {...p} />
+          <Path d="M4 17l5-4 4 3 3-2 4 3" {...p} />
+        </>
+      )}
       {name === 'user' && (
         <>
           <Circle cx={12} cy={8} r={4} {...p} />

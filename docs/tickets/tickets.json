@@ -358,6 +358,22 @@
             "Whole names only: plant milk is never reduced to dairy milk",
             "Accessible in every state, covered by the browser tests"
           ]
+        },
+        {
+          "key": "4.10",
+          "sprint": 6,
+          "area": "app",
+          "status": "done",
+          "title": "Photo add: fill pantry details from a photo",
+          "acceptance": [
+            "Take a photo, choose a photo, and on the web drop or paste one",
+            "Optional, uses the person's own Claude key; says how to turn it on when it is off",
+            "Only the resized photo and a fixed instruction are sent; the photo is never stored",
+            "Reads names, amounts, places and printed use-by dates; estimates shelf life otherwise and says so",
+            "Model output is validated field by field; text in a photo is data, not instructions",
+            "Results appear in the quick add preview and nothing is saved until confirmed",
+            "Failures explain themselves; covered by unit and browser tests"
+          ]
         }
       ]
     },

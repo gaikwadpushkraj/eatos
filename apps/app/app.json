@@ -47,6 +47,13 @@
           "resizeMode": "contain",
           "backgroundColor": "#121614"
         }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "EatOS reads a photo you choose to fill in pantry details. It is not stored.",
+          "cameraPermission": "EatOS uses the camera when you take a photo to fill in pantry details. It is not stored."
+        }
       ]
     ],
     "runtimeVersion": {

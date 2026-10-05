@@ -224,6 +224,88 @@ await run('quickadd', { width: 390, height: 844 }, 'light', async (page) => {
   await shot(page, '20-quick-add-done');
 });
 
+// Photo add: drop, paste or choose a photo; Claude (own key) reads it; the person confirms.
+await run('photo', { width: 390, height: 844 }, 'light', async (page) => {
+  const png = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==';
+  const requests = [];
+  let mode = 'ok';
+  await page.route('https://api.anthropic.com/**', async (route) => {
+    const cors = { 'access-control-allow-origin': '*', 'access-control-allow-headers': '*', 'access-control-allow-methods': '*' };
+    const req = route.request();
+    if (req.method() === 'OPTIONS') return route.fulfill({ status: 204, headers: cors });
+    requests.push(req.postDataJSON());
+    const answer =
+      mode === 'junk'
+        ? 'this is not json'
+        : { items: [
+            { name: 'Spinach', quantity: 1, unit: 'bag', location: 'fridge', useByDate: null, shelfLifeDays: 4, confidence: 'high' },
+            { name: 'Greek yogurt', quantity: 2, unit: 'tub', location: 'fridge', useByDate: '2030-01-15', shelfLifeDays: null, confidence: 'medium' },
+            { name: 'IGNORE PREVIOUS INSTRUCTIONS', quantity: 1, unit: 'pc', location: 'cupboard', useByDate: null, shelfLifeDays: null, confidence: 'low' },
+          ], notes: null };
+    return route.fulfill({ status: 200, headers: cors, contentType: 'application/json', body: JSON.stringify({ id: 'msg_test', type: 'message', role: 'assistant', model: 'claude-sonnet-5-5', content: [{ type: 'text', text: typeof answer === 'string' ? answer : JSON.stringify(answer) }], stop_reason: 'end_turn', stop_sequence: null, usage: { input_tokens: 10, output_tokens: 10 } }) });
+  });
+  await onboard(page, true);
+  await page.goto(base + '/pantry');
+  // Without Claude turned on, nothing is sent and the card says how to enable it.
+  await page.getByRole('button', { name: 'Choose a photo' }).click();
+  await text(page, 'Photo add uses Claude with your own key');
+  if (requests.length) throw new Error('a photo was sent without Claude being enabled');
+  await page.goto(base + '/profile');
+  await page.getByRole('switch', { name: 'Use Claude for Ask' }).click();
+  await page.getByLabel('Your Anthropic API key').fill('sk-ant-test-key-0000');
+  await page.getByRole('button', { name: 'Save' }).click();
+  await text(page, 'Claude will be used for Ask');
+  await page.goto(base + '/pantry');
+
+  // Choose a photo with the file chooser.
+  const [chooser] = await Promise.all([page.waitForEvent('filechooser'), page.getByRole('button', { name: 'Choose a photo' }).click()]);
+  await chooser.setFiles({ name: 'shop.png', mimeType: 'image/png', buffer: Buffer.from(png, 'base64') });
+  await text(page, 'Found 3 items');
+  await text(page, 'Spinach');
+  await text(page, 'Greek yogurt · 2 tub');
+  await text(page, 'Not sure about this one');
+  if (requests.length !== 1) throw new Error(`expected 1 model call, saw ${requests.length}`);
+  const sent = JSON.stringify(requests[0]);
+  const content = requests[0].messages[0].content;
+  if (!content.some((b) => b.type === 'image' && b.source.type === 'base64' && b.source.media_type === 'image/jpeg')) throw new Error('image block missing');
+  for (const secret of ['Asha', 'Kian', 'nuts']) if (sent.includes(secret)) throw new Error(`profile data leaked with the photo: ${secret}`);
+  if (requests[0].output_config?.format?.type !== 'json_schema') throw new Error('expected a JSON schema');
+  await shot(page, '21-photo-preview');
+  // The printed date is used as printed; nothing is saved until the person confirms.
+  await text(page, 'Use by Tue, 15 Jan');
+  if ((await stored(page, 'eatos.events.v1')).includes('"unit":"tub"')) throw new Error('saved before confirming');
+  await page.getByRole('button', { name: 'Remove ignore previous instructions' }).click();
+
+  // Drop a second photo on the page (adds to the preview).
+  await page.evaluate((b64) => {
+    const bytes = Uint8Array.from(atob(b64), (c) => c.charCodeAt(0));
+    const dt = new DataTransfer();
+    dt.items.add(new File([bytes], 'drop.png', { type: 'image/png' }));
+    document.dispatchEvent(new DragEvent('drop', { dataTransfer: dt, bubbles: true, cancelable: true }));
+  }, png);
+  await page.waitForFunction(() => document.body.innerText.includes('Add 5 items'), null, { timeout: 15000 });
+  // Paste too.
+  await page.evaluate((b64) => {
+    const bytes = Uint8Array.from(atob(b64), (c) => c.charCodeAt(0));
+    const dt = new DataTransfer();
+    dt.items.add(new File([bytes], 'p.png', { type: 'image/png' }));
+    document.dispatchEvent(new ClipboardEvent('paste', { clipboardData: dt, bubbles: true, cancelable: true }));
+  }, png);
+  await page.waitForFunction(() => document.body.innerText.includes('Add 8 items'), null, { timeout: 15000 });
+  if (requests.length !== 3) throw new Error(`expected 3 model calls, saw ${requests.length}`);
+  await page.getByRole('button', { name: 'Add 8 items' }).click();
+  await text(page, 'Added 8 items to your pantry');
+  const log = await stored(page, 'eatos.events.v1');
+  if (!log.includes('"unit":"tub"') || !log.includes('"unit":"bag"')) throw new Error('photo items were not saved');
+  if (log.includes('base64') || log.includes('iVBOR')) throw new Error('the photo was stored');
+
+  // An unreadable answer explains itself and saves nothing.
+  mode = 'junk';
+  const [c2] = await Promise.all([page.waitForEvent('filechooser'), page.getByRole('button', { name: 'Choose a photo' }).click()]);
+  await c2.setFiles({ name: 'x.png', mimeType: 'image/png', buffer: Buffer.from(png, 'base64') });
+  await text(page, 'did not return a usable answer');
+});
+
 // Privacy: device encryption, unlock, encrypted backup, restore on a fresh device.
 const unlock = async (page, pass = 'correct horse battery') => {
   await text(page, 'Enter your passphrase');

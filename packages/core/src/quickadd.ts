@@ -23,6 +23,8 @@ export interface QuickItem {
   guessed: boolean;
   /** True when the name matched a food EatOS knows. */
   known: boolean;
+  /** True when whatever read this was not confident (for example a blurry photo). */
+  uncertain?: boolean;
 }
 
 const NUMBER_WORDS: Record<string, number> = { a: 1, an: 1, one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9, ten: 10, eleven: 11, twelve: 12, couple: 2, few: 3, dozen: 12 };
@@ -85,7 +87,7 @@ function dateOf(day: number, month: string, today: number, tz: number): number |
   return t;
 }
 
-const UNIT_NAME: Record<string, string> = {
+export const UNIT_NAME: Record<string, string> = {
   kg: 'kg', kilo: 'kg', kilos: 'kg', g: 'g', gram: 'g', grams: 'g', l: 'l', litre: 'l', litres: 'l', liter: 'l', liters: 'l', ml: 'ml', lb: 'lb', oz: 'oz',
   pack: 'pack', packs: 'pack', packet: 'pack', packets: 'pack',
   bottle: 'bottle', bottles: 'bottle', tin: 'tin', tins: 'tin', can: 'can', cans: 'can', jar: 'jar', jars: 'jar',
@@ -148,7 +150,7 @@ function singular(s: string): string {
  * A lone word that ends exactly one known food becomes that food ("lentils" becomes "red lentils").
  * Anything else stays as typed: guessing a singular would mangle words like "couscous".
  */
-function canonicalName(cleaned: string, known: string | undefined): string {
+export function canonicalName(cleaned: string, known: string | undefined): string {
   if (known) {
     const one = singular(known);
     return KNOWN_FOODS.includes(one) ? one : known;
@@ -163,7 +165,7 @@ function canonicalName(cleaned: string, known: string | undefined): string {
  * Phrases with extra words ("almond milk", "mac and cheese") are deliberately not reduced to a
  * known word inside them: that would turn plant milk into dairy milk.
  */
-function matchKnown(name: string): string | undefined {
+export function matchKnown(name: string): string | undefined {
   const n = name.toLowerCase().trim();
   return KNOWN_FOODS.find((f) => n === f || n === singular(f) || n === `${f}s` || n === `${f}es`);
 }

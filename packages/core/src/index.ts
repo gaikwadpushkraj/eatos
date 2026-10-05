@@ -22,3 +22,4 @@ export * from './llm-ask';
 export * from './vault';
 export * from './validate';
 export * from './quickadd';
+export * from './photo';

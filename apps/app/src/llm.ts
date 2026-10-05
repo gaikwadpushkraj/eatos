@@ -1,6 +1,6 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { getSecret, setSecret } from './secure';
-import type { LlmCompleter } from '@eatos/core';
+import type { LlmCompleter, PhotoCompleter } from '@eatos/core';
 
 export interface LlmConfig {
   enabled: boolean;
@@ -47,6 +47,37 @@ export function makeCompleter(config: LlmConfig): LlmCompleter | undefined {
     if (response.stop_reason === 'refusal') throw new Error('The model declined this request');
     const block = response.content.find((b) => b.type === 'text');
     if (!block || block.type !== 'text') throw new Error('The model returned no text');
+    return block.text;
+  };
+}
+
+/**
+ * Photo add: sends one resized photo to Claude with the user's own key and
+ * asks for the strict JSON the kernel validates. Only the photo and a fixed
+ * instruction are sent: no profile, allergies, pantry or history.
+ */
+export function makePhotoCompleter(config: LlmConfig): PhotoCompleter | undefined {
+  if (!llmReady(config)) return undefined;
+  const client = new Anthropic({ apiKey: config.apiKey.trim(), dangerouslyAllowBrowser: true, maxRetries: 1, timeout: 35_000 });
+  return async ({ system, user, schema, image }) => {
+    const response = await client.messages.create({
+      model: config.model || DEFAULT_MODEL,
+      max_tokens: 1500,
+      system,
+      messages: [
+        {
+          role: 'user',
+          content: [
+            { type: 'image', source: { type: 'base64', media_type: image.mediaType as 'image/jpeg', data: image.base64 } },
+            { type: 'text', text: user },
+          ],
+        },
+      ],
+      output_config: { effort: 'low', format: { type: 'json_schema', schema: schema as unknown as Record<string, unknown> } },
+    });
+    if (response.stop_reason === 'refusal') throw new Error('The model declined to read this photo.');
+    const block = response.content.find((b) => b.type === 'text');
+    if (!block || block.type !== 'text') throw new Error('The model returned no text.');
     return block.text;
   };
 }
