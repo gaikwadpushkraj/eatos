@@ -3,6 +3,8 @@ import type { State } from './state';
 import { eventsOnDay, eventsToday } from './state';
 import { biggestGap, healthChecks, intakeToday, targets } from './health';
 import { atMinute, clock, HOUR, MINUTE } from './time';
+import { suhoorEnds, sunTimes } from './sun';
+import { activeFast } from './recommend';
 
 const SLOT_TITLE: Record<MealSlot, string> = {
   breakfast: 'Breakfast',
@@ -113,6 +115,52 @@ function routineTasks(state: State, now: number): Task[] {
       need: 'routine',
     }),
   );
+  return tasks;
+}
+
+/**
+ * Sunrise and sunset shape the day for two groups: someone keeping Ramzan eats at dawn (suhoor)
+ * and at sunset (iftar) and drinks only in the evening and before dawn, and someone who eats
+ * before sunset (for example a Jain household) has dinner planned in daylight.
+ */
+function applySun(state: State, tasks: Task[], now: number): Task[] {
+  const p = state.profile!;
+  const off = p.tzOffsetMin;
+  const sun = sunTimes(now, off, p.city);
+  const fast = activeFast(state, p.members, now);
+  const target = targets(state, now).waterMl;
+  const out: Task[] = [];
+
+  if (fast.kind === 'ramzan') {
+    const dawn = suhoorEnds(sun);
+    const cumulative = (f: number) => Math.round((target * f) / 50) * 50;
+    for (const t of tasks) {
+      if (t.id === 'meal:lunch') continue;
+      if (t.id.startsWith('water:')) continue;
+      if (t.id === 'meal:breakfast') {
+        out.push({ ...t, title: 'Suhoor', at: dawn - 45 * MINUTE, deadline: dawn, reasons: ['Eat and drink well before the dawn prayer'] });
+      } else if (t.id === 'meal:dinner') {
+        out.push({ ...t, title: 'Iftar', at: sun.sunset, deadline: sun.sunset + 2 * HOUR, reasons: ['Break the fast gently with dates and water, then eat'] });
+      } else if (t.id === 'meal:snack') {
+        out.push({ ...t, title: 'Evening snack', at: sun.sunset + 150 * MINUTE, deadline: sun.sunset + 4 * HOUR });
+      } else out.push(t);
+    }
+    const drinks: [string, number, number][] = [['Drink water at suhoor', dawn - 45 * MINUTE, 0.25], ['Drink water with iftar', sun.sunset, 0.5], ['Drink water after dinner', sun.sunset + 90 * MINUTE, 0.75], ['Drink water before bed', sun.sunset + 210 * MINUTE, 1]];
+    drinks.forEach(([title, at, f], i) => out.push(task({ id: `water:${i}`, title, kind: 'hydration', priority: 1, at, deadline: at + 90 * MINUTE, need: 'hydration', waterMl: cumulative(f) })));
+    return out;
+  }
+
+  const early = p.members.find((m) => m.id === p.selfId)?.rules?.includes('before-sunset') || p.members.some((m) => m.rules?.includes('before-sunset'));
+  if (early) {
+    for (const t of tasks) {
+      if (t.id === 'meal:dinner' && t.at > sun.sunset - 30 * MINUTE) {
+        out.push({ ...t, at: sun.sunset - 30 * MINUTE, deadline: sun.sunset, reasons: [...t.reasons, `Before sunset at ${clock(sun.sunset, off)}`] });
+      } else if (t.id === 'meal:snack' && t.at > sun.sunset - 30 * MINUTE) {
+        continue;
+      } else out.push(t);
+    }
+    return out;
+  }
   return tasks;
 }
 
@@ -254,6 +302,7 @@ export function buildSchedule(state: State, catalog: Food[], now: number): Task[
   const gap = biggestGap(healthChecks(state, catalog, now));
   const gapNeed = gap ? (gap.key as NeedKind) : undefined;
   let tasks = routineTasks(state, now);
+  tasks = applySun(state, tasks, now);
   tasks = applyInterrupts(state, tasks, now);
   tasks = resolveInversions(tasks, gapNeed, state.profile.tzOffsetMin);
   tasks = applyProgress(state, catalog, tasks, now);

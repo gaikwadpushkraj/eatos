@@ -78,7 +78,7 @@ export type Allergen =
   | 'sesame';
 
 /** Religious, ethical or household rules that are always hard filters. */
-export type DietRule = 'jain' | 'satvik' | 'no-onion-garlic' | 'no-egg' | 'no-beef' | 'no-pork' | 'halal';
+export type DietRule = 'jain' | 'satvik' | 'no-onion-garlic' | 'no-egg' | 'no-beef' | 'no-pork' | 'halal' | 'before-sunset';
 
 /**
  * Conditions a person chooses to declare. EatOS never infers or states a
@@ -158,6 +158,8 @@ export interface Profile {
   hideNumbers?: boolean;
   /** What the cook space allows: a PG or hostel may have no kitchen at all. */
   kitchen?: Kitchen;
+  /** One of the seven metros, for sunrise and sunset. */
+  city?: string;
 }
 
 export interface Nutrients {

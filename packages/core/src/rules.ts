@@ -28,6 +28,8 @@ const RULE_DENY: Record<DietRule, string[]> = {
   'no-beef': ['beef', 'veal'],
   'no-pork': ['pork', 'bacon', 'ham', 'sausage'],
   halal: ['pork', 'bacon', 'ham', 'sausage', 'alcohol', 'wine', 'beer', 'rum', 'gelatin'],
+  // A timing rule only: it changes when dinner is planned, not what is in it.
+  'before-sunset': [],
 };
 
 export const RULE_LABEL: Record<DietRule, string> = {
@@ -38,6 +40,7 @@ export const RULE_LABEL: Record<DietRule, string> = {
   'no-beef': 'No beef',
   'no-pork': 'No pork',
   halal: 'Halal',
+  'before-sunset': 'Eat before sunset',
 };
 
 /** Ingredients that are unsafe in pregnancy. Everything else is left to the person's clinician. */

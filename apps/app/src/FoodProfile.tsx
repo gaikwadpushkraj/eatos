@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { Condition, Diet, DietRule, Kitchen, Member } from '@eatos/core';
-import { DEFAULT_ROUTINE, RULE_LABEL, askDoctorFlags, hm } from '@eatos/core';
+import { CITIES, DEFAULT_ROUTINE, RULE_LABEL, askDoctorFlags, hm } from '@eatos/core';
 import type { Routine } from '@eatos/core';
 import { useKernel } from './kernel';
 import { Btn, Card, Chip, Row, Section, Txt } from './ui';
@@ -113,6 +113,13 @@ export function FoodProfile() {
                 selected={profile.routine.wake === d.routine.wake && profile.routine.sleep === d.routine.sleep}
                 onPress={() => submit({ type: 'profile.set', profile: { ...profile, routine: { ...d.routine, medication: profile.routine.medication } } })}
               />
+            ))}
+          </Row>
+          <Txt v="label">Your city</Txt>
+          <Txt v="small">Used for sunrise and sunset: iftar and suhoor times, and dinner before sunset.</Txt>
+          <Row wrap gap={8}>
+            {Object.entries(CITIES).map(([key, c]) => (
+              <Chip key={key} label={c.name} selected={profile.city === key} onPress={() => submit({ type: 'profile.set', profile: { ...profile, city: profile.city === key ? undefined : key } })} />
             ))}
           </Row>
           <Txt v="label">Where you cook</Txt>

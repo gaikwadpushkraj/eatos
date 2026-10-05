@@ -28,3 +28,4 @@ export * from './context';
 export * from './india';
 export * from './aspire';
 export * from './taste';
+export * from './sun';

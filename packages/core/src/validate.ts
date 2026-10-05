@@ -13,7 +13,7 @@ const SLOTS = ['breakfast', 'lunch', 'snack', 'dinner'];
 const LOCATIONS = ['fridge', 'freezer', 'cupboard', 'counter'];
 const GOALS = ['more-protein', 'hydration', 'less-waste', 'energy', 'performance'];
 const VERDICTS = ['liked', 'skip', 'never'];
-const RULES = ['jain', 'satvik', 'no-onion-garlic', 'no-egg', 'no-beef', 'no-pork', 'halal'];
+const RULES = ['jain', 'satvik', 'no-onion-garlic', 'no-egg', 'no-beef', 'no-pork', 'halal', 'before-sunset'];
 const CONDITIONS = ['diabetes', 'prediabetes', 'hypertension', 'high-cholesterol', 'pcos', 'thyroid', 'anaemia', 'lactose-intolerant', 'celiac', 'gout', 'kidney', 'pregnancy', 'insulin', 'eating-disorder-history', 'minor'];
 const FASTS = ['navratri', 'ekadashi', 'shravan', 'ramzan', 'custom'];
 const BLOCKERS = ['health', 'religion', 'allergy', 'time', 'skill', 'equipment', 'availability', 'household', 'budget', 'habit', 'other'];
@@ -63,6 +63,7 @@ function profile(p: unknown): string | undefined {
   if (!num(p.floorKcal) || !num(p.tzOffsetMin) || Math.abs(p.tzOffsetMin) > 14 * 60) return 'profile numbers are not valid';
   if (p.hideNumbers !== undefined && typeof p.hideNumbers !== 'boolean') return 'hideNumbers must be true or false';
   if (p.kitchen !== undefined && !oneOf(KITCHENS)(p.kitchen)) return 'kitchen is not valid';
+  if (p.city !== undefined && !oneOf(['mumbai', 'delhi', 'bengaluru', 'hyderabad', 'chennai', 'kolkata', 'pune'])(p.city)) return 'city is not valid';
   return undefined;
 }
 
