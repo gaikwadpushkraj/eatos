@@ -95,3 +95,21 @@ When the server compacts a log it starts a new `epoch`; a device on an
 old epoch gets the full log back. Events loaded without an id get a
 stable id hashed from their content, so every device names them the
 same way. A second device can join from onboarding with the same code.
+
+## Drivers (`packages/core/src/drivers`)
+
+Drivers turn outside data into ordinary events, so the kernel never
+needs to know where something came from. Each driver gives its events
+stable ids derived from the source record, which makes every import
+idempotent and lets it sync across devices like any other event.
+
+| Driver | Input | Events |
+|---|---|---|
+| `ics.ts` | iCalendar text | `calendar.busy` (free/busy only; titles are opt-in) |
+| `health-import.ts` | Apple Health `export.xml` or CSV | `workout.completed`, `sleep.logged`, `water.logged` |
+| `receipt.ts` | Receipt text | `pantry.added` with place and use-by date |
+| `delivery.ts` | Menu JSON | ranked options; `intake.logged` for an order |
+
+Safety rule for delivery: a dish with no allergen information is
+treated as unsafe for anyone with an allergy, and a dish with no diet
+stated is unsafe for anyone on a restricted diet.

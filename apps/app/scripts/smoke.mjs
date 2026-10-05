@@ -122,6 +122,34 @@ await run('wide-dark', { width: 1440, height: 1000 }, 'dark', async (page) => {
   await shot(page, '11-dashboard-dark');
 });
 
+// Integrations: calendar, health, receipt and delivery imports.
+await run('integrations', { width: 390, height: 844 }, 'light', async (page) => {
+  await onboard(page, true);
+  await page.goto(base + '/integrations');
+  await text(page, 'Connect your world');
+  const day = new Date();
+  const d = (h, m) => `${day.getUTCFullYear()}${String(day.getUTCMonth() + 1).padStart(2, '0')}${String(day.getUTCDate()).padStart(2, '0')}T${String(h).padStart(2, '0')}${String(m).padStart(2, '0')}00Z`;
+  const ics = `BEGIN:VCALENDAR\nBEGIN:VEVENT\nUID:smoke1\nDTSTART:${d(18, 0)}\nDTEND:${d(19, 0)}\nSUMMARY:Review\nEND:VEVENT\nEND:VCALENDAR`;
+  await page.getByLabel('Or paste calendar text').fill(ics);
+  await page.getByRole('button', { name: 'Import pasted calendar' }).click();
+  await text(page, 'busy time');
+  await page.getByRole('button', { name: 'Import pasted calendar' }).click();
+  await text(page, 'Already up to date');
+  await page.getByLabel('Or paste CSV').fill('type,start,end,value\nwater,' + new Date().toISOString() + ',,500');
+  await page.getByRole('button', { name: 'Import pasted data' }).click();
+  await text(page, 'Added 1 new records');
+  await page.getByLabel('Receipt text').fill('2 x Bananas 1.20\nSpinach 200g 1.50\nMystery Gadget 9.99\nTOTAL 12.69');
+  await page.getByRole('button', { name: 'Add to pantry' }).click();
+  await text(page, 'Added 2 items to your pantry');
+  await text(page, 'Skipped 1 line');
+  await page.getByRole('button', { name: 'Try a sample' }).click();
+  await text(page, 'Paneer tikka bowl');
+  await text(page, 'hidden for safety');
+  await shot(page, '14-integrations');
+  await page.goto(base + '/pantry');
+  await text(page, 'Banana');
+});
+
 // Sync: device A turns sync on, device B joins with the same code.
 const apiPort = 8790 + Math.floor(Math.random() * 100);
 const api = spawn('npx', ['tsx', 'src/main.ts'], {

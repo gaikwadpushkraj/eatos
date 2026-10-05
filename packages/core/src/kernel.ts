@@ -12,7 +12,7 @@ import { compact, housekeeping, pantryView } from './housekeeping';
 import { fitMatrix, resolveRequest } from './household';
 import { explainToday } from './explain';
 import { groceryList, planWeek } from './plan';
-import { newId } from './time';
+import { hashString, newId } from './time';
 
 export interface NowView {
   next?: Task;
@@ -31,19 +31,9 @@ export interface KernelOptions {
   onEvent?: (event: EatEvent, state: State) => void;
 }
 
-/** FNV-1a hash, used to give id-less events a stable id on every device. */
-function hash(s: string): string {
-  let h = 0x811c9dc5;
-  for (let i = 0; i < s.length; i++) {
-    h ^= s.charCodeAt(i);
-    h = Math.imul(h, 0x01000193);
-  }
-  return (h >>> 0).toString(36);
-}
-
 /** Events loaded without an id get one derived from their content. */
 export function withId(e: EatEvent): EatEvent {
-  return e.id ? e : ({ ...e, id: `ev_h${hash(JSON.stringify(e))}` } as EatEvent);
+  return e.id ? e : ({ ...e, id: `ev_h${hashString(JSON.stringify(e))}` } as EatEvent);
 }
 
 /**

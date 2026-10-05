@@ -367,30 +367,38 @@
           "key": "5.2",
           "sprint": 7,
           "area": "drivers",
-          "status": "todo",
+          "status": "done",
           "title": "Calendar driver",
           "acceptance": [
-            "Free/busy only, emits calendar.busy"
+            "Reads iCalendar (.ics) files: UTC, TZID with daylight saving, folding, DURATION",
+            "Expands daily and weekly recurring events with INTERVAL, COUNT, UNTIL, BYDAY and EXDATE",
+            "Free/busy only: titles are dropped unless the person opts in",
+            "Stable event ids so importing twice adds nothing"
           ]
         },
         {
           "key": "5.3",
           "sprint": 8,
           "area": "drivers",
-          "status": "todo",
+          "status": "done",
           "title": "Health data and wearable drivers",
           "acceptance": [
-            "Workouts and sleep become events"
+            "Reads Apple Health export.xml: workouts, sleep nights, dietary water",
+            "Reads a simple CSV (type,start,end,value)",
+            "Workouts raise targets, short sleep moves the wind down",
+            "Stable ids so re-importing adds nothing"
           ]
         },
         {
           "key": "5.4",
           "sprint": 8,
           "area": "drivers",
-          "status": "todo",
+          "status": "done",
           "title": "Grocery and delivery drivers",
           "acceptance": [
-            "Receipts fill the pantry"
+            "Receipts become pantry items with quantities, places and use-by dates",
+            "Delivery menus are ranked for everyone eating; missing allergen or diet info is treated as unsafe",
+            "Ordered dishes can be logged as intake"
           ]
         },
         {

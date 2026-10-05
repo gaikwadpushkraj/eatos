@@ -40,17 +40,4 @@ export function daysLabel(days: number | undefined): string {
   return `${days} days`;
 }
 
-const AISLES: [string, RegExp][] = [
-  ['Produce', /spinach|tomato|onion|garlic|lemon|banana|berries|apple|pepper|broccoli|carrot|cucumber|lettuce|mushroom|potato|ginger|basil|peas/],
-  ['Dairy and protein', /yogurt|milk|paneer|egg|tofu|chicken|salmon|parmesan|mozzarella|hummus/],
-  ['Grains and pulses', /rice|oats|lentil|dal|chickpea|bread|pasta|tortilla|flatbread|dough|flattened/],
-];
-
-export function aisle(name: string): string {
-  return AISLES.find(([, re]) => re.test(name))?.[0] ?? 'Other';
-}
-
-export function shelfLifeDays(name: string): number {
-  const a = aisle(name);
-  return a === 'Produce' ? 5 : a === 'Dairy and protein' ? 7 : a === 'Grains and pulses' ? 180 : 30;
-}
+export { aisleFor as aisle, shelfLifeDays } from '@eatos/core';

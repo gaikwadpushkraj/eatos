@@ -14,3 +14,7 @@ export * from './plan';
 export * from './explain';
 export * from './kernel';
 export * from './sync';
+export * from './drivers/ics';
+export * from './drivers/health-import';
+export * from './drivers/receipt';
+export * from './drivers/delivery';

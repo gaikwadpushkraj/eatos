@@ -79,6 +79,12 @@ export default function ProfileScreen() {
         <Txt v="small" color="okText">{`EatOS never plans below ${profile.floorKcal} kcal a day and never suggests skipping meals. For a medical diet, follow your clinician's plan.`}</Txt>
       </Card>
 
+      <Card>
+        <Txt v="h3">Connect your world</Txt>
+        <Txt v="small">Calendar, health data, grocery receipts and delivery menus.</Txt>
+        <Btn kind="outline" label="Open integrations" onPress={() => router.push('/integrations')} />
+      </Card>
+
       <SyncSettings />
 
       <Section title="Your data">
