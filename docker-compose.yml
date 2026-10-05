@@ -1,0 +1,20 @@
+# Run the EatOS API with encrypted storage:
+#   EATOS_DATA_KEY='a long random secret' docker compose up -d
+services:
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    ports:
+      - "8787:8787"
+    environment:
+      # Encrypts every user's file at rest. Without it the API warns and stores plain JSON.
+      EATOS_DATA_KEY: ${EATOS_DATA_KEY:?set EATOS_DATA_KEY to a long random secret}
+      # Restrict browsers to your web app's origin, e.g. https://eatos.example.com
+      EATOS_CORS_ORIGIN: ${EATOS_CORS_ORIGIN:-*}
+    volumes:
+      - eatos-data:/data
+    restart: unless-stopped
+
+volumes:
+  eatos-data:

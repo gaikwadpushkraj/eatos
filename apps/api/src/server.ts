@@ -35,10 +35,14 @@ async function readJson(req: IncomingMessage): Promise<unknown> {
   }
 }
 
+/** Origin allowed to call the API from a browser. Set EATOS_CORS_ORIGIN in production. */
+let corsOrigin = '*';
+
 function send(res: ServerResponse, status: number, body: unknown) {
   res.writeHead(status, {
     'content-type': 'application/json',
-    'access-control-allow-origin': '*',
+    'access-control-allow-origin': corsOrigin,
+    vary: 'origin',
     'access-control-allow-headers': 'content-type, x-user-id',
     'access-control-allow-methods': 'GET, POST, DELETE, OPTIONS',
   });
@@ -55,6 +59,8 @@ function validateEvent(raw: unknown, now: number): EatEvent {
 
 export interface ServerOptions extends StoreOptions {
   dataDir: string;
+  /** Browser origin allowed to call the API (default any). */
+  corsOrigin?: string;
   /** Injectable clock for tests. */
   clock?: () => number;
 }
@@ -63,7 +69,8 @@ export interface ServerOptions extends StoreOptions {
  * The EatOS API. Every route is a kernel syscall. The user is chosen by
  * the `x-user-id` header (auth is out of scope for the local server).
  */
-export function createApi({ dataDir, clock = Date.now, dataKey, kdf }: ServerOptions): Server {
+export function createApi({ dataDir, clock = Date.now, dataKey, kdf, corsOrigin: origin = '*' }: ServerOptions): Server {
+  corsOrigin = origin;
   const store = new Store(dataDir, { dataKey, kdf });
 
   return createServer(async (req, res) => {

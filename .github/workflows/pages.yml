@@ -1,0 +1,51 @@
+name: Deploy web app
+
+# Publishes the web build to GitHub Pages. Enable it once in the repository:
+# Settings > Pages > Source: GitHub Actions.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      CI: "1"
+      EXPO_NO_TELEMETRY: "1"
+      # Project pages live under /<repo name>.
+      EXPO_BASE_URL: /${{ github.event.repository.name }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm typecheck && pnpm test
+      - run: pnpm --filter @eatos/app build:web
+      # Pages serves 404.html for unknown paths, which lets deep links open the app.
+      - run: cp apps/app/dist/index.html apps/app/dist/404.html
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: apps/app/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
