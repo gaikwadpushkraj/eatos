@@ -440,20 +440,25 @@
           "key": "6.2",
           "sprint": 9,
           "area": "app",
-          "status": "todo",
+          "status": "done",
           "title": "Accessibility audit",
           "acceptance": [
-            "Screen reader labels, contrast, 44 px targets"
+            "axe-core (WCAG 2.0 to 2.2, A and AA) finds no violations on every screen, light and dark, phone and desktop",
+            "Every control is at least 44 x 44 px",
+            "Keyboard focus is visible",
+            "Switches, checkboxes and progress bars are labelled for screen readers"
           ]
         },
         {
           "key": "6.3",
           "sprint": 9,
           "area": "qa",
-          "status": "todo",
+          "status": "done",
           "title": "End-to-end tests",
           "acceptance": [
-            "Playwright on the web build covers onboarding to cooking"
+            "Playwright drives the built web app: onboarding, every screen, cooking to eaten, sync between two browsers, encryption and unlock, backups and restore, imports, optional Claude Ask (stubbed)",
+            "pnpm e2e runs the build, the journey and the accessibility audit",
+            "CI runs it on every push and uploads screenshots"
           ]
         },
         {

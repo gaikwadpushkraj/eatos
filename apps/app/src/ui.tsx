@@ -160,11 +160,11 @@ export function Chip({ label, selected, onPress, tone }: { label: string; select
   );
 }
 
-export function Meter({ value, color }: { value: number; color?: string }) {
+export function Meter({ value, color, label }: { value: number; color?: string; label: string }) {
   const { c } = useTheme();
   const pct = Math.max(0, Math.min(1, value)) * 100;
   return (
-    <View style={{ height: 6, borderRadius: 3, backgroundColor: c.border }} accessibilityRole="progressbar" accessibilityValue={{ min: 0, max: 100, now: Math.round(pct) }}>
+    <View style={{ height: 6, borderRadius: 3, backgroundColor: c.border }} accessibilityRole="progressbar" accessibilityLabel={label} accessibilityValue={{ min: 0, max: 100, now: Math.round(pct) }}>
       <View style={{ width: `${pct}%`, height: 6, borderRadius: 3, backgroundColor: color ?? c.accent }} />
     </View>
   );
@@ -188,7 +188,7 @@ export function Field({ label, ...props }: TextInputProps & { label: string }) {
 export function Toggle({ label, hint, value, onChange }: { label: string; hint?: string; value: boolean; onChange: (v: boolean) => void }) {
   const { c } = useTheme();
   return (
-    <Pressable accessibilityRole="switch" accessibilityState={{ checked: value }} accessibilityLabel={label} onPress={() => onChange(!value)} style={styles.toggleRow}>
+    <Pressable accessibilityRole="switch" accessibilityState={{ checked: value }} aria-checked={value} accessibilityLabel={label} onPress={() => onChange(!value)} style={styles.toggleRow}>
       <View style={{ flex: 1, gap: 2 }}>
         <Txt v="body">{label}</Txt>
         {hint ? <Txt v="small">{hint}</Txt> : null}
@@ -203,7 +203,7 @@ export function Toggle({ label, hint, value, onChange }: { label: string; hint?:
 export function Check({ label, checked, onChange, detail }: { label: string; checked: boolean; onChange: (v: boolean) => void; detail?: string }) {
   const { c } = useTheme();
   return (
-    <Pressable accessibilityRole="checkbox" accessibilityState={{ checked }} accessibilityLabel={label} onPress={() => onChange(!checked)} style={styles.checkRow}>
+    <Pressable accessibilityRole="checkbox" accessibilityState={{ checked }} aria-checked={checked} accessibilityLabel={label} onPress={() => onChange(!checked)} style={styles.checkRow}>
       <View style={[styles.box, { borderColor: checked ? c.accent : c.muted, backgroundColor: checked ? c.accent : 'transparent' }]}>
         {checked ? <Icon name="check" size={14} color={c.onAccent} strokeWidth={3} /> : null}
       </View>
@@ -252,7 +252,7 @@ const styles = StyleSheet.create({
   card: { borderRadius: 20, borderWidth: 1, gap: 10 },
   btn: { borderRadius: 14, borderWidth: 1, paddingHorizontal: 16, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8 },
   chip: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 12, alignSelf: 'flex-start' },
-  chipBtn: { minHeight: 36, paddingHorizontal: 14, borderRadius: 18, borderWidth: 1, justifyContent: 'center' },
+  chipBtn: { minHeight: 44, minWidth: 44, paddingHorizontal: 14, borderRadius: 22, borderWidth: 1, justifyContent: 'center', alignItems: 'center' },
   input: { minHeight: 48, borderRadius: 14, borderWidth: 1, paddingHorizontal: 14, fontFamily: fonts.regular, fontSize: 15 },
   toggleRow: { minHeight: 56, flexDirection: 'row', alignItems: 'center', gap: 12 },
   switch: { width: 46, height: 28, borderRadius: 14, padding: 3, justifyContent: 'center' },

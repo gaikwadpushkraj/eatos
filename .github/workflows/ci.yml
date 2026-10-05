@@ -18,3 +18,28 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm typecheck
       - run: pnpm test
+
+  # Builds the web app and drives it in Chromium: onboarding, every screen,
+  # cooking, sync, encryption, backups, imports, plus an accessibility audit.
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      CI: "1"
+      EXPO_NO_TELEMETRY: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @eatos/app exec playwright install --with-deps chromium
+      - run: pnpm e2e
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: screenshots
+          path: apps/app/dist-shots
+          if-no-files-found: ignore

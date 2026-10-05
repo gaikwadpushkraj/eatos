@@ -48,6 +48,7 @@ async function run(name, viewport, scheme, fn) {
   await ctx.close();
 }
 
+const stored = (page, key) => page.evaluate((k) => localStorage.getItem(k), key);
 const shot = (page, name) => page.screenshot({ path: join(shots, `${name}.png`), fullPage: true });
 const text = (page, t) => page.getByText(t, { exact: false }).filter({ visible: true }).first().waitFor({ timeout: 15000 });
 
@@ -122,6 +123,32 @@ await run('wide-dark', { width: 1440, height: 1000 }, 'dark', async (page) => {
   await shot(page, '11-dashboard-dark');
 });
 
+// Journey: set up, cook a suggested recipe step by step, mark it eaten, and see it recorded.
+await run('journey', { width: 390, height: 844 }, 'light', async (page) => {
+  await onboard(page, true);
+  await text(page, 'NEXT UP');
+  const nextUp = async () => (await page.getByText(/^(NEXT UP ·|ALL DONE FOR TODAY)/).filter({ visible: true }).first().textContent()) ?? '';
+  const before = await nextUp();
+  await page.getByRole('button', { name: 'Start cooking' }).click();
+  await text(page, 'STEP 1 OF');
+  const total = Number((await page.getByText(/STEP 1 OF \d+/).first().textContent()).match(/OF (\d+)/)[1]);
+  for (let i = 1; i < total; i++) {
+    await page.getByRole('button', { name: 'Next step' }).click();
+    await text(page, `STEP ${i + 1} OF ${total}`);
+  }
+  await page.getByRole('button', { name: 'Previous' }).click();
+  await text(page, `STEP ${total - 1} OF ${total}`);
+  await page.getByRole('button', { name: 'Next step' }).click();
+  await page.getByRole('button', { name: 'Done, I ate this' }).click();
+  await page.getByText(/^(NEXT UP ·|ALL DONE FOR TODAY)/).filter({ visible: true }).first().waitFor({ timeout: 15000 });
+  await page.waitForTimeout(400);
+  if (!(await stored(page, 'eatos.events.v1')).includes('intake.logged')) throw new Error('eating the recipe was not recorded');
+  // The meal that was eaten is not suggested again as the next one.
+  const after = await nextUp();
+  if (after === before) throw new Error(`the eaten meal is still next: ${after}`);
+  await shot(page, '18-journey-done');
+});
+
 // Integrations: calendar, health, receipt and delivery imports.
 await run('integrations', { width: 390, height: 844 }, 'light', async (page) => {
   await onboard(page, true);
@@ -156,7 +183,6 @@ const unlock = async (page, pass = 'correct horse battery') => {
   await page.getByLabel('Passphrase', { exact: true }).fill(pass);
   await page.getByRole('button', { name: 'Unlock' }).click();
 };
-const stored = (page, key) => page.evaluate((k) => localStorage.getItem(k), key);
 const backupPath = join(mkdtempSync(join(tmpdir(), 'eatos-backup-')), 'backup.json');
 await run('security', { width: 390, height: 844 }, 'light', async (page) => {
   await onboard(page, false);

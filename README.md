@@ -32,6 +32,7 @@ pnpm typecheck
 pnpm simulate      # run a synthetic household through a day
 pnpm api           # start the API on http://localhost:8787
 pnpm --filter @eatos/app web   # run the app in a browser
+pnpm e2e           # build the web app, drive it in Chromium, audit accessibility
 ```
 
 Requires Node 22 and pnpm 10.

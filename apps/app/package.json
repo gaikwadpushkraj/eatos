@@ -10,7 +10,9 @@
     "ios": "expo start --ios",
     "build:web": "expo export --platform web",
     "typecheck": "tsc -p tsconfig.json",
-    "smoke": "node scripts/smoke.mjs"
+    "smoke": "node scripts/smoke.mjs",
+    "a11y": "node scripts/a11y.mjs",
+    "e2e": "pnpm build:web && pnpm smoke && pnpm a11y"
   },
   "dependencies": {
     "@eatos/core": "workspace:*",
@@ -37,6 +39,7 @@
   "devDependencies": {
     "@types/react": "~19.2.0",
     "playwright": "^1.55.0",
-    "typescript": "~5.9.0"
+    "typescript": "~5.9.0",
+    "@axe-core/playwright": "^4.11.0"
   }
 }

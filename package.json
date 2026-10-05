@@ -8,6 +8,7 @@
     "test": "pnpm -r --if-present test",
     "typecheck": "pnpm -r --if-present typecheck",
     "simulate": "pnpm --filter @eatos/core simulate",
-    "api": "pnpm --filter @eatos/api start"
+    "api": "pnpm --filter @eatos/api start",
+    "e2e": "pnpm --filter @eatos/app e2e"
   }
 }

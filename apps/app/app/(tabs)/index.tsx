@@ -37,7 +37,7 @@ function HealthTile({ check, hide }: { check: HealthCheck; hide?: boolean }) {
           <Txt v="small">{` / ${fmt(check.target)} ${unit}`}</Txt>
         </Txt>
       )}
-      <Meter value={ratio} color={color} />
+      <Meter value={ratio} color={color} label={`${check.label} progress`} />
     </Card>
   );
 }
@@ -71,7 +71,7 @@ function NextUp() {
         <Btn label="Start cooking" kind="lime" onPress={() => router.push(`/cook/${rec.food.id}`)} style={{ flexGrow: 1 }} />
         <Btn label="Other options" kind="onInk" onPress={() => router.push(`/ask?slot=${meal.slot ?? ''}`)} style={{ flexGrow: 1 }} />
       </Row>
-      <Pressable accessibilityRole="button" onPress={() => eatFood(kernel, submitMany, rec.food, meal.slot ?? 'snack')}>
+      <Pressable accessibilityRole="button" onPress={() => eatFood(kernel, submitMany, rec.food, meal.slot ?? 'snack')} style={{ minHeight: 44, justifyContent: 'center' }}>
         <Txt v="small" color="inkMuted" style={{ textDecorationLine: 'underline' }}>I already ate this</Txt>
       </Pressable>
     </Card>
@@ -234,7 +234,7 @@ export default function Now() {
         </Row>
         <Txt v={wide ? 'display' : 'h1'}>{`${greeting(kernel, now)}, ${me?.name ?? 'there'}`}</Txt>
       </View>
-      <Pressable accessibilityRole="button" accessibilityLabel="Profile and settings" onPress={() => router.push('/profile')}>
+      <Pressable accessibilityRole="button" accessibilityLabel="Profile and settings" onPress={() => router.push('/profile')} style={{ minWidth: 44, minHeight: 44, alignItems: 'center', justifyContent: 'center' }}>
         <Avatar name={me?.name ?? 'You'} />
       </Pressable>
     </Row>
