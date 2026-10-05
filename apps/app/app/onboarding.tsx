@@ -9,6 +9,7 @@ import { useTheme } from '../src/theme';
 import { Btn, Card, Check, Chip, Field, Row, Screen, Section, Toggle, Txt } from '../src/ui';
 import { capitalise, localOffset, shelfLifeDays } from '../src/format';
 import { SyncSettings } from '../src/SyncSettings';
+import { BackupAndDelete } from '../src/ProtectionSettings';
 
 const WHO = [
   { key: 'me', title: 'Just me', hint: 'Everyday meals that fit my day' },
@@ -85,7 +86,7 @@ function MemberForm({ onAdd }: { onAdd: (m: Member) => void }) {
 }
 
 export default function Onboarding() {
-  const { submitMany, now, kernel, version } = useKernel();
+  const { submitMany, now, kernel, version, lastWipe } = useKernel();
   const [joining, setJoining] = useState(false);
   // A synced profile from another device finishes onboarding.
   useEffect(() => {
@@ -161,12 +162,25 @@ export default function Onboarding() {
         </Row>
       </View>
 
+      {lastWipe && step === 0 ? (
+        <Card tone={lastWipe.serverDeleted === false ? 'warn' : 'ok'}>
+          <Txt v="small" color={lastWipe.serverDeleted === false ? 'warnText' : 'okText'}>
+            {lastWipe.serverDeleted === false ? 'Everything was deleted on this device. The sync server could not be reached, so its copy is still there.' : lastWipe.serverDeleted ? 'Everything was deleted, on this device and on your sync server.' : 'Everything was deleted from this device.'}
+          </Txt>
+        </Card>
+      ) : null}
+
       {stepKey === 'who' && (
         <>
           <Txt v="h1">Who is EatOS feeding?</Txt>
           <Txt v="body" color="muted">Pick everything that applies. You can change it any time.</Txt>
-          <Btn small kind="ghost" label={joining ? 'Set up this device instead' : 'Already use EatOS on another device? Connect'} onPress={() => setJoining(!joining)} />
-          {joining ? <SyncSettings joining /> : null}
+          <Btn small kind="ghost" label={joining ? 'Set up this device instead' : 'Already use EatOS? Connect another device or restore a backup'} onPress={() => setJoining(!joining)} />
+          {joining ? (
+            <>
+              <SyncSettings joining />
+              <BackupAndDelete joining />
+            </>
+          ) : null}
           <View style={{ gap: 10 }}>
             {WHO.map((w) => (
               <Card key={w.key} tone={who.includes(w.key) ? 'accent' : 'default'} padding={4}>

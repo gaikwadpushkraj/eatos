@@ -9,7 +9,7 @@ import { existsSync } from 'node:fs';
 import { extname, join, resolve } from 'node:path';
 import { chromium } from 'playwright';
 import { spawn } from 'node:child_process';
-import { mkdtempSync } from 'node:fs';
+import { mkdtempSync, writeFileSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 
 const root = resolve('dist');
@@ -150,6 +150,104 @@ await run('integrations', { width: 390, height: 844 }, 'light', async (page) => 
   await text(page, 'Banana');
 });
 
+// Privacy: device encryption, unlock, encrypted backup, restore on a fresh device.
+const unlock = async (page, pass = 'correct horse battery') => {
+  await text(page, 'Enter your passphrase');
+  await page.getByLabel('Passphrase', { exact: true }).fill(pass);
+  await page.getByRole('button', { name: 'Unlock' }).click();
+};
+const stored = (page, key) => page.evaluate((k) => localStorage.getItem(k), key);
+const backupPath = join(mkdtempSync(join(tmpdir(), 'eatos-backup-')), 'backup.json');
+await run('security', { width: 390, height: 844 }, 'light', async (page) => {
+  await onboard(page, false);
+  if (!(await stored(page, 'eatos.events.v1')).includes('Asha')) throw new Error('expected a plain log before protection');
+  await page.goto(base + '/profile');
+  await page.getByRole('button', { name: 'Turn on protection' }).click();
+  await page.getByLabel(/Passphrase \(at least/).fill('short');
+  await text(page, 'Use at least 8 characters');
+  await page.getByLabel(/Passphrase \(at least/).fill('correct horse battery');
+  await page.getByLabel('Repeat passphrase').fill('correct horse');
+  await text(page, 'do not match');
+  await page.getByLabel('Repeat passphrase').fill('correct horse battery');
+  await page.getByRole('button', { name: 'Encrypt', exact: true }).click();
+  await text(page, 'This device is now encrypted');
+  await page.waitForTimeout(400);
+  const blob = await stored(page, 'eatos.events.v1');
+  if (blob.includes('Asha') || blob.includes('profile.set')) throw new Error('log is not encrypted at rest');
+  if (!blob.includes('xchacha20poly1305')) throw new Error('expected an encrypted envelope');
+  await shot(page, '16-protection-on');
+
+  // New events are saved encrypted too. (A reload locks the app.)
+  await page.goto(base + '/');
+  await unlock(page);
+  await page.getByRole('button', { name: '+ 250 ml water' }).click();
+  await page.waitForTimeout(400);
+  if ((await stored(page, 'eatos.events.v1')).includes('water.logged')) throw new Error('new events were saved in plain text');
+
+  // Encrypted backup download.
+  await page.goto(base + '/profile');
+  await unlock(page);
+  await page.getByLabel('Passphrase for an encrypted backup').fill('backup passphrase');
+  const [download] = await Promise.all([page.waitForEvent('download'), page.getByRole('button', { name: 'Export encrypted backup' }).click()]);
+  await download.saveAs(backupPath);
+  const backup = readFileSync(backupPath, 'utf8');
+  if (backup.includes('Asha') || !backup.includes('xchacha20poly1305')) throw new Error('backup is not encrypted');
+
+  // Reload: locked. Wrong passphrase fails, right one opens.
+  await page.goto(base + '/');
+  await text(page, 'Enter your passphrase');
+  await shot(page, '17-locked');
+  await unlock(page, 'wrong passphrase');
+  await text(page, 'not right');
+  await unlock(page);
+  await text(page, 'Good');
+  await text(page, 'Asha');
+
+  // Lock now returns to the lock screen; turning protection off checks the passphrase first.
+  await page.goto(base + '/profile');
+  await unlock(page);
+  await page.getByRole('button', { name: 'Lock now' }).click();
+  await unlock(page); // unlocking returns to the Now screen
+  await text(page, 'Good');
+  await page.getByRole('button', { name: 'Profile and settings' }).click();
+  await page.getByRole('button', { name: 'Turn off protection' }).click();
+  await page.getByLabel('Passphrase', { exact: true }).fill('wrong one');
+  await page.getByRole('button', { name: 'Turn off', exact: true }).click();
+  await text(page, 'not right');
+  await page.getByLabel('Passphrase', { exact: true }).fill('correct horse battery');
+  await page.getByRole('button', { name: 'Turn off', exact: true }).click();
+  await text(page, 'Protection is off');
+  await page.waitForTimeout(400);
+  if (!(await stored(page, 'eatos.events.v1')).includes('Asha')) throw new Error('log should be plain again');
+});
+
+await run('restore', { width: 390, height: 844 }, 'light', async (page) => {
+  await page.goto(base + '/');
+  await text(page, 'Who is EatOS feeding?');
+  await page.getByRole('button', { name: /Connect another device or restore a backup/ }).click();
+  const [chooser] = await Promise.all([page.waitForEvent('filechooser'), page.getByRole('button', { name: 'Choose backup file' }).click()]);
+  await chooser.setFiles(backupPath);
+  await text(page, 'This backup is encrypted');
+  await page.getByLabel('Backup passphrase').fill('nope nope nope');
+  await page.getByRole('button', { name: 'Restore', exact: true }).click();
+  await text(page, 'Wrong passphrase');
+  await page.getByLabel('Backup passphrase').fill('backup passphrase');
+  await page.getByRole('button', { name: 'Restore', exact: true }).click();
+  await text(page, 'Asha');
+  await text(page, 'NEXT UP');
+});
+
+await run('bad-backup', { width: 390, height: 844 }, 'light', async (page) => {
+  const junk = join(mkdtempSync(join(tmpdir(), 'eatos-junk-')), 'junk.json');
+  writeFileSync(junk, '{"hello": "world"}');
+  await page.goto(base + '/');
+  await text(page, 'Who is EatOS feeding?');
+  await page.getByRole('button', { name: /Connect another device or restore a backup/ }).click();
+  const [chooser] = await Promise.all([page.waitForEvent('filechooser'), page.getByRole('button', { name: 'Choose backup file' }).click()]);
+  await chooser.setFiles(junk);
+  await text(page, 'not an EatOS backup');
+});
+
 // Optional Claude-powered Ask, with the Anthropic endpoint stubbed (no real calls, no credits).
 await run('llm', { width: 390, height: 844 }, 'light', async (page) => {
   const requests = [];
@@ -226,13 +324,34 @@ await run('sync-a', { width: 390, height: 844 }, 'light', async (page) => {
 await run('sync-b', { width: 390, height: 844 }, 'light', async (page) => {
   await page.goto(base + '/');
   await text(page, 'Who is EatOS feeding?');
-  await page.getByRole('button', { name: 'Already use EatOS on another device? Connect' }).click();
+  await page.getByRole('button', { name: /Connect another device or restore a backup/ }).click();
   await page.getByLabel('Server address').fill(apiUrl);
   await page.getByLabel('Sync code').fill(code);
   await page.getByRole('button', { name: 'Connect' }).click();
   await text(page, 'Good');
   await text(page, 'Asha');
   await shot(page, '13-sync-joined');
+});
+// Delete everything: device and server copy.
+await run('wipe', { width: 390, height: 844 }, 'light', async (page) => {
+  await page.goto(base + '/');
+  await text(page, 'Who is EatOS feeding?');
+  await page.getByRole('button', { name: /Connect another device or restore a backup/ }).click();
+  await page.getByLabel('Server address').fill(apiUrl);
+  await page.getByLabel('Sync code').fill(code);
+  await page.getByRole('button', { name: 'Connect' }).click();
+  await text(page, 'Asha');
+  const before = await (await fetch(`${apiUrl}/v1/events`, { headers: { 'x-user-id': code } })).json();
+  if (before.events.length < 5) throw new Error('server should hold the synced events');
+  await page.goto(base + '/profile');
+  await page.getByRole('button', { name: 'Delete all data' }).click();
+  await page.getByRole('button', { name: 'Yes, delete everything' }).click();
+  await text(page, 'Everything was deleted, on this device and on your sync server');
+  const after = await (await fetch(`${apiUrl}/v1/events`, { headers: { 'x-user-id': code } })).json();
+  if (after.events.length !== 0) throw new Error('server copy was not deleted');
+  if ((await page.evaluate(() => Object.keys(localStorage).filter((k) => k.startsWith('eatos.')).length)) > 1) throw new Error('device data was not wiped');
+  await page.goto(base + '/');
+  await text(page, 'Who is EatOS feeding?');
 });
 api.kill();
 

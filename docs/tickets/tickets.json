@@ -426,11 +426,14 @@
           "key": "6.1",
           "sprint": 9,
           "area": "security",
-          "status": "todo",
+          "status": "done",
           "title": "Encryption at rest, export and delete",
           "acceptance": [
-            "Event log encrypted on device",
-            "One-step export and delete"
+            "Event log and saved secrets encrypted on device with a passphrase; app starts locked",
+            "Wrong passphrase and tampering are rejected",
+            "Encrypted backups and restore, plain or encrypted",
+            "Server files encrypted at rest with EATOS_DATA_KEY",
+            "One-step export, and delete that also removes the server copy"
           ]
         },
         {

@@ -5,11 +5,21 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useFonts, Geist_400Regular, Geist_500Medium, Geist_600SemiBold, Geist_700Bold } from '@expo-google-fonts/geist';
 import { GeistMono_400Regular } from '@expo-google-fonts/geist-mono';
 import { ThemeProvider, useTheme } from '../src/theme';
-import { KernelProvider, useKernelMaybe } from '../src/kernel';
+import { KernelProvider, useKernelMaybe, useLock } from '../src/kernel';
+import { Unlock } from '../src/Unlock';
 
 function Shell({ fontsReady }: { fontsReady: boolean }) {
   const { c, scheme } = useTheme();
   const k = useKernelMaybe();
+  const lock = useLock();
+  if (fontsReady && lock.locked) {
+    return (
+      <>
+        <StatusBar style={scheme === 'dark' ? 'light' : 'dark'} />
+        <Unlock />
+      </>
+    );
+  }
   if (!k || !fontsReady) {
     return (
       <View style={{ flex: 1, backgroundColor: c.bg, alignItems: 'center', justifyContent: 'center' }}>

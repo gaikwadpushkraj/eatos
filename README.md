@@ -21,6 +21,7 @@ recommendations.
 | `docs/PLAN.md` | Phases, sprints and tasks |
 | `docs/ARCHITECTURE.md` | How the pieces fit and the rules behind each OS concept |
 | `docs/tickets/` | The plan as GitHub-issue-ready tickets |
+| `docs/SECURITY.md` | What is protected, how, and the known limits |
 
 ## Quick start
 

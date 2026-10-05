@@ -1,7 +1,9 @@
 import { createServer } from 'node:http';
 import type { IncomingMessage, Server, ServerResponse } from 'node:http';
 import type { EatEvent, Query, SyncRequest } from '@eatos/core';
-import { Store, validUserId } from './store';
+import { makeBackup } from '@eatos/core';
+import { Store, StoreLockedError, validUserId } from './store';
+import type { StoreOptions } from './store';
 
 const EVENT_TYPES = new Set<EatEvent['type']>([
   'profile.set', 'member.added', 'member.removed', 'intake.logged', 'water.logged', 'workout.completed',
@@ -38,7 +40,7 @@ function send(res: ServerResponse, status: number, body: unknown) {
     'content-type': 'application/json',
     'access-control-allow-origin': '*',
     'access-control-allow-headers': 'content-type, x-user-id',
-    'access-control-allow-methods': 'GET, POST, OPTIONS',
+    'access-control-allow-methods': 'GET, POST, DELETE, OPTIONS',
   });
   res.end(JSON.stringify(body));
 }
@@ -51,7 +53,7 @@ function validateEvent(raw: unknown, now: number): EatEvent {
   return { ...e, at: (e.at as number | undefined) ?? now } as EatEvent;
 }
 
-export interface ServerOptions {
+export interface ServerOptions extends StoreOptions {
   dataDir: string;
   /** Injectable clock for tests. */
   clock?: () => number;
@@ -61,8 +63,8 @@ export interface ServerOptions {
  * The EatOS API. Every route is a kernel syscall. The user is chosen by
  * the `x-user-id` header (auth is out of scope for the local server).
  */
-export function createApi({ dataDir, clock = Date.now }: ServerOptions): Server {
-  const store = new Store(dataDir);
+export function createApi({ dataDir, clock = Date.now, dataKey, kdf }: ServerOptions): Server {
+  const store = new Store(dataDir, { dataKey, kdf });
 
   return createServer(async (req, res) => {
     try {
@@ -72,7 +74,7 @@ export function createApi({ dataDir, clock = Date.now }: ServerOptions): Server 
 
       const userId = String(req.headers['x-user-id'] ?? 'me');
       if (!validUserId(userId)) throw new HttpError(400, 'invalid x-user-id');
-      const k = store.kernel(userId);
+      const k = await store.kernel(userId);
       const nowParam = url.searchParams.get('now');
       const now = nowParam ? Number(nowParam) : clock();
       if (!Number.isFinite(now)) throw new HttpError(400, 'now must be epoch ms');
@@ -111,7 +113,7 @@ export function createApi({ dataDir, clock = Date.now }: ServerOptions): Server 
         case 'POST /v1/housekeeping': {
           const result = k.housekeep(now);
           k.compact(now);
-          store.compacted(userId);
+          await store.compacted(userId);
           return send(res, 200, result);
         }
         case 'GET /v1/week':
@@ -135,8 +137,12 @@ export function createApi({ dataDir, clock = Date.now }: ServerOptions): Server 
             if (typeof ev.id !== 'string' || !ev.id) throw new HttpError(400, 'synced events need an id');
             return ev;
           });
-          return send(res, 200, store.sync(userId, { since, epoch: body.epoch, events }));
+          return send(res, 200, await store.sync(userId, { since, epoch: body.epoch, events }));
         }
+        case 'GET /v1/export':
+          return send(res, 200, makeBackup(k.events, now));
+        case 'DELETE /v1/data':
+          return send(res, 200, { deleted: await store.delete(userId) });
         case 'GET /v1/catalog':
           return send(res, 200, { foods: k.catalog });
         default:
@@ -144,6 +150,7 @@ export function createApi({ dataDir, clock = Date.now }: ServerOptions): Server 
       }
     } catch (err) {
       if (err instanceof HttpError) return send(res, err.status, { error: err.message });
+      if (err instanceof StoreLockedError) return send(res, 503, { error: err.message });
       return send(res, 500, { error: 'internal error' });
     }
   });

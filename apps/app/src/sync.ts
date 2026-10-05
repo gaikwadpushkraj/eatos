@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { emptySyncState, syncOnce } from '@eatos/core';
+import { getSecret, setSecret } from './secure';
 import type { Kernel, SyncRequest, SyncResponse, SyncState } from '@eatos/core';
 
 export interface SyncConfig {
@@ -22,16 +23,11 @@ const STATE_KEY = 'eatos.sync.state';
 export const defaultConfig: SyncConfig = { enabled: false, url: '', code: '' };
 
 export async function loadConfig(): Promise<SyncConfig> {
-  try {
-    const raw = await AsyncStorage.getItem(CONFIG_KEY);
-    return raw ? { ...defaultConfig, ...(JSON.parse(raw) as SyncConfig) } : defaultConfig;
-  } catch {
-    return defaultConfig;
-  }
+  return { ...defaultConfig, ...(await getSecret<Partial<SyncConfig>>(CONFIG_KEY, {})) };
 }
 
 export async function saveConfig(c: SyncConfig, previous?: SyncConfig): Promise<void> {
-  await AsyncStorage.setItem(CONFIG_KEY, JSON.stringify(c));
+  await setSecret(CONFIG_KEY, c);
   // A different server or code is a different log: start from scratch.
   if (previous && (previous.url !== c.url || previous.code !== c.code)) await AsyncStorage.removeItem(STATE_KEY);
 }
@@ -64,4 +60,15 @@ export async function syncWithServer(kernel: Kernel, config: SyncConfig): Promis
   const result = await syncOnce(kernel, await loadState(), transport);
   await AsyncStorage.setItem(STATE_KEY, JSON.stringify(result.state));
   return { received: result.received, sent: result.sent, at: result.state.lastSyncAt ?? Date.now() };
+}
+
+/** Asks the server to erase this person's synced data. Returns whether it confirmed. */
+export async function deleteServerData(config: SyncConfig): Promise<boolean> {
+  if (!config.url || !config.code) return false;
+  try {
+    const res = await fetch(`${config.url.replace(/\/+$/, '')}/v1/data`, { method: 'DELETE', headers: { 'x-user-id': config.code } });
+    return res.ok;
+  } catch {
+    return false;
+  }
 }

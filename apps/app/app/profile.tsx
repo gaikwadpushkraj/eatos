@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { Platform, Share, View } from 'react-native';
+import { View } from 'react-native';
 import { router } from 'expo-router';
 import type { Goal, Profile } from '@eatos/core';
 import { useKernel } from '../src/kernel';
@@ -8,6 +7,7 @@ import type { ThemePref } from '../src/theme';
 import { Avatar, Btn, Card, Chip, Row, Screen, Section, Toggle, Txt, TopBar } from '../src/ui';
 import { SyncSettings } from '../src/SyncSettings';
 import { LlmSettings } from '../src/LlmSettings';
+import { BackupAndDelete, DeviceProtection } from '../src/ProtectionSettings';
 
 const GOALS: { key: Goal; label: string }[] = [
   { key: 'more-protein', label: 'More protein' },
@@ -18,9 +18,8 @@ const GOALS: { key: Goal; label: string }[] = [
 ];
 
 export default function ProfileScreen() {
-  const { kernel, submit, reset } = useKernel();
+  const { kernel, submit } = useKernel();
   const { pref, setPref } = useTheme();
-  const [confirm, setConfirm] = useState(false);
   const profile = kernel.state.profile;
   const me = kernel.me();
   if (!profile || !me) return null;
@@ -30,18 +29,6 @@ export default function ProfileScreen() {
   const toggleGoal = (g: Goal) => {
     const goals = me.goals.includes(g) ? me.goals.filter((x) => x !== g) : [...me.goals, g];
     update({ members: profile.members.map((m) => (m.id === me.id ? { ...m, goals } : m)) });
-  };
-
-  const exportData = () => {
-    const json = JSON.stringify(kernel.events, null, 2);
-    if (Platform.OS === 'web' && typeof document !== 'undefined') {
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(new Blob([json], { type: 'application/json' }));
-      a.download = 'eatos-events.json';
-      a.click();
-      return;
-    }
-    Share.share({ message: json }).catch(() => {});
   };
 
   return (
@@ -90,24 +77,9 @@ export default function ProfileScreen() {
 
       <LlmSettings />
 
-      <Section title="Your data">
-        <Txt v="small">{`${kernel.events.length} events stored on this device.`}</Txt>
-        <Row wrap>
-          <Btn kind="outline" label="Export my data" onPress={exportData} />
-          {confirm ? (
-            <Btn
-              kind="primary"
-              label="Yes, delete everything"
-              onPress={async () => {
-                await reset();
-                router.replace('/onboarding');
-              }}
-            />
-          ) : (
-            <Btn kind="ghost" label="Delete all data" onPress={() => setConfirm(true)} />
-          )}
-        </Row>
-      </Section>
+      <DeviceProtection />
+
+      <BackupAndDelete />
     </Screen>
   );
 }

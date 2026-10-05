@@ -19,3 +19,4 @@ export * from './drivers/health-import';
 export * from './drivers/receipt';
 export * from './drivers/delivery';
 export * from './llm-ask';
+export * from './vault';

@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
-import { mkdtempSync, rmSync, existsSync } from 'node:fs';
+import { mkdtempSync, rmSync, existsSync, readFileSync, writeFileSync, statSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import type { AddressInfo } from 'node:net';
@@ -15,8 +15,8 @@ let dir: string;
 let server: Server;
 let base: string;
 
-async function start(clock = () => T('16:00')) {
-  server = createApi({ dataDir: dir, clock });
+async function start(clock = () => T('16:00'), extra: { dataKey?: string; kdf?: { N: number; r: number; p: number } } = {}) {
+  server = createApi({ dataDir: dir, clock, ...extra });
   await new Promise<void>((r) => server.listen(0, r));
   base = `http://127.0.0.1:${(server.address() as AddressInfo).port}`;
 }
@@ -162,6 +162,63 @@ describe('EatOS API', () => {
     it('rejects synced events without ids and bad cursors', async () => {
       expect((await call('POST', '/v1/sync', { since: 0, events: [{ type: 'water.logged', at: DAY0, ml: 1 }] })).status).toBe(400);
       expect((await call('POST', '/v1/sync', { since: 'a' })).status).toBe(400);
+    });
+  });
+
+  describe('privacy: encryption, export and delete', () => {
+    const kdf = { N: 16, r: 8, p: 1 };
+    const restart = async (extra?: Parameters<typeof start>[1]) => {
+      await new Promise((r) => server.close(r));
+      await start(undefined, extra);
+    };
+
+    it('encrypts files at rest when a data key is set, and reads them back after a restart', async () => {
+      await restart({ dataKey: 'server secret', kdf });
+      await call('POST', '/v1/events', [{ type: 'profile.set', at: DAY0, profile }, { type: 'water.logged', at: T('09:00'), ml: 777 }], 'enc');
+      const onDisk = readFileSync(join(dir, 'enc.json'), 'utf8');
+      expect(onDisk).not.toContain('water.logged');
+      expect(onDisk).not.toContain('777');
+      expect(JSON.parse(onDisk)).toMatchObject({ v: 1, alg: 'xchacha20poly1305', kdf: 'scrypt' });
+      expect(statSync(join(dir, 'enc.json')).mode & 0o077).toBe(0); // owner-only
+
+      await restart({ dataKey: 'server secret', kdf });
+      expect((await call('GET', '/v1/events', undefined, 'enc')).body.events).toHaveLength(2);
+      expect((await call('GET', '/v1/health', undefined, 'enc')).body.checks[0].actual).toBe(777);
+    });
+
+    it('answers 503 for an encrypted file with no key or the wrong key', async () => {
+      await restart({ dataKey: 'right', kdf });
+      await call('POST', '/v1/events', { type: 'water.logged', at: T('09:00'), ml: 1 }, 'locked');
+      await restart(); // no key
+      const none = await call('GET', '/v1/events', undefined, 'locked');
+      expect(none.status).toBe(503);
+      expect(none.body.error).toMatch(/EATOS_DATA_KEY/);
+      await restart({ dataKey: 'wrong', kdf });
+      expect((await call('GET', '/v1/events', undefined, 'locked')).status).toBe(503);
+      await restart({ dataKey: 'right', kdf });
+      expect((await call('GET', '/v1/events', undefined, 'locked')).body.events).toHaveLength(1);
+    });
+
+    it('encrypts a plain legacy file as soon as a key is configured', async () => {
+      writeFileSync(join(dir, 'old.json'), JSON.stringify([{ type: 'water.logged', at: DAY0, ml: 42, id: 'x1' }]));
+      await restart({ dataKey: 'k', kdf });
+      expect((await call('GET', '/v1/events', undefined, 'old')).body.events).toHaveLength(1);
+      expect(readFileSync(join(dir, 'old.json'), 'utf8')).not.toContain('water.logged');
+    });
+
+    it('exports a backup and deletes everything for a user', async () => {
+      await call('POST', '/v1/events', [{ type: 'profile.set', at: DAY0, profile }, { type: 'water.logged', at: T('09:00'), ml: 250 }], 'gone');
+      const backup = (await call('GET', '/v1/export', undefined, 'gone')).body;
+      expect(backup).toMatchObject({ app: 'eatos', format: 1 });
+      expect(backup.events).toHaveLength(2);
+
+      expect((await call('DELETE', '/v1/data', undefined, 'gone')).body.deleted).toBe(true);
+      expect(existsSync(join(dir, 'gone.json'))).toBe(false);
+      expect((await call('GET', '/v1/events', undefined, 'gone')).body.events).toHaveLength(0);
+      // Other users are untouched, and deleting twice is harmless.
+      await call('POST', '/v1/events', { type: 'water.logged', at: T('09:00'), ml: 1 }, 'keep');
+      expect((await call('DELETE', '/v1/data', undefined, 'gone')).body.deleted).toBe(false);
+      expect((await call('GET', '/v1/events', undefined, 'keep')).body.events).toHaveLength(1);
     });
   });
 });

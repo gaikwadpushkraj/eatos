@@ -1,5 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getSecret, setSecret } from './secure';
 import type { LlmCompleter } from '@eatos/core';
 
 export interface LlmConfig {
@@ -15,16 +15,11 @@ export const defaultLlmConfig: LlmConfig = { enabled: false, apiKey: '', model: 
 const KEY = 'eatos.llm.config';
 
 export async function loadLlmConfig(): Promise<LlmConfig> {
-  try {
-    const raw = await AsyncStorage.getItem(KEY);
-    return raw ? { ...defaultLlmConfig, ...(JSON.parse(raw) as LlmConfig) } : defaultLlmConfig;
-  } catch {
-    return defaultLlmConfig;
-  }
+  return { ...defaultLlmConfig, ...(await getSecret<Partial<LlmConfig>>(KEY, {})) };
 }
 
 export async function saveLlmConfig(c: LlmConfig): Promise<void> {
-  await AsyncStorage.setItem(KEY, JSON.stringify(c));
+  await setSecret(KEY, c);
 }
 
 export function llmReady(c: LlmConfig): boolean {
