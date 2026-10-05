@@ -248,6 +248,9 @@ export default function Onboarding() {
               <Txt v="small" color="okText">EatOS gives general suggestions only. Follow your clinician's plan for a medical diet.</Txt>
             </Card>
           ) : null}
+          <Card tone="soft">
+            <Txt v="small">Next, add your rules (Jain, no egg, halal), spice and the food you grew up with under Profile, Your food. It takes a minute and every suggestion follows it.</Txt>
+          </Card>
           <Card padding={4}>
             <View style={{ paddingHorizontal: 12 }}>
               <Toggle label="Start with a sample pantry" hint="Adds a few common items so suggestions make sense straight away" value={sample} onChange={setSample} />

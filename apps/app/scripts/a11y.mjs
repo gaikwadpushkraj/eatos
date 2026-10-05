@@ -52,6 +52,8 @@ const SCREENS = [
   ['household', '/household', 'Household'],
   ['profile', '/profile', 'Safety floor is on'],
   ['integrations', '/integrations', 'Connect your world'],
+  ['wishes', '/wishes', 'I wish I could eat'],
+  ['taste', '/taste', 'Would you eat this?'],
 ];
 const VIEWPORTS = [
   ['phone', { width: 390, height: 844 }],

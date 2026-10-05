@@ -9,6 +9,7 @@ import { Avatar, Btn, Card, Chip, Dot, Meter, Row, Screen, Section, Txt, useWide
 import { Icon } from '../../src/icons';
 import { greeting, timeLabel } from '../../src/format';
 import { eatFood } from '../../src/actions';
+import { FastingCard } from '../../src/FastingCard';
 
 function statusTone(task: Task): { label: string; tone?: 'ok' | 'warn' | 'accent' } {
   if (task.state === 'done') return { label: 'Done', tone: 'ok' };
@@ -129,6 +130,19 @@ function Adjusted() {
         </View>
       </Row>
     </Card>
+  );
+}
+
+function Explore() {
+  return (
+    <>
+      <FastingCard />
+      <Card padding={14} style={{ gap: 8 }}>
+        <Txt v="h3">Wish for something you can’t have?</Txt>
+        <Txt v="small">Say it, and EatOS shows why, and the kindest alternatives.</Txt>
+        <Btn kind="outline" small label="Open wish list" onPress={() => router.push('/wishes')} />
+      </Card>
+    </>
   );
 }
 
@@ -284,6 +298,7 @@ export default function Now() {
               {tiles}
             </Card>
             {quick}
+            <Explore />
             <HouseholdMini />
           </View>
         </View>
@@ -300,6 +315,7 @@ export default function Now() {
       {tiles}
       <Adjusted />
       {quick}
+      <Explore />
       <Schedule compact />
       <AskBar />
     </Screen>

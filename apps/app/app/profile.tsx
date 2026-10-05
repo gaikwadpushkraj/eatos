@@ -7,6 +7,7 @@ import type { ThemePref } from '../src/theme';
 import { Avatar, Btn, Card, Chip, Row, Screen, Section, Toggle, Txt, TopBar } from '../src/ui';
 import { SyncSettings } from '../src/SyncSettings';
 import { LlmSettings } from '../src/LlmSettings';
+import { FoodProfile } from '../src/FoodProfile';
 import { BackupAndDelete, DeviceProtection } from '../src/ProtectionSettings';
 
 const GOALS: { key: Goal; label: string }[] = [
@@ -48,6 +49,14 @@ export default function ProfileScreen() {
           ))}
         </Row>
       </Section>
+
+      <FoodProfile />
+
+      <Card>
+        <Txt v="h3">Teach EatOS your taste</Txt>
+        <Txt v="small">Eight quick taps on dishes that fit your rules.</Txt>
+        <Btn kind="outline" label="Start the taste cards" onPress={() => router.push('/taste')} />
+      </Card>
 
       <Card padding={4} style={{ paddingHorizontal: 16 }}>
         <Toggle label="I'm unwell" hint="Safe mode: gentle food, fluids first, goals paused" value={safe} onChange={(v) => submit({ type: v ? 'illness.started' : 'illness.ended' })} />

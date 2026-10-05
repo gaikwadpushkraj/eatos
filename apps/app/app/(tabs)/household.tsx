@@ -24,7 +24,12 @@ export default function Household() {
   const tonight = useMemo(() => kernel.recommend({ slot: 'dinner', k: 3 }, now), [kernel, now, version]);
   const dinners = kernel.catalog.filter((f) => f.slots.includes('dinner') && !f.variantOf);
   // Show the best options plus a few dishes that do not suit everyone, so conflicts are visible.
-  const conflicts = dinners.filter((f) => !tonight.some((r) => r.food.id === f.id) && members.some((m) => !fitFor(f, m).ok)).slice(0, 3);
+  // Show the dishes that clash hardest first: a broken rule matters more than a dislike.
+  const clash = (f: (typeof dinners)[number]) => members.reduce((n, m) => n + (fitFor(f, m).hard ? 2 : fitFor(f, m).ok ? 0 : 1), 0);
+  const conflicts = dinners
+    .filter((f) => !tonight.some((r) => r.food.id === f.id) && clash(f) > 0)
+    .sort((a, b) => clash(b) - clash(a))
+    .slice(0, 3);
   const matrixFoods = [...tonight.map((r) => r.food), ...conflicts];
   const matrix = fitMatrix(matrixFoods, members);
   const resolution = request ? kernel.resolve(request) : undefined;
@@ -125,7 +130,7 @@ export default function Household() {
       <Section title="Two wishes, one meal">
         <Txt v="small">Someone asked for a dish? Pick it and EatOS finds a version everyone can eat.</Txt>
         <Row wrap gap={8}>
-          {dinners.slice(0, 8).map((f) => (
+          {[...conflicts, ...dinners.filter((f) => !conflicts.includes(f))].slice(0, 8).map((f) => (
             <Chip key={f.id} label={f.name} selected={request === f.id} onPress={() => setRequest(f.id)} />
           ))}
         </Row>

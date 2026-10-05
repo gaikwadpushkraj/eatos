@@ -306,6 +306,57 @@ await run('photo', { width: 390, height: 844 }, 'light', async (page) => {
   await text(page, 'did not return a usable answer');
 });
 
+// Indian metro food: rules, fasting, wishes with alternatives, taste cards.
+await run('indian', { width: 390, height: 844 }, 'light', async (page) => {
+  await onboard(page, false);
+  await page.goto(base + '/profile');
+  await text(page, 'Your food');
+  await page.getByRole('button', { name: 'Jain', exact: true }).click();
+  await page.getByRole('button', { name: 'Vegetarian', exact: true }).click();
+  await page.getByRole('button', { name: 'Add health options' }).click();
+  await page.getByRole('button', { name: 'Prediabetes' }).click();
+  const log = await stored(page, 'eatos.events.v1');
+  if (!log.includes('"rules":["jain"]') || !log.includes('"conditions":["prediabetes"]')) throw new Error('rules and conditions were not saved');
+  await shot(page, '22-your-food');
+
+  // The Jain rule is a hard rule: nothing with onion or garlic reaches Ask.
+  await page.goto(base + '/ask');
+  await page.getByLabel('Message EatOS').fill('dinner something warm');
+  await page.getByRole('button', { name: 'Send' }).click();
+  await text(page, 'Ready in');
+  const body = await page.evaluate(() => document.body.innerText);
+  for (const bad of ['biryani', 'Pav bhaji with', 'Aloo paratha']) if (body.includes(bad)) throw new Error(`a Jain rule was broken: ${bad}`);
+
+  // A wish that the rule blocks: the Jain version is offered.
+  await page.goto(base + '/wishes');
+  await page.getByLabel('What do you wish you could eat?').fill('pav bhaji');
+  await page.getByRole('button', { name: 'Find alternatives' }).click();
+  await text(page, 'Pav bhaji (Jain style)');
+  await text(page, 'Your rules');
+  await shot(page, '23-wish-alternatives');
+  await page.getByRole('button', { name: 'Save to my wish list' }).click();
+  await text(page, 'Saved to your wish list');
+
+  // Fasting today, and a gate when it would not be safe.
+  await page.goto(base + '/');
+  await page.getByRole('button', { name: 'Navratri fast' }).click();
+  await text(page, 'follow your navratri fast today');
+  await page.goto(base + '/profile');
+  await page.getByRole('button', { name: /Health options/ }).click();
+  await page.getByRole('button', { name: 'On insulin or sulfonylureas' }).click();
+  await page.goto(base + '/');
+  await text(page, 'needs your doctor');
+
+  // Taste cards teach the system.
+  await page.goto(base + '/taste');
+  await text(page, 'Would you eat this?');
+  await page.getByRole('button', { name: 'Yes, love it' }).click();
+  await page.getByRole('button', { name: 'Never for me' }).click();
+  const after = await stored(page, 'eatos.events.v1');
+  if (!after.includes('"verdict":"liked"') || !after.includes('"verdict":"never"')) throw new Error('taste answers were not saved');
+  await shot(page, '24-taste-cards');
+});
+
 // Privacy: device encryption, unlock, encrypted backup, restore on a fresh device.
 const unlock = async (page, pass = 'correct horse battery') => {
   await text(page, 'Enter your passphrase');
