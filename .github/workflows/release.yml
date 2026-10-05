@@ -1,0 +1,36 @@
+name: Release
+
+# Tag a version (git tag v0.1.0 && git push --tags) to run the full checks,
+# build the web app and publish a GitHub release with the web build attached.
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      CI: "1"
+      EXPO_NO_TELEMETRY: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm typecheck && pnpm test
+      - run: pnpm --filter @eatos/app exec playwright install --with-deps chromium
+      - run: pnpm e2e
+      - name: Package the web build
+        run: |
+          cd apps/app/dist
+          zip -r "../../../eatos-web-${GITHUB_REF_NAME}.zip" .
+      - name: Create the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" "eatos-web-${GITHUB_REF_NAME}.zip" --generate-notes --title "EatOS $GITHUB_REF_NAME"

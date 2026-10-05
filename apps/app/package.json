@@ -1,0 +1,47 @@
+{
+  "name": "@eatos/app",
+  "version": "0.1.0",
+  "private": true,
+  "main": "expo-router/entry",
+  "scripts": {
+    "start": "expo start",
+    "web": "expo start --web",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "build:web": "expo export --platform web",
+    "typecheck": "tsc -p tsconfig.json",
+    "smoke": "node scripts/smoke.mjs",
+    "a11y": "node scripts/a11y.mjs",
+    "e2e": "pnpm build:web && pnpm smoke && pnpm a11y"
+  },
+  "dependencies": {
+    "@eatos/core": "workspace:*",
+    "@expo-google-fonts/geist": "^0.4.2",
+    "@expo-google-fonts/geist-mono": "^0.4.3",
+    "@react-native-async-storage/async-storage": "2.2.0",
+    "expo": "~57.0.26",
+    "expo-constants": "~57.0.20",
+    "expo-font": "~57.0.4",
+    "expo-linking": "~57.0.11",
+    "expo-router": "~57.0.24",
+    "expo-status-bar": "~57.0.1",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "react-native": "0.86.3",
+    "react-native-safe-area-context": "~5.7.0",
+    "react-native-screens": "~4.26.0",
+    "react-native-svg": "15.15.4",
+    "react-native-web": "~0.21.0",
+    "expo-document-picker": "~57.0.3",
+    "@anthropic-ai/sdk": "^0.131.0",
+    "expo-crypto": "~57.0.3",
+    "expo-splash-screen": "~57.0.9",
+    "expo-system-ui": "~57.0.4"
+  },
+  "devDependencies": {
+    "@types/react": "~19.2.0",
+    "playwright": "^1.55.0",
+    "typescript": "~5.9.0",
+    "@axe-core/playwright": "^4.11.0"
+  }
+}

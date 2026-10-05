@@ -1,0 +1,495 @@
+{
+  "repo": "gaikwadpushkraj/eatos",
+  "epics": [
+    {
+      "key": "P0",
+      "title": "Phase 0: Foundation",
+      "summary": "Monorepo, documentation and CI so every later phase has a working base.",
+      "tasks": [
+        {
+          "key": "0.1",
+          "sprint": 0,
+          "area": "infra",
+          "status": "done",
+          "title": "Monorepo with pnpm workspaces, TypeScript and Vitest",
+          "acceptance": [
+            "pnpm install works from a clean clone",
+            "pnpm test and pnpm typecheck run across all packages"
+          ]
+        },
+        {
+          "key": "0.2",
+          "sprint": 0,
+          "area": "docs",
+          "status": "done",
+          "title": "README, architecture and delivery plan",
+          "acceptance": [
+            "README explains the idea and quick start",
+            "docs/ARCHITECTURE.md documents every OS concept as a concrete rule",
+            "docs/PLAN.md lists phases, sprints and tasks"
+          ]
+        },
+        {
+          "key": "0.3",
+          "sprint": 0,
+          "area": "infra",
+          "status": "done",
+          "title": "CI workflow: install, typecheck, test",
+          "acceptance": [
+            "GitHub Actions runs on push and pull requests"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "P1",
+      "title": "Phase 1: Kernel",
+      "summary": "@eatos/core: event-sourced state and a scheduler with priority classes, interrupts, re-prioritisation, inversion handling, health checks and a safety floor.",
+      "tasks": [
+        {
+          "key": "1.1",
+          "sprint": 1,
+          "area": "core",
+          "status": "done",
+          "title": "Domain types: priorities, tasks, events, profile, members, foods, pantry",
+          "acceptance": [
+            "P0\u2013P3 priority classes",
+            "Discriminated union of events"
+          ]
+        },
+        {
+          "key": "1.2",
+          "sprint": 1,
+          "area": "core",
+          "status": "done",
+          "title": "Event log and state reducer",
+          "acceptance": [
+            "replay(events) equals step-by-step reduce",
+            "Safe mode derived from illness events"
+          ]
+        },
+        {
+          "key": "1.3",
+          "sprint": 1,
+          "area": "core",
+          "status": "done",
+          "title": "Daily routine scheduler",
+          "acceptance": [
+            "Meals, medication (P0, 30 min deadline), hydration checkpoints and wind down"
+          ]
+        },
+        {
+          "key": "1.4",
+          "sprint": 2,
+          "area": "core",
+          "status": "done",
+          "title": "Interrupt handlers: calendar, workout, sleep, illness (safe mode)",
+          "acceptance": [
+            "Meeting moves overlapping meal with a reason",
+            "Long workout adds recovery snack and raises targets",
+            "Safe mode: no snack, gentle meals, fluids P0"
+          ]
+        },
+        {
+          "key": "1.5",
+          "sprint": 2,
+          "area": "core",
+          "status": "done",
+          "title": "Re-prioritisation (EDF) and priority inversion",
+          "acceptance": [
+            "Due tasks ordered by priority then deadline",
+            "Snack before a meal inherits priority and is kept light",
+            "Snack within 45 min is folded in"
+          ]
+        },
+        {
+          "key": "1.6",
+          "sprint": 2,
+          "area": "core",
+          "status": "done",
+          "title": "Health checks and safety floor",
+          "acceptance": [
+            "Hydration, protein and fibre vs time-of-day curve",
+            "Energy floor goes critical when very little is eaten",
+            "Goals pause in safe mode"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "P2",
+      "title": "Phase 2: Intelligence",
+      "summary": "Which food serves a need, for whom, with reasons.",
+      "tasks": [
+        {
+          "key": "2.1",
+          "sprint": 3,
+          "area": "core",
+          "status": "done",
+          "title": "Seed food catalog with nutrients, tags, allergens and safe variants",
+          "acceptance": [
+            "30+ foods across all slots",
+            "Nut-free and peanut-free variants linked with variantOf"
+          ]
+        },
+        {
+          "key": "2.2",
+          "sprint": 3,
+          "area": "core",
+          "status": "done",
+          "title": "Recommender with hard filters, soft scoring and reasons",
+          "acceptance": [
+            "Never breaks an allergy or diet",
+            "Prefers expiring pantry items and says so",
+            "Respects time limits and exclusions"
+          ]
+        },
+        {
+          "key": "2.3",
+          "sprint": 3,
+          "area": "core",
+          "status": "done",
+          "title": "Preference memory with decay",
+          "acceptance": [
+            "60-day half-life",
+            "\"Never\" is hard for a year, a later \"liked\" lifts it"
+          ]
+        },
+        {
+          "key": "2.4",
+          "sprint": 3,
+          "area": "core",
+          "status": "done",
+          "title": "Housekeeping: pantry expiry, use-soon, compaction",
+          "acceptance": [
+            "Expired items removed via events",
+            "Compaction keeps profile, feedback, pantry and safe mode"
+          ]
+        },
+        {
+          "key": "2.5",
+          "sprint": 3,
+          "area": "core",
+          "status": "done",
+          "title": "Household fit matrix and conflict resolution",
+          "acceptance": [
+            "Fit per member with reason",
+            "Conflicting request swapped for a safe variant"
+          ]
+        },
+        {
+          "key": "2.6",
+          "sprint": 3,
+          "area": "core",
+          "status": "done",
+          "title": "Ask EatOS rule-based parser",
+          "acceptance": [
+            "Understands minutes, mood, slot, need, exclusions and who is eating",
+            "No network or paid model"
+          ]
+        },
+        {
+          "key": "2.7",
+          "sprint": 3,
+          "area": "core",
+          "status": "done",
+          "title": "Day simulator CLI",
+          "acceptance": [
+            "pnpm simulate prints schedule, checks, suggestions and the change log"
+          ]
+        },
+        {
+          "key": "2.8",
+          "sprint": 3,
+          "area": "core",
+          "status": "done",
+          "title": "Weekly plan and grocery list",
+          "acceptance": [
+            "Every slot planned for 7 days",
+            "Batch cooking: dinner returns as next-day lunch",
+            "Grocery list excludes what is in the pantry"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "P3",
+      "title": "Phase 3: API",
+      "summary": "HTTP server exposing the kernel so web, mobile and third parties share one backend.",
+      "tasks": [
+        {
+          "key": "3.1",
+          "sprint": 4,
+          "area": "api",
+          "status": "done",
+          "title": "HTTP syscalls",
+          "acceptance": [
+            "/v1/events, /v1/now, /v1/schedule, /v1/health, /v1/recommend, /v1/ask, /v1/pantry, /v1/week, /v1/log, /v1/state"
+          ]
+        },
+        {
+          "key": "3.2",
+          "sprint": 4,
+          "area": "api",
+          "status": "done",
+          "title": "Per-user event log persistence",
+          "acceptance": [
+            "One JSON file per user",
+            "Restart rebuilds state from the log"
+          ]
+        },
+        {
+          "key": "3.3",
+          "sprint": 4,
+          "area": "api",
+          "status": "done",
+          "title": "API tests",
+          "acceptance": [
+            "Vitest covers each route, validation and persistence"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "P4",
+      "title": "Phase 4: App shell, mobile and web",
+      "summary": "One Expo app for iOS, Android and web built from the design canvas, kernel on the device.",
+      "tasks": [
+        {
+          "key": "4.1",
+          "sprint": 5,
+          "area": "app",
+          "status": "done",
+          "title": "Expo app with kernel on the device",
+          "acceptance": [
+            "Expo Router app builds for web",
+            "Uses @eatos/core directly"
+          ]
+        },
+        {
+          "key": "4.2",
+          "sprint": 5,
+          "area": "app",
+          "status": "done",
+          "title": "Theme tokens, light and dark",
+          "acceptance": [
+            "Colours from the design",
+            "Follows system setting, with a Light/Dark/System choice"
+          ]
+        },
+        {
+          "key": "4.3",
+          "sprint": 5,
+          "area": "app",
+          "status": "done",
+          "title": "Onboarding: who's eating, diet, allergies",
+          "acceptance": [
+            "Creates the profile event"
+          ]
+        },
+        {
+          "key": "4.4",
+          "sprint": 5,
+          "area": "app",
+          "status": "done",
+          "title": "Now and Ask screens",
+          "acceptance": [
+            "Next up card with reasons, health tiles, plan-adjusted notice, coming up",
+            "Ask returns 3 options, Choose for me, Why these"
+          ]
+        },
+        {
+          "key": "4.5",
+          "sprint": 6,
+          "area": "app",
+          "status": "done",
+          "title": "Plan, Grocery and Pantry screens",
+          "acceptance": [
+            "Weekly plan with batch cooking",
+            "Grocery list with checkboxes",
+            "Pantry with use-soon and add item"
+          ]
+        },
+        {
+          "key": "4.6",
+          "sprint": 6,
+          "area": "app",
+          "status": "done",
+          "title": "Cooking, Household and Profile screens",
+          "acceptance": [
+            "Cooking steps and pantry status",
+            "Household fit and conflict resolution",
+            "Settings, safety floor, export"
+          ]
+        },
+        {
+          "key": "4.7",
+          "sprint": 6,
+          "area": "app",
+          "status": "done",
+          "title": "Responsive web layout",
+          "acceptance": [
+            "Wide screens show a two-column dashboard",
+            "Works at phone width"
+          ]
+        },
+        {
+          "key": "4.8",
+          "sprint": 6,
+          "area": "app",
+          "status": "done",
+          "title": "Local persistence of the event log",
+          "acceptance": [
+            "Event log saved on the device and restored on launch"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "P5",
+      "title": "Phase 5: Sync and integrations",
+      "summary": "Connect EatOS to the world around the person so they log less.",
+      "tasks": [
+        {
+          "key": "5.1",
+          "sprint": 7,
+          "area": "api",
+          "status": "done",
+          "title": "Device to server sync of event logs",
+          "acceptance": [
+            "Append-only merge by event id",
+            "Server cursor and epoch; devices resync fully after compaction",
+            "Works offline and reconciles",
+            "Off by default; turned on per device with a sync code"
+          ]
+        },
+        {
+          "key": "5.2",
+          "sprint": 7,
+          "area": "drivers",
+          "status": "done",
+          "title": "Calendar driver",
+          "acceptance": [
+            "Reads iCalendar (.ics) files: UTC, TZID with daylight saving, folding, DURATION",
+            "Expands daily and weekly recurring events with INTERVAL, COUNT, UNTIL, BYDAY and EXDATE",
+            "Free/busy only: titles are dropped unless the person opts in",
+            "Stable event ids so importing twice adds nothing"
+          ]
+        },
+        {
+          "key": "5.3",
+          "sprint": 8,
+          "area": "drivers",
+          "status": "done",
+          "title": "Health data and wearable drivers",
+          "acceptance": [
+            "Reads Apple Health export.xml: workouts, sleep nights, dietary water",
+            "Reads a simple CSV (type,start,end,value)",
+            "Workouts raise targets, short sleep moves the wind down",
+            "Stable ids so re-importing adds nothing"
+          ]
+        },
+        {
+          "key": "5.4",
+          "sprint": 8,
+          "area": "drivers",
+          "status": "done",
+          "title": "Grocery and delivery drivers",
+          "acceptance": [
+            "Receipts become pantry items with quantities, places and use-by dates",
+            "Delivery menus are ranked for everyone eating; missing allergen or diet info is treated as unsafe",
+            "Ordered dishes can be logged as intake"
+          ]
+        },
+        {
+          "key": "5.5",
+          "sprint": 8,
+          "area": "core",
+          "status": "done",
+          "title": "Optional LLM adapter for Ask EatOS",
+          "acceptance": [
+            "Same ParsedAsk shape as the rule parser",
+            "Off by default; the person supplies their own key and model",
+            "Only the typed sentence is sent: no profile, allergies, pantry or health data",
+            "Model output is validated strictly; any error, refusal, timeout or bad JSON falls back to the on-device parser",
+            "Allergies and diets are enforced by the recommender, never by the model"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "P6",
+      "title": "Phase 6: Hardening and release",
+      "summary": "Make EatOS safe, private and ready to ship.",
+      "tasks": [
+        {
+          "key": "6.1",
+          "sprint": 9,
+          "area": "security",
+          "status": "done",
+          "title": "Encryption at rest, export and delete",
+          "acceptance": [
+            "Event log and saved secrets encrypted on device with a passphrase; app starts locked",
+            "Wrong passphrase and tampering are rejected",
+            "Encrypted backups and restore, plain or encrypted",
+            "Server files encrypted at rest with EATOS_DATA_KEY",
+            "One-step export, and delete that also removes the server copy"
+          ]
+        },
+        {
+          "key": "6.2",
+          "sprint": 9,
+          "area": "app",
+          "status": "done",
+          "title": "Accessibility audit",
+          "acceptance": [
+            "axe-core (WCAG 2.0 to 2.2, A and AA) finds no violations on every screen, light and dark, phone and desktop",
+            "Every control is at least 44 x 44 px",
+            "Keyboard focus is visible",
+            "Switches, checkboxes and progress bars are labelled for screen readers"
+          ]
+        },
+        {
+          "key": "6.3",
+          "sprint": 9,
+          "area": "qa",
+          "status": "done",
+          "title": "End-to-end tests",
+          "acceptance": [
+            "Playwright drives the built web app: onboarding, every screen, cooking to eaten, sync between two browsers, encryption and unlock, backups and restore, imports, optional Claude Ask (stubbed)",
+            "pnpm e2e runs the build, the journey and the accessibility audit",
+            "CI runs it on every push and uploads screenshots"
+          ]
+        },
+        {
+          "key": "6.4",
+          "sprint": 9,
+          "area": "release",
+          "status": "done",
+          "title": "Release pipeline: app config, icons, EAS, Pages, Docker, release guide",
+          "acceptance": [
+            "App config with bundle ids, generated icons and splash, EAS build profiles",
+            "Web build deploys to GitHub Pages and works under a sub-path",
+            "A tagged release re-runs every check and attaches the web build",
+            "API ships as a Docker image with encrypted storage required",
+            "docs/RELEASE.md lists every step, including the ones only the account owner can do"
+          ]
+        },
+        {
+          "key": "6.5",
+          "sprint": 9,
+          "area": "release",
+          "status": "todo",
+          "title": "Publish to the app stores and turn on Pages (owner action)",
+          "acceptance": [
+            "Repository: Settings > Pages > Source: GitHub Actions",
+            "Expo account, eas init, and the EXPO_TOKEN secret",
+            "Apple Developer and Google Play accounts, signing credentials, store listings and privacy policy",
+            "Answer Apple's export-compliance and Google's data-safety questionnaires",
+            "First production build submitted with eas submit"
+          ]
+        }
+      ]
+    }
+  ]
+}

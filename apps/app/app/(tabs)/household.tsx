@@ -1,0 +1,141 @@
+import { useMemo, useState } from 'react';
+import { View } from 'react-native';
+import { fitFor, fitMatrix, makeMember } from '@eatos/core';
+import type { Allergen, Diet } from '@eatos/core';
+import { useKernel } from '../../src/kernel';
+import { Avatar, Btn, Card, Chip, Field, Row, Screen, Section, Toggle, Txt, useWide } from '../../src/ui';
+import { capitalise } from '../../src/format';
+
+const DIETS: Diet[] = ['omnivore', 'pescatarian', 'vegetarian', 'vegan'];
+const ALLERGENS: Allergen[] = ['nuts', 'peanuts', 'dairy', 'gluten', 'egg', 'soy', 'fish', 'shellfish', 'sesame'];
+
+export default function Household() {
+  const { kernel, now, submit, version } = useKernel();
+  const wide = useWide();
+  const members = kernel.state.profile?.members ?? [];
+  const selfId = kernel.state.profile?.selfId;
+  const [request, setRequest] = useState<string | null>(null);
+  const [adding, setAdding] = useState(false);
+  const [name, setName] = useState('');
+  const [diet, setDiet] = useState<Diet>('omnivore');
+  const [allergens, setAllergens] = useState<Allergen[]>([]);
+  const [mild, setMild] = useState(false);
+
+  const tonight = useMemo(() => kernel.recommend({ slot: 'dinner', k: 3 }, now), [kernel, now, version]);
+  const dinners = kernel.catalog.filter((f) => f.slots.includes('dinner') && !f.variantOf);
+  // Show the best options plus a few dishes that do not suit everyone, so conflicts are visible.
+  const conflicts = dinners.filter((f) => !tonight.some((r) => r.food.id === f.id) && members.some((m) => !fitFor(f, m).ok)).slice(0, 3);
+  const matrixFoods = [...tonight.map((r) => r.food), ...conflicts];
+  const matrix = fitMatrix(matrixFoods, members);
+  const resolution = request ? kernel.resolve(request) : undefined;
+
+  return (
+    <Screen maxWidth={wide ? 1100 : 720}>
+      <Row style={{ justifyContent: 'space-between' }}>
+        <Txt v="h1">Household</Txt>
+        <Btn small kind="outline" label={adding ? 'Close' : 'Add someone'} onPress={() => setAdding(!adding)} />
+      </Row>
+
+      {adding ? (
+        <Card>
+          <Field label="Name" value={name} onChangeText={setName} placeholder="e.g. Sam" />
+          <Row wrap gap={8}>
+            {DIETS.map((d) => (
+              <Chip key={d} label={capitalise(d)} selected={diet === d} onPress={() => setDiet(d)} />
+            ))}
+          </Row>
+          <Row wrap gap={8}>
+            {ALLERGENS.map((a) => (
+              <Chip key={a} label={`No ${a}`} selected={allergens.includes(a)} onPress={() => setAllergens(allergens.includes(a) ? allergens.filter((x) => x !== a) : [...allergens, a])} />
+            ))}
+          </Row>
+          <Toggle label="Prefers mild food" value={mild} onChange={setMild} />
+          <Btn
+            label="Add to household"
+            disabled={!name.trim()}
+            onPress={() => {
+              submit({ type: 'member.added', member: makeMember({ id: `m_${now.toString(36)}`, name: name.trim(), diet, allergens, mild }) });
+              setName('');
+              setAllergens([]);
+              setAdding(false);
+            }}
+          />
+        </Card>
+      ) : null}
+
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 10 }}>
+        {members.map((m, i) => (
+          <Card key={m.id} style={{ flexGrow: 1, flexBasis: 150 }}>
+            <Row>
+              <Avatar name={m.name} tone={i === 0 ? 'accent' : m.allergens.length ? 'warn' : 'ok'} />
+              <View style={{ flex: 1 }}>
+                <Txt v="h3">{m.name}</Txt>
+                <Txt v="small">{m.id === selfId ? 'You' : m.managedBy ? 'Managed by you' : 'Member'}</Txt>
+              </View>
+            </Row>
+            <Row wrap gap={6}>
+              <Chip label={capitalise(m.diet)} />
+              {m.allergens.map((a) => (
+                <Chip key={a} label={`No ${a} · always`} tone="warn" />
+              ))}
+              {m.mild ? <Chip label="Mild" /> : null}
+              {m.dislikes.map((d) => (
+                <Chip key={d} label={`Dislikes ${d}`} />
+              ))}
+            </Row>
+            {m.id !== selfId ? <Btn small kind="ghost" label="Remove" accessibilityLabel={`Remove ${m.name}`} onPress={() => submit({ type: 'member.removed', memberId: m.id })} /> : null}
+          </Card>
+        ))}
+      </View>
+
+      {tonight[0] ? (
+        <Card tone="ink" padding={20}>
+          <Txt v="mono" color="inkMuted">TONIGHT · SHARED DINNER</Txt>
+          <Txt v="h2" color="inkText">{tonight[0].food.name}</Txt>
+          {members.map((m) => (
+            <Row key={m.id} style={{ justifyContent: 'space-between' }}>
+              <Txt v="body" color="inkText">{m.name}</Txt>
+              <Txt v="small" style={{ color: '#D9F26B' }}>{fitFor(tonight[0]!.food, m).reason}</Txt>
+            </Row>
+          ))}
+        </Card>
+      ) : null}
+
+      {members.length > 1 ? (
+        <Section title="Who each dinner works for">
+          <Card>
+            {matrix.map((row) => (
+              <View key={row.food.id} style={{ gap: 4, paddingVertical: 6 }}>
+                <Row style={{ justifyContent: 'space-between' }}>
+                  <Txt v="bodyStrong" style={{ flex: 1 }}>{row.food.name}</Txt>
+                  {row.everyone ? <Chip label="Everyone" tone="ok" /> : null}
+                </Row>
+                <Row wrap gap={6}>
+                  {row.fits.map((f) => {
+                    const m = members.find((x) => x.id === f.memberId)!;
+                    return <Chip key={f.memberId} label={`${m.name}: ${f.ok ? 'yes' : f.reason.toLowerCase()}`} tone={f.ok ? 'ok' : 'warn'} />;
+                  })}
+                </Row>
+              </View>
+            ))}
+          </Card>
+        </Section>
+      ) : null}
+
+      <Section title="Two wishes, one meal">
+        <Txt v="small">Someone asked for a dish? Pick it and EatOS finds a version everyone can eat.</Txt>
+        <Row wrap gap={8}>
+          {dinners.slice(0, 8).map((f) => (
+            <Chip key={f.id} label={f.name} selected={request === f.id} onPress={() => setRequest(f.id)} />
+          ))}
+        </Row>
+        {resolution ? (
+          <Card tone={resolution.substituted ? 'warn' : resolution.chosen === resolution.requested && resolution.reason === 'Works for everyone' ? 'ok' : 'warn'}>
+            <Txt v="h3" color={resolution.reason === 'Works for everyone' ? 'okText' : 'warnText'}>{resolution.chosen.name}</Txt>
+            <Txt v="small" color={resolution.reason === 'Works for everyone' ? 'okText' : 'warnText'}>{resolution.reason}</Txt>
+          </Card>
+        ) : null}
+      </Section>
+    </Screen>
+  );
+}

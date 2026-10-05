@@ -1,0 +1,59 @@
+{
+  "expo": {
+    "name": "EatOS",
+    "slug": "eatos",
+    "scheme": "eatos",
+    "version": "0.1.0",
+    "orientation": "default",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "backgroundColor": "#F4F5F1",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "ios": {
+      "bundleIdentifier": "io.github.gaikwadpushkraj.eatos",
+      "buildNumber": "1",
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "io.github.gaikwadpushkraj.eatos",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#121614"
+      }
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "single",
+      "favicon": "./assets/favicon.png",
+      "name": "EatOS",
+      "shortName": "EatOS",
+      "description": "An operating system that helps you decide what to eat.",
+      "themeColor": "#121614",
+      "backgroundColor": "#F4F5F1"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#121614"
+        }
+      ]
+    ],
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "experiments": {
+      "typedRoutes": false
+    }
+  }
+}
