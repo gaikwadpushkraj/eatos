@@ -131,6 +131,14 @@ for (const scheme of ['light', 'dark']) {
       await scan(`${name}`);
       await targets(name);
       await focus(name);
+      if (name === 'pantry') {
+        // The quick-add preview (chips, remove buttons, hints) is its own state worth checking.
+        await page.getByLabel('Add items').fill('2 eggs, spinach till friday, rice 1 kg in the cupboard');
+        await text(page, 'Add 3 items');
+        await scan('pantry-quick-add-preview');
+        await targets('pantry-quick-add-preview');
+        await page.getByLabel('Add items').fill('');
+      }
     }
     await ctx.close();
   }
@@ -140,7 +148,7 @@ server.close();
 
 const list = [...seen.values()];
 if (!list.length) {
-  console.log('A11Y OK: no WCAG A/AA violations found on 10 screens x light/dark x phone/desktop.');
+  console.log('A11Y OK: no WCAG A/AA violations found on 11 screens and states x light/dark x phone/desktop.');
   process.exit(0);
 }
 const byRule = new Map();

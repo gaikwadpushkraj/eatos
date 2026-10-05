@@ -5,7 +5,7 @@ change, not once.
 
 ## What is checked automatically (`pnpm --filter @eatos/app a11y`)
 
-Run against the built web app, on every screen, in light and dark mode,
+Run against the built web app, on every screen (and the pantry quick-add preview state), in light and dark mode,
 at phone (390 px) and desktop (1440 px) widths:
 
 - **axe-core** with the WCAG 2.0, 2.1 and 2.2 level A and AA rules:

@@ -186,6 +186,44 @@ await run('integrations', { width: 390, height: 844 }, 'light', async (page) => 
   await text(page, 'Banana');
 });
 
+// Pantry quick add: say it in a sentence, check the preview, fix a place, add, restock.
+await run('quickadd', { width: 390, height: 844 }, 'light', async (page) => {
+  await onboard(page, false);
+  await page.goto(base + '/pantry');
+  await text(page, 'Add to your pantry');
+  const input = page.getByLabel('Add items');
+  await input.fill('2 eggs, spinach till friday, rice 1 kg in the cupboard, frozen peas');
+  // The preview shows what was understood, before anything is saved.
+  await text(page, 'Use by');
+  await text(page, 'Rice · 1 kg');
+  await text(page, 'Eggs · 2');
+  await text(page, 'Add 4 items');
+  await shot(page, '19-quick-add-preview');
+  // Fix a place with one tap, and drop an item.
+  await page.getByRole('button', { name: 'Fridge' }).first().click(); // eggs: fridge -> freezer
+  await page.getByRole('button', { name: 'Remove peas' }).click();
+  await text(page, 'Add 3 items');
+  await page.getByRole('button', { name: 'Add 3 items' }).click();
+  await text(page, 'Added 3 items to your pantry');
+  await page.getByRole('button', { name: 'Cupboard' }).first().waitFor({ state: 'visible' }).catch(() => {});
+  // The new items are in the list with sensible places.
+  await text(page, 'Rice');
+  await text(page, 'Spinach');
+  const log = await stored(page, 'eatos.events.v1');
+  if (!log.includes('"name":"rice"') || !log.includes('"unit":"kg"')) throw new Error('rice 1 kg was not saved with its unit');
+  if (log.includes('"name":"peas"')) throw new Error('a removed item was saved');
+  // Enter adds too.
+  await input.fill('oat milk');
+  await input.press('Enter');
+  await text(page, 'Added Oat milk to your pantry');
+  // Using something up offers it again as a one-tap restock.
+  await page.getByRole('button', { name: 'Mark oat milk as used' }).click();
+  await text(page, 'Run out? Tap to add again');
+  await page.getByRole('button', { name: '+ Oat milk' }).click();
+  await text(page, 'Added Oat milk again');
+  await shot(page, '20-quick-add-done');
+});
+
 // Privacy: device encryption, unlock, encrypted backup, restore on a fresh device.
 const unlock = async (page, pass = 'correct horse battery') => {
   await text(page, 'Enter your passphrase');

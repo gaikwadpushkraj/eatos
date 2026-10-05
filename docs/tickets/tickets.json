@@ -342,6 +342,22 @@
           "acceptance": [
             "Event log saved on the device and restored on launch"
           ]
+        },
+        {
+          "key": "4.9",
+          "sprint": 6,
+          "area": "app",
+          "status": "done",
+          "title": "Quick add: one smart box for the pantry",
+          "acceptance": [
+            "Say it in a sentence: \"2 eggs, spinach till Friday, rice 1 kg in the cupboard\"",
+            "Understands amounts, units, number words, places and dates in words, with typical shelf lives when no date is given",
+            "Live preview of what was understood; change a place or remove an item with a tap",
+            "Enter or one button adds everything",
+            "One-tap restock chips for things used up recently",
+            "Whole names only: plant milk is never reduced to dairy milk",
+            "Accessible in every state, covered by the browser tests"
+          ]
         }
       ]
     },

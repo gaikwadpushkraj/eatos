@@ -15,7 +15,9 @@ export type IconName =
   | 'plus'
   | 'share'
   | 'chat'
-  | 'user';
+  | 'user'
+  | 'close'
+  | 'sparkle';
 
 /** Stroke icons from the design, drawn with the current text colour. */
 export function Icon({ name, size = 22, color, strokeWidth = 2 }: { name: IconName; size?: number; color: string; strokeWidth?: number }) {
@@ -61,6 +63,8 @@ export function Icon({ name, size = 22, color, strokeWidth = 2 }: { name: IconNa
       {name === 'plus' && <Path d="M12 5v14M5 12h14" {...p} />}
       {name === 'share' && <Path d="M12 3v12M7 8l5-5 5 5M5 14v6h14v-6" {...p} />}
       {name === 'chat' && <Path d="M4 5h16v11H9l-5 4z" {...p} />}
+      {name === 'close' && <Path d="M6 6l12 12M18 6L6 18" {...p} />}
+      {name === 'sparkle' && <Path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8zM19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8z" {...p} />}
       {name === 'user' && (
         <>
           <Circle cx={12} cy={8} r={4} {...p} />

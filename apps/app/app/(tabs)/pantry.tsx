@@ -4,7 +4,8 @@ import { router } from 'expo-router';
 import type { PantryLocation } from '@eatos/core';
 import { useKernel } from '../../src/kernel';
 import { useTheme, fonts } from '../../src/theme';
-import { Btn, Card, Chip, Field, Row, Screen, Section, Txt, useWide } from '../../src/ui';
+import { Btn, Card, Chip, Row, Screen, Section, Txt, useWide } from '../../src/ui';
+import { QuickAdd } from '../../src/QuickAdd';
 import { Icon } from '../../src/icons';
 import { capitalise, daysLabel, LOCATION_LABEL } from '../../src/format';
 
@@ -25,23 +26,11 @@ export default function Pantry() {
   const items = useMemo(() => kernel.pantry(now), [kernel, now, version]);
   const [filter, setFilter] = useState<Filter>('all');
   const [search, setSearch] = useState('');
-  const [adding, setAdding] = useState(false);
-  const [name, setName] = useState('');
-  const [location, setLocation] = useState<PantryLocation>('fridge');
-  const [days, setDays] = useState('5');
 
   const soon = items.filter((i) => i.status === 'use-soon');
   const shown = items.filter(
     (i) => (filter === 'all' || (filter === 'soon' ? i.status === 'use-soon' : i.location === filter)) && i.name.toLowerCase().includes(search.toLowerCase()),
   );
-
-  const add = () => {
-    const n = name.trim().toLowerCase();
-    if (!n) return;
-    submit({ type: 'pantry.added', item: { id: `p_${n.replace(/\s/g, '-')}_${now}`, name: n, qty: 1, unit: 'pc', location, addedAt: now, expiresAt: Number(days) > 0 ? now + Number(days) * 86_400_000 : undefined } });
-    setName('');
-    setAdding(false);
-  };
 
   return (
     <Screen maxWidth={wide ? 1000 : 720}>
@@ -49,6 +38,8 @@ export default function Pantry() {
         <Txt v="h1">Pantry</Txt>
         <Txt v="mono">{`${items.length} items`}</Txt>
       </Row>
+
+      <QuickAdd />
 
       <View style={{ minHeight: 48, borderRadius: 14, backgroundColor: c.surface, borderWidth: 1, borderColor: c.borderStrong, flexDirection: 'row', alignItems: 'center', gap: 10, paddingHorizontal: 14 }}>
         <Icon name="search" size={18} color={c.muted} />
@@ -86,26 +77,7 @@ export default function Pantry() {
         {!shown.length ? <Txt v="small">Nothing here.</Txt> : null}
       </Section>
 
-      {adding ? (
-        <Card>
-          <Field label="Item" value={name} onChangeText={setName} placeholder="e.g. spinach" autoFocus />
-          <Row wrap gap={8}>
-            {(Object.keys(LOCATION_LABEL) as PantryLocation[]).map((l) => (
-              <Chip key={l} label={LOCATION_LABEL[l]} selected={location === l} onPress={() => setLocation(l)} />
-            ))}
-          </Row>
-          <Field label="Days until it expires" value={days} onChangeText={setDays} keyboardType="numeric" />
-          <Row>
-            <Btn label="Cancel" kind="outline" onPress={() => setAdding(false)} style={{ flex: 1 }} />
-            <Btn label="Add" onPress={add} disabled={!name.trim()} style={{ flex: 1 }} />
-          </Row>
-        </Card>
-      ) : (
-        <Row>
-          <Btn label="Grocery list" kind="outline" onPress={() => router.push('/grocery')} style={{ flex: 1 }} />
-          <Btn label="Add item" icon="plus" onPress={() => setAdding(true)} style={{ flex: 1 }} />
-        </Row>
-      )}
+      <Btn label="Grocery list" kind="outline" onPress={() => router.push('/grocery')} />
     </Screen>
   );
 }
