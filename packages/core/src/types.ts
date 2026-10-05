@@ -99,7 +99,11 @@ export type Condition =
   | 'pregnancy'
   | 'insulin'
   | 'eating-disorder-history'
-  | 'minor';
+  | 'minor'
+  | 'child-under-5'
+  | 'older-adult-soft'
+  | 'lactation'
+  | 'gerd';
 
 export type FastingKind = 'navratri' | 'ekadashi' | 'shravan' | 'ramzan' | 'custom';
 

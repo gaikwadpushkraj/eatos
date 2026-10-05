@@ -1,0 +1,1677 @@
+{
+ "meta": {
+  "source": "IFCT/NHB/ICAR seasonality from expert knowledge; not verified against live mandi prices; regional variation by weather/year. Cheap = peak supply months.",
+  "months": [
+   "jan",
+   "feb",
+   "mar",
+   "apr",
+   "may",
+   "jun",
+   "jul",
+   "aug",
+   "sep",
+   "oct",
+   "nov",
+   "dec"
+  ],
+  "price_note": "Prices drop in peak months; tomato spikes Jun-Aug; onion varies; leafy greens costly in monsoon"
+ },
+ "regions": {
+  "north (Delhi-NCR, Punjab, UP, Rajasthan, Kashmir)": {
+   "jan": {
+    "vegetables": [
+     "carrot",
+     "peas",
+     "cauliflower",
+     "cabbage",
+     "radish",
+     "turnip",
+     "beetroot",
+     "green garlic",
+     "sweet potato",
+     "tomato (peak, cheap)"
+    ],
+    "leafy": [
+     "sarson",
+     "bathua",
+     "palak",
+     "methi",
+     "mooli leaves"
+    ],
+    "fruit": [
+     "orange",
+     "kinnow",
+     "guava",
+     "amla",
+     "strawberry (Mahabaleshwar/Panchgani)",
+     "sugarcane"
+    ],
+    "note": "Gajar halwa and sarson saag-makki season; nolen/jaggery gur available"
+   },
+   "feb": {
+    "vegetables": [
+     "peas",
+     "cauliflower",
+     "cabbage",
+     "carrot",
+     "radish",
+     "beetroot",
+     "capsicum",
+     "tomato"
+    ],
+    "leafy": [
+     "palak",
+     "methi",
+     "sarson",
+     "spring onion"
+    ],
+    "fruit": [
+     "orange",
+     "kinnow",
+     "strawberry",
+     "banana",
+     "papaya",
+     "guava"
+    ],
+    "note": ""
+   },
+   "mar": {
+    "vegetables": [
+     "cabbage",
+     "brinjal",
+     "carrot",
+     "cucumber (starts)",
+     "raw mango (late)",
+     "beans"
+    ],
+    "leafy": [
+     "palak",
+     "methi",
+     "chaulai (amaranth)"
+    ],
+    "fruit": [
+     "watermelon (begins)",
+     "orange (end)",
+     "papaya",
+     "banana",
+     "strawberry (end)"
+    ],
+    "note": ""
+   },
+   "apr": {
+    "vegetables": [
+     "cucumber",
+     "lauki",
+     "tinda",
+     "karela",
+     "tomato",
+     "raw mango",
+     "ridge gourd",
+     "beans"
+    ],
+    "leafy": [
+     "chaulai",
+     "pudina"
+    ],
+    "fruit": [
+     "watermelon",
+     "muskmelon",
+     "raw mango",
+     "early mango",
+     "jamun (late)",
+     "lychee (begins)"
+    ],
+    "note": ""
+   },
+   "may": {
+    "vegetables": [
+     "lauki",
+     "tori",
+     "tinda",
+     "karela",
+     "cucumber",
+     "raw mango",
+     "ivy gourd (tondli)"
+    ],
+    "leafy": [
+     "pudina",
+     "chaulai"
+    ],
+    "fruit": [
+     "mango (peak, cheap)",
+     "lychee",
+     "watermelon",
+     "muskmelon",
+     "jackfruit",
+     "jamun",
+     "falsa",
+     "phalsa"
+    ],
+    "note": "Heatwave: lauki, tinda, kachcha aam panna; mangoes Dasheri/Langra from June"
+   },
+   "jun": {
+    "vegetables": [
+     "lauki",
+     "tori",
+     "karela",
+     "bhindi",
+     "pumpkin",
+     "raw mango",
+     "cluster beans (gwar)"
+    ],
+    "leafy": [
+     "chaulai",
+     "pudina"
+    ],
+    "fruit": [
+     "mango (late)",
+     "jamun",
+     "lychee",
+     "plum",
+     "peach",
+     "jackfruit",
+     "cherry (Kashmir)"
+    ],
+    "note": "Langra, Chausa, Dasheri peak; lychee"
+   },
+   "jul": {
+    "vegetables": [
+     "bhindi",
+     "lauki",
+     "tori",
+     "karela",
+     "corn on the cob",
+     "arbi",
+     "sem (hyacinth beans)",
+     "tinda"
+    ],
+    "leafy": [
+     "arbi leaves (patra)",
+     "chaulai",
+     "lal saag (leafy veg expensive/avoid washing risk in rains)"
+    ],
+    "fruit": [
+     "jamun",
+     "plum",
+     "pear",
+     "apple (Himachal begins)",
+     "banana",
+     "cherry",
+     "peach",
+     "custard apple (late)"
+    ],
+    "note": "Rains: leafy greens costly and bacteria-prone; avoid raw salad outside"
+   },
+   "aug": {
+    "vegetables": [
+     "bhindi",
+     "tori",
+     "karela",
+     "corn",
+     "arbi",
+     "pumpkin",
+     "cluster beans",
+     "ridge gourd"
+    ],
+    "leafy": [
+     "arbi leaves",
+     "chaulai",
+     "cheap pumpkin leaves"
+    ],
+    "fruit": [
+     "apple",
+     "pear",
+     "plum",
+     "peach",
+     "pomegranate (begins)",
+     "custard apple",
+     "papaya"
+    ],
+    "note": ""
+   },
+   "sep": {
+    "vegetables": [
+     "bhindi",
+     "pumpkin",
+     "tori",
+     "brinjal",
+     "capsicum",
+     "cluster beans",
+     "green chillies",
+     "raw banana"
+    ],
+    "leafy": [
+     "palak (returns late)",
+     "methi (returns late)"
+    ],
+    "fruit": [
+     "apple",
+     "pomegranate",
+     "guava",
+     "custard apple",
+     "banana",
+     "papaya",
+     "pear"
+    ],
+    "note": ""
+   },
+   "oct": {
+    "vegetables": [
+     "cauliflower (early)",
+     "tomato (rising)",
+     "pumpkin",
+     "brinjal",
+     "arbi",
+     "singhara (water chestnut)",
+     "raw banana",
+     "sweet potato"
+    ],
+    "leafy": [
+     "palak",
+     "methi",
+     "bathua (late)"
+    ],
+    "fruit": [
+     "apple",
+     "pomegranate",
+     "guava",
+     "sitaphal",
+     "singhara",
+     "banana",
+     "sweet lime (mosambi)"
+    ],
+    "note": ""
+   },
+   "nov": {
+    "vegetables": [
+     "cauliflower",
+     "cabbage",
+     "peas (begin)",
+     "carrot",
+     "radish",
+     "turnip",
+     "green garlic",
+     "beetroot",
+     "sweet potato",
+     "tomato (falling)"
+    ],
+    "leafy": [
+     "palak",
+     "methi",
+     "sarson",
+     "bathua",
+     "dill (suva)"
+    ],
+    "fruit": [
+     "guava",
+     "pomegranate",
+     "orange (starts)",
+     "amla",
+     "custard apple",
+     "sitaphal",
+     "banana",
+     "singhara"
+    ],
+    "note": ""
+   },
+   "dec": {
+    "vegetables": [
+     "peas",
+     "cauliflower",
+     "cabbage",
+     "carrot (gajar for halwa)",
+     "radish",
+     "turnip",
+     "beetroot",
+     "green garlic",
+     "fresh turmeric",
+     "spring onion",
+     "tomato (cheapest)"
+    ],
+    "leafy": [
+     "sarson",
+     "bathua",
+     "methi",
+     "palak",
+     "dill",
+     "mooli leaves"
+    ],
+    "fruit": [
+     "orange",
+     "kinnow",
+     "guava",
+     "amla",
+     "strawberry",
+     "pomegranate",
+     "sugarcane juice"
+    ],
+    "note": "Peak cold-weather vegetable glut"
+   }
+  },
+  "west (Mumbai, Pune, Ahmedabad, Goa)": {
+   "jan": {
+    "vegetables": [
+     "carrot",
+     "peas",
+     "cauliflower",
+     "cabbage",
+     "radish",
+     "turnip",
+     "beetroot",
+     "green garlic",
+     "sweet potato",
+     "tomato (peak, cheap)"
+    ],
+    "leafy": [
+     "sarson",
+     "bathua",
+     "palak",
+     "methi",
+     "mooli leaves"
+    ],
+    "fruit": [
+     "orange",
+     "kinnow",
+     "guava",
+     "amla",
+     "strawberry (Mahabaleshwar/Panchgani)",
+     "sugarcane"
+    ],
+    "note": "Undhiyu vegetables (surti papdi, purple yam) peak; Uttarayan"
+   },
+   "feb": {
+    "vegetables": [
+     "peas",
+     "cauliflower",
+     "cabbage",
+     "carrot",
+     "radish",
+     "beetroot",
+     "capsicum",
+     "tomato"
+    ],
+    "leafy": [
+     "palak",
+     "methi",
+     "sarson",
+     "spring onion"
+    ],
+    "fruit": [
+     "orange",
+     "kinnow",
+     "strawberry",
+     "banana",
+     "papaya",
+     "guava"
+    ],
+    "note": ""
+   },
+   "mar": {
+    "vegetables": [
+     "cabbage",
+     "brinjal",
+     "carrot",
+     "cucumber (starts)",
+     "raw mango (late)",
+     "beans"
+    ],
+    "leafy": [
+     "palak",
+     "methi",
+     "chaulai (amaranth)"
+    ],
+    "fruit": [
+     "watermelon (begins)",
+     "orange (end)",
+     "papaya",
+     "banana",
+     "strawberry (end)"
+    ],
+    "note": ""
+   },
+   "apr": {
+    "vegetables": [
+     "cucumber",
+     "lauki",
+     "tinda",
+     "karela",
+     "tomato",
+     "raw mango",
+     "ridge gourd",
+     "beans"
+    ],
+    "leafy": [
+     "chaulai",
+     "pudina"
+    ],
+    "fruit": [
+     "watermelon",
+     "muskmelon",
+     "raw mango",
+     "early mango",
+     "jamun (late)",
+     "lychee (begins)"
+    ],
+    "note": ""
+   },
+   "may": {
+    "vegetables": [
+     "lauki",
+     "tori",
+     "tinda",
+     "karela",
+     "cucumber",
+     "raw mango",
+     "ivy gourd (tondli)"
+    ],
+    "leafy": [
+     "pudina",
+     "chaulai"
+    ],
+    "fruit": [
+     "mango (peak, cheap)",
+     "lychee",
+     "watermelon",
+     "muskmelon",
+     "jackfruit",
+     "jamun",
+     "falsa",
+     "phalsa"
+    ],
+    "note": "Alphonso/Kesar mango peak (Apr-Jun)"
+   },
+   "jun": {
+    "vegetables": [
+     "lauki",
+     "tori",
+     "karela",
+     "bhindi",
+     "pumpkin",
+     "raw mango",
+     "cluster beans (gwar)"
+    ],
+    "leafy": [
+     "chaulai",
+     "pudina"
+    ],
+    "fruit": [
+     "mango (late)",
+     "jamun",
+     "lychee",
+     "plum",
+     "peach",
+     "jackfruit",
+     "cherry (Kashmir)"
+    ],
+    "note": ""
+   },
+   "jul": {
+    "vegetables": [
+     "bhindi",
+     "lauki",
+     "tori",
+     "karela",
+     "corn on the cob",
+     "arbi",
+     "sem (hyacinth beans)",
+     "tinda"
+    ],
+    "leafy": [
+     "arbi leaves (patra)",
+     "chaulai",
+     "lal saag (leafy veg expensive/avoid washing risk in rains)"
+    ],
+    "fruit": [
+     "jamun",
+     "plum",
+     "pear",
+     "apple (Himachal begins)",
+     "banana",
+     "cherry",
+     "peach",
+     "custard apple (late)"
+    ],
+    "note": "Monsoon: wild vegetables like bamboo shoots, tender corn, local pumpkin; fish ban Jun-Jul in Goa/Maharashtra"
+   },
+   "aug": {
+    "vegetables": [
+     "bhindi",
+     "tori",
+     "karela",
+     "corn",
+     "arbi",
+     "pumpkin",
+     "cluster beans",
+     "ridge gourd"
+    ],
+    "leafy": [
+     "arbi leaves",
+     "chaulai",
+     "cheap pumpkin leaves"
+    ],
+    "fruit": [
+     "apple",
+     "pear",
+     "plum",
+     "peach",
+     "pomegranate (begins)",
+     "custard apple",
+     "papaya"
+    ],
+    "note": ""
+   },
+   "sep": {
+    "vegetables": [
+     "bhindi",
+     "pumpkin",
+     "tori",
+     "brinjal",
+     "capsicum",
+     "cluster beans",
+     "green chillies",
+     "raw banana"
+    ],
+    "leafy": [
+     "palak (returns late)",
+     "methi (returns late)"
+    ],
+    "fruit": [
+     "apple",
+     "pomegranate",
+     "guava",
+     "custard apple",
+     "banana",
+     "papaya",
+     "pear"
+    ],
+    "note": ""
+   },
+   "oct": {
+    "vegetables": [
+     "cauliflower (early)",
+     "tomato (rising)",
+     "pumpkin",
+     "brinjal",
+     "arbi",
+     "singhara (water chestnut)",
+     "raw banana",
+     "sweet potato"
+    ],
+    "leafy": [
+     "palak",
+     "methi",
+     "bathua (late)"
+    ],
+    "fruit": [
+     "apple",
+     "pomegranate",
+     "guava",
+     "sitaphal",
+     "singhara",
+     "banana",
+     "sweet lime (mosambi)"
+    ],
+    "note": "Coastal fish season returns Aug-Sep end; Mumbai arrives with drumstick"
+   },
+   "nov": {
+    "vegetables": [
+     "cauliflower",
+     "cabbage",
+     "peas (begin)",
+     "carrot",
+     "radish",
+     "turnip",
+     "green garlic",
+     "beetroot",
+     "sweet potato",
+     "tomato (falling)"
+    ],
+    "leafy": [
+     "palak",
+     "methi",
+     "sarson",
+     "bathua",
+     "dill (suva)"
+    ],
+    "fruit": [
+     "guava",
+     "pomegranate",
+     "orange (starts)",
+     "amla",
+     "custard apple",
+     "sitaphal",
+     "banana",
+     "singhara"
+    ],
+    "note": ""
+   },
+   "dec": {
+    "vegetables": [
+     "peas",
+     "cauliflower",
+     "cabbage",
+     "carrot (gajar for halwa)",
+     "radish",
+     "turnip",
+     "beetroot",
+     "green garlic",
+     "fresh turmeric",
+     "spring onion",
+     "tomato (cheapest)"
+    ],
+    "leafy": [
+     "sarson",
+     "bathua",
+     "methi",
+     "palak",
+     "dill",
+     "mooli leaves"
+    ],
+    "fruit": [
+     "orange",
+     "kinnow",
+     "guava",
+     "amla",
+     "strawberry",
+     "pomegranate",
+     "sugarcane juice"
+    ],
+    "note": ""
+   }
+  },
+  "south (Chennai, Bengaluru, Hyderabad, Kerala, Andhra)": {
+   "jan": {
+    "vegetables": [
+     "carrot",
+     "peas",
+     "cauliflower",
+     "cabbage",
+     "radish",
+     "turnip",
+     "beetroot",
+     "green garlic",
+     "sweet potato",
+     "tomato (peak, cheap)"
+    ],
+    "leafy": [
+     "sarson",
+     "bathua",
+     "palak",
+     "methi",
+     "mooli leaves"
+    ],
+    "fruit": [
+     "orange",
+     "kinnow",
+     "guava",
+     "amla",
+     "strawberry (Mahabaleshwar/Panchgani)",
+     "sugarcane"
+    ],
+    "note": "Pongal season: sugarcane, sweet potato, turmeric, ash gourd, plantain"
+   },
+   "feb": {
+    "vegetables": [
+     "peas",
+     "cauliflower",
+     "cabbage",
+     "carrot",
+     "radish",
+     "beetroot",
+     "capsicum",
+     "tomato"
+    ],
+    "leafy": [
+     "palak",
+     "methi",
+     "sarson",
+     "spring onion"
+    ],
+    "fruit": [
+     "orange",
+     "kinnow",
+     "strawberry",
+     "banana",
+     "papaya",
+     "guava"
+    ],
+    "note": ""
+   },
+   "mar": {
+    "vegetables": [
+     "cabbage",
+     "brinjal",
+     "carrot",
+     "cucumber (starts)",
+     "raw mango (late)",
+     "beans"
+    ],
+    "leafy": [
+     "palak",
+     "methi",
+     "chaulai (amaranth)"
+    ],
+    "fruit": [
+     "watermelon (begins)",
+     "orange (end)",
+     "papaya",
+     "banana",
+     "strawberry (end)"
+    ],
+    "note": "Drumstick (mulakkada) season Feb-Apr; tender coconut cheap"
+   },
+   "apr": {
+    "vegetables": [
+     "cucumber",
+     "lauki",
+     "tinda",
+     "karela",
+     "tomato",
+     "raw mango",
+     "ridge gourd",
+     "beans"
+    ],
+    "leafy": [
+     "chaulai",
+     "pudina"
+    ],
+    "fruit": [
+     "watermelon",
+     "muskmelon",
+     "raw mango",
+     "early mango",
+     "jamun (late)",
+     "lychee (begins)"
+    ],
+    "note": ""
+   },
+   "may": {
+    "vegetables": [
+     "lauki",
+     "tori",
+     "tinda",
+     "karela",
+     "cucumber",
+     "raw mango",
+     "ivy gourd (tondli)"
+    ],
+    "leafy": [
+     "pudina",
+     "chaulai"
+    ],
+    "fruit": [
+     "mango (peak, cheap)",
+     "lychee",
+     "watermelon",
+     "muskmelon",
+     "jackfruit",
+     "jamun",
+     "falsa",
+     "phalsa"
+    ],
+    "note": "Mango season: Banganapalli, Totapuri, Neelam, Rumani; also jackfruit (Apr-Jun)"
+   },
+   "jun": {
+    "vegetables": [
+     "lauki",
+     "tori",
+     "karela",
+     "bhindi",
+     "pumpkin",
+     "raw mango",
+     "cluster beans (gwar)"
+    ],
+    "leafy": [
+     "chaulai",
+     "pudina"
+    ],
+    "fruit": [
+     "mango (late)",
+     "jamun",
+     "lychee",
+     "plum",
+     "peach",
+     "jackfruit",
+     "cherry (Kashmir)"
+    ],
+    "note": ""
+   },
+   "jul": {
+    "vegetables": [
+     "bhindi",
+     "lauki",
+     "tori",
+     "karela",
+     "corn on the cob",
+     "arbi",
+     "sem (hyacinth beans)",
+     "tinda"
+    ],
+    "leafy": [
+     "arbi leaves (patra)",
+     "chaulai",
+     "lal saag (leafy veg expensive/avoid washing risk in rains)"
+    ],
+    "fruit": [
+     "jamun",
+     "plum",
+     "pear",
+     "apple (Himachal begins)",
+     "banana",
+     "cherry",
+     "peach",
+     "custard apple (late)"
+    ],
+    "note": ""
+   },
+   "aug": {
+    "vegetables": [
+     "bhindi",
+     "tori",
+     "karela",
+     "corn",
+     "arbi",
+     "pumpkin",
+     "cluster beans",
+     "ridge gourd"
+    ],
+    "leafy": [
+     "arbi leaves",
+     "chaulai",
+     "cheap pumpkin leaves"
+    ],
+    "fruit": [
+     "apple",
+     "pear",
+     "plum",
+     "peach",
+     "pomegranate (begins)",
+     "custard apple",
+     "papaya"
+    ],
+    "note": ""
+   },
+   "sep": {
+    "vegetables": [
+     "bhindi",
+     "pumpkin",
+     "tori",
+     "brinjal",
+     "capsicum",
+     "cluster beans",
+     "green chillies",
+     "raw banana"
+    ],
+    "leafy": [
+     "palak (returns late)",
+     "methi (returns late)"
+    ],
+    "fruit": [
+     "apple",
+     "pomegranate",
+     "guava",
+     "custard apple",
+     "banana",
+     "papaya",
+     "pear"
+    ],
+    "note": "Onam: banana, yam, ash gourd, raw banana, snake gourd, elephant foot yam"
+   },
+   "oct": {
+    "vegetables": [
+     "cauliflower (early)",
+     "tomato (rising)",
+     "pumpkin",
+     "brinjal",
+     "arbi",
+     "singhara (water chestnut)",
+     "raw banana",
+     "sweet potato"
+    ],
+    "leafy": [
+     "palak",
+     "methi",
+     "bathua (late)"
+    ],
+    "fruit": [
+     "apple",
+     "pomegranate",
+     "guava",
+     "sitaphal",
+     "singhara",
+     "banana",
+     "sweet lime (mosambi)"
+    ],
+    "note": ""
+   },
+   "nov": {
+    "vegetables": [
+     "cauliflower",
+     "cabbage",
+     "peas (begin)",
+     "carrot",
+     "radish",
+     "turnip",
+     "green garlic",
+     "beetroot",
+     "sweet potato",
+     "tomato (falling)"
+    ],
+    "leafy": [
+     "palak",
+     "methi",
+     "sarson",
+     "bathua",
+     "dill (suva)"
+    ],
+    "fruit": [
+     "guava",
+     "pomegranate",
+     "orange (starts)",
+     "amla",
+     "custard apple",
+     "sitaphal",
+     "banana",
+     "singhara"
+    ],
+    "note": ""
+   },
+   "dec": {
+    "vegetables": [
+     "peas",
+     "cauliflower",
+     "cabbage",
+     "carrot (gajar for halwa)",
+     "radish",
+     "turnip",
+     "beetroot",
+     "green garlic",
+     "fresh turmeric",
+     "spring onion",
+     "tomato (cheapest)"
+    ],
+    "leafy": [
+     "sarson",
+     "bathua",
+     "methi",
+     "palak",
+     "dill",
+     "mooli leaves"
+    ],
+    "fruit": [
+     "orange",
+     "kinnow",
+     "guava",
+     "amla",
+     "strawberry",
+     "pomegranate",
+     "sugarcane juice"
+    ],
+    "note": "Tomato prices fall"
+   }
+  },
+  "east (Kolkata, Odisha, Bihar, Jharkhand)": {
+   "jan": {
+    "vegetables": [
+     "carrot",
+     "peas",
+     "cauliflower",
+     "cabbage",
+     "radish",
+     "turnip",
+     "beetroot",
+     "green garlic",
+     "sweet potato",
+     "tomato (peak, cheap)"
+    ],
+    "leafy": [
+     "sarson",
+     "bathua",
+     "palak",
+     "methi",
+     "mooli leaves"
+    ],
+    "fruit": [
+     "orange",
+     "kinnow",
+     "guava",
+     "amla",
+     "strawberry (Mahabaleshwar/Panchgani)",
+     "sugarcane"
+    ],
+    "note": "Nolen gur (date palm jaggery) season; winter cauliflower, cabbage, kamala orange"
+   },
+   "feb": {
+    "vegetables": [
+     "peas",
+     "cauliflower",
+     "cabbage",
+     "carrot",
+     "radish",
+     "beetroot",
+     "capsicum",
+     "tomato"
+    ],
+    "leafy": [
+     "palak",
+     "methi",
+     "sarson",
+     "spring onion"
+    ],
+    "fruit": [
+     "orange",
+     "kinnow",
+     "strawberry",
+     "banana",
+     "papaya",
+     "guava"
+    ],
+    "note": ""
+   },
+   "mar": {
+    "vegetables": [
+     "cabbage",
+     "brinjal",
+     "carrot",
+     "cucumber (starts)",
+     "raw mango (late)",
+     "beans"
+    ],
+    "leafy": [
+     "palak",
+     "methi",
+     "chaulai (amaranth)"
+    ],
+    "fruit": [
+     "watermelon (begins)",
+     "orange (end)",
+     "papaya",
+     "banana",
+     "strawberry (end)"
+    ],
+    "note": "Neem flower, sajne data (drumstick), raw jackfruit"
+   },
+   "apr": {
+    "vegetables": [
+     "cucumber",
+     "lauki",
+     "tinda",
+     "karela",
+     "tomato",
+     "raw mango",
+     "ridge gourd",
+     "beans"
+    ],
+    "leafy": [
+     "chaulai",
+     "pudina"
+    ],
+    "fruit": [
+     "watermelon",
+     "muskmelon",
+     "raw mango",
+     "early mango",
+     "jamun (late)",
+     "lychee (begins)"
+    ],
+    "note": ""
+   },
+   "may": {
+    "vegetables": [
+     "lauki",
+     "tori",
+     "tinda",
+     "karela",
+     "cucumber",
+     "raw mango",
+     "ivy gourd (tondli)"
+    ],
+    "leafy": [
+     "pudina",
+     "chaulai"
+    ],
+    "fruit": [
+     "mango (peak, cheap)",
+     "lychee",
+     "watermelon",
+     "muskmelon",
+     "jackfruit",
+     "jamun",
+     "falsa",
+     "phalsa"
+    ],
+    "note": "Mango (Himsagar, Langra); lychee (Muzaffarpur) May-Jun"
+   },
+   "jun": {
+    "vegetables": [
+     "lauki",
+     "tori",
+     "karela",
+     "bhindi",
+     "pumpkin",
+     "raw mango",
+     "cluster beans (gwar)"
+    ],
+    "leafy": [
+     "chaulai",
+     "pudina"
+    ],
+    "fruit": [
+     "mango (late)",
+     "jamun",
+     "lychee",
+     "plum",
+     "peach",
+     "jackfruit",
+     "cherry (Kashmir)"
+    ],
+    "note": ""
+   },
+   "jul": {
+    "vegetables": [
+     "bhindi",
+     "lauki",
+     "tori",
+     "karela",
+     "corn on the cob",
+     "arbi",
+     "sem (hyacinth beans)",
+     "tinda"
+    ],
+    "leafy": [
+     "arbi leaves (patra)",
+     "chaulai",
+     "lal saag (leafy veg expensive/avoid washing risk in rains)"
+    ],
+    "fruit": [
+     "jamun",
+     "plum",
+     "pear",
+     "apple (Himachal begins)",
+     "banana",
+     "cherry",
+     "peach",
+     "custard apple (late)"
+    ],
+    "note": ""
+   },
+   "aug": {
+    "vegetables": [
+     "bhindi",
+     "tori",
+     "karela",
+     "corn",
+     "arbi",
+     "pumpkin",
+     "cluster beans",
+     "ridge gourd"
+    ],
+    "leafy": [
+     "arbi leaves",
+     "chaulai",
+     "cheap pumpkin leaves"
+    ],
+    "fruit": [
+     "apple",
+     "pear",
+     "plum",
+     "peach",
+     "pomegranate (begins)",
+     "custard apple",
+     "papaya"
+    ],
+    "note": "Hilsa season Aug-Oct; pointed gourd (potol), bitter gourd, raw jackfruit"
+   },
+   "sep": {
+    "vegetables": [
+     "bhindi",
+     "pumpkin",
+     "tori",
+     "brinjal",
+     "capsicum",
+     "cluster beans",
+     "green chillies",
+     "raw banana"
+    ],
+    "leafy": [
+     "palak (returns late)",
+     "methi (returns late)"
+    ],
+    "fruit": [
+     "apple",
+     "pomegranate",
+     "guava",
+     "custard apple",
+     "banana",
+     "papaya",
+     "pear"
+    ],
+    "note": ""
+   },
+   "oct": {
+    "vegetables": [
+     "cauliflower (early)",
+     "tomato (rising)",
+     "pumpkin",
+     "brinjal",
+     "arbi",
+     "singhara (water chestnut)",
+     "raw banana",
+     "sweet potato"
+    ],
+    "leafy": [
+     "palak",
+     "methi",
+     "bathua (late)"
+    ],
+    "fruit": [
+     "apple",
+     "pomegranate",
+     "guava",
+     "sitaphal",
+     "singhara",
+     "banana",
+     "sweet lime (mosambi)"
+    ],
+    "note": ""
+   },
+   "nov": {
+    "vegetables": [
+     "cauliflower",
+     "cabbage",
+     "peas (begin)",
+     "carrot",
+     "radish",
+     "turnip",
+     "green garlic",
+     "beetroot",
+     "sweet potato",
+     "tomato (falling)"
+    ],
+    "leafy": [
+     "palak",
+     "methi",
+     "sarson",
+     "bathua",
+     "dill (suva)"
+    ],
+    "fruit": [
+     "guava",
+     "pomegranate",
+     "orange (starts)",
+     "amla",
+     "custard apple",
+     "sitaphal",
+     "banana",
+     "singhara"
+    ],
+    "note": ""
+   },
+   "dec": {
+    "vegetables": [
+     "peas",
+     "cauliflower",
+     "cabbage",
+     "carrot (gajar for halwa)",
+     "radish",
+     "turnip",
+     "beetroot",
+     "green garlic",
+     "fresh turmeric",
+     "spring onion",
+     "tomato (cheapest)"
+    ],
+    "leafy": [
+     "sarson",
+     "bathua",
+     "methi",
+     "palak",
+     "dill",
+     "mooli leaves"
+    ],
+    "fruit": [
+     "orange",
+     "kinnow",
+     "guava",
+     "amla",
+     "strawberry",
+     "pomegranate",
+     "sugarcane juice"
+    ],
+    "note": ""
+   }
+  },
+  "northeast (Assam, Meghalaya, Sikkim)": {
+   "jan": {
+    "vegetables": [
+     "carrot",
+     "peas",
+     "cauliflower",
+     "cabbage",
+     "radish",
+     "turnip",
+     "beetroot",
+     "green garlic",
+     "sweet potato",
+     "tomato (peak, cheap)"
+    ],
+    "leafy": [
+     "sarson",
+     "bathua",
+     "palak",
+     "methi",
+     "mooli leaves"
+    ],
+    "fruit": [
+     "orange",
+     "kinnow",
+     "guava",
+     "amla",
+     "strawberry (Mahabaleshwar/Panchgani)",
+     "sugarcane"
+    ],
+    "note": "Winter vegetable glut; oranges (Khasi mandarin) Nov-Jan, Magh Bihu pitha rice"
+   },
+   "feb": {
+    "vegetables": [
+     "peas",
+     "cauliflower",
+     "cabbage",
+     "carrot",
+     "radish",
+     "beetroot",
+     "capsicum",
+     "tomato"
+    ],
+    "leafy": [
+     "palak",
+     "methi",
+     "sarson",
+     "spring onion"
+    ],
+    "fruit": [
+     "orange",
+     "kinnow",
+     "strawberry",
+     "banana",
+     "papaya",
+     "guava"
+    ],
+    "note": ""
+   },
+   "mar": {
+    "vegetables": [
+     "cabbage",
+     "brinjal",
+     "carrot",
+     "cucumber (starts)",
+     "raw mango (late)",
+     "beans"
+    ],
+    "leafy": [
+     "palak",
+     "methi",
+     "chaulai (amaranth)"
+    ],
+    "fruit": [
+     "watermelon (begins)",
+     "orange (end)",
+     "papaya",
+     "banana",
+     "strawberry (end)"
+    ],
+    "note": ""
+   },
+   "apr": {
+    "vegetables": [
+     "cucumber",
+     "lauki",
+     "tinda",
+     "karela",
+     "tomato",
+     "raw mango",
+     "ridge gourd",
+     "beans"
+    ],
+    "leafy": [
+     "chaulai",
+     "pudina"
+    ],
+    "fruit": [
+     "watermelon",
+     "muskmelon",
+     "raw mango",
+     "early mango",
+     "jamun (late)",
+     "lychee (begins)"
+    ],
+    "note": "Bohag Bihu: bamboo shoot, khar, jolokia, tender papaya, lai xaak"
+   },
+   "may": {
+    "vegetables": [
+     "lauki",
+     "tori",
+     "tinda",
+     "karela",
+     "cucumber",
+     "raw mango",
+     "ivy gourd (tondli)"
+    ],
+    "leafy": [
+     "pudina",
+     "chaulai"
+    ],
+    "fruit": [
+     "mango (peak, cheap)",
+     "lychee",
+     "watermelon",
+     "muskmelon",
+     "jackfruit",
+     "jamun",
+     "falsa",
+     "phalsa"
+    ],
+    "note": ""
+   },
+   "jun": {
+    "vegetables": [
+     "lauki",
+     "tori",
+     "karela",
+     "bhindi",
+     "pumpkin",
+     "raw mango",
+     "cluster beans (gwar)"
+    ],
+    "leafy": [
+     "chaulai",
+     "pudina"
+    ],
+    "fruit": [
+     "mango (late)",
+     "jamun",
+     "lychee",
+     "plum",
+     "peach",
+     "jackfruit",
+     "cherry (Kashmir)"
+    ],
+    "note": ""
+   },
+   "jul": {
+    "vegetables": [
+     "bhindi",
+     "lauki",
+     "tori",
+     "karela",
+     "corn on the cob",
+     "arbi",
+     "sem (hyacinth beans)",
+     "tinda"
+    ],
+    "leafy": [
+     "arbi leaves (patra)",
+     "chaulai",
+     "lal saag (leafy veg expensive/avoid washing risk in rains)"
+    ],
+    "fruit": [
+     "jamun",
+     "plum",
+     "pear",
+     "apple (Himachal begins)",
+     "banana",
+     "cherry",
+     "peach",
+     "custard apple (late)"
+    ],
+    "note": "Monsoon: ferns (dhekia), colocasia, bamboo shoot, local fish"
+   },
+   "aug": {
+    "vegetables": [
+     "bhindi",
+     "tori",
+     "karela",
+     "corn",
+     "arbi",
+     "pumpkin",
+     "cluster beans",
+     "ridge gourd"
+    ],
+    "leafy": [
+     "arbi leaves",
+     "chaulai",
+     "cheap pumpkin leaves"
+    ],
+    "fruit": [
+     "apple",
+     "pear",
+     "plum",
+     "peach",
+     "pomegranate (begins)",
+     "custard apple",
+     "papaya"
+    ],
+    "note": ""
+   },
+   "sep": {
+    "vegetables": [
+     "bhindi",
+     "pumpkin",
+     "tori",
+     "brinjal",
+     "capsicum",
+     "cluster beans",
+     "green chillies",
+     "raw banana"
+    ],
+    "leafy": [
+     "palak (returns late)",
+     "methi (returns late)"
+    ],
+    "fruit": [
+     "apple",
+     "pomegranate",
+     "guava",
+     "custard apple",
+     "banana",
+     "papaya",
+     "pear"
+    ],
+    "note": ""
+   },
+   "oct": {
+    "vegetables": [
+     "cauliflower (early)",
+     "tomato (rising)",
+     "pumpkin",
+     "brinjal",
+     "arbi",
+     "singhara (water chestnut)",
+     "raw banana",
+     "sweet potato"
+    ],
+    "leafy": [
+     "palak",
+     "methi",
+     "bathua (late)"
+    ],
+    "fruit": [
+     "apple",
+     "pomegranate",
+     "guava",
+     "sitaphal",
+     "singhara",
+     "banana",
+     "sweet lime (mosambi)"
+    ],
+    "note": ""
+   },
+   "nov": {
+    "vegetables": [
+     "cauliflower",
+     "cabbage",
+     "peas (begin)",
+     "carrot",
+     "radish",
+     "turnip",
+     "green garlic",
+     "beetroot",
+     "sweet potato",
+     "tomato (falling)"
+    ],
+    "leafy": [
+     "palak",
+     "methi",
+     "sarson",
+     "bathua",
+     "dill (suva)"
+    ],
+    "fruit": [
+     "guava",
+     "pomegranate",
+     "orange (starts)",
+     "amla",
+     "custard apple",
+     "sitaphal",
+     "banana",
+     "singhara"
+    ],
+    "note": "Khasi mandarin, ginger, turmeric harvest"
+   },
+   "dec": {
+    "vegetables": [
+     "peas",
+     "cauliflower",
+     "cabbage",
+     "carrot (gajar for halwa)",
+     "radish",
+     "turnip",
+     "beetroot",
+     "green garlic",
+     "fresh turmeric",
+     "spring onion",
+     "tomato (cheapest)"
+    ],
+    "leafy": [
+     "sarson",
+     "bathua",
+     "methi",
+     "palak",
+     "dill",
+     "mooli leaves"
+    ],
+    "fruit": [
+     "orange",
+     "kinnow",
+     "guava",
+     "amla",
+     "strawberry",
+     "pomegranate",
+     "sugarcane juice"
+    ],
+    "note": ""
+   }
+  }
+ }
+}

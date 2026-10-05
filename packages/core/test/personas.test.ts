@@ -172,7 +172,7 @@ describe('fixes from persona testing', () => {
     expect(k.wish('ice cream', base).food?.id).not.toBe('dal-tadka-rice');
     expect(k.wish('butter naan', base).food?.id).not.toBe('peanut-butter-banana');
     expect(k.wish('mutton biryani', base).food?.id).toBe('mutton-biryani');
-    expect(k.wish('masala chai', base).food).toBeUndefined();
+    expect(k.wish('kombucha', base).food).toBeUndefined();
   });
   it('wish alternatives respect declared health conditions', () => {
     const k = kernelFor(PERSONAS[1]!);
@@ -226,5 +226,34 @@ describe('fixes from persona testing', () => {
     expect(k.tasteCards(base, 8).some((c) => c.cuisine === 'punjabi')).toBe(true);
     const h = kernelFor(PERSONAS[7]!);
     for (const c of h.tasteCards(base, 8)) expect(c.tags).toContain('no-cook');
+  });
+});
+
+describe('round 2 safety', () => {
+  it('a child under 5 is never offered a choking hazard, even when the adults could eat it', () => {
+    const k = new Kernel();
+    const me = makeMember({ id: 'me', name: 'Neha', diet: 'vegetarian' });
+    const kid = makeMember({ id: 'k', name: 'Aarav', diet: 'vegetarian', conditions: ['child-under-5', 'minor'] });
+    k.submit({ type: 'profile.set', at: base - 86_400_000, profile: makeProfile({ members: [me, kid], tzOffsetMin: IST }) });
+    const ids = k.recommend({ k: 400 }, base + 5 * 3_600_000).map((r) => r.food.id);
+    expect(ids).not.toContain('popcorn');
+    expect(ids).not.toContain('roasted-chana');
+    expect(ids.length).toBeGreaterThan(10);
+  });
+  it('soft-food preference ranks soft dishes first and demotes crunchy ones', () => {
+    const k = kernelFor({ name: 'kamla', member: { diet: 'vegetarian', rules: ['no-onion-garlic'], conditions: ['older-adult-soft', 'diabetes'] }, wishes: [] });
+    const snack = k.recommend({ slot: 'snack', k: 3 }, base + 10 * 3_600_000);
+    for (const r of snack) expect(r.food.tags).not.toContain('crunchy');
+  });
+  it('diabetes alone still warns about fasting and medicines without refusing', () => {
+    const k = kernelFor({ name: 'd', member: { diet: 'omnivore', conditions: ['diabetes'] }, wishes: [] });
+    k.submit({ type: 'fasting.set', at: base + 3_600_000, kind: 'navratri' });
+    const notes = k.notes({}, base + 5 * 3_600_000).join(' ');
+    expect(notes).toMatch(/check with your doctor/);
+    expect(k.recommend({ slot: 'dinner', k: 3 }, base + 5 * 3_600_000).length).toBeGreaterThan(0);
+  });
+  it('fad-diet requests get the kind answer too', () => {
+    const k = kernelFor(PERSONAS[1]!);
+    expect(k.wish('omad keto diet pills', base).later).toMatch(/regular meals/i);
   });
 });

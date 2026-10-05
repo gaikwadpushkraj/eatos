@@ -7,6 +7,7 @@ import type { ThemePref } from '../src/theme';
 import { Avatar, Btn, Card, Chip, Row, Screen, Section, Toggle, Txt, TopBar } from '../src/ui';
 import { SyncSettings } from '../src/SyncSettings';
 import { LlmSettings } from '../src/LlmSettings';
+import { setLang, useLang } from '../src/i18n';
 import { FoodProfile } from '../src/FoodProfile';
 import { BackupAndDelete, DeviceProtection } from '../src/ProtectionSettings';
 
@@ -21,6 +22,7 @@ const GOALS: { key: Goal; label: string }[] = [
 export default function ProfileScreen() {
   const { kernel, submit } = useKernel();
   const { pref, setPref } = useTheme();
+  const lang = useLang();
   const profile = kernel.state.profile;
   const me = kernel.me();
   if (!profile || !me) return null;
@@ -62,6 +64,13 @@ export default function ProfileScreen() {
         <Toggle label="I'm unwell" hint="Safe mode: gentle food, fluids first, goals paused" value={safe} onChange={(v) => submit({ type: v ? 'illness.started' : 'illness.ended' })} />
         <Toggle label="Hide numbers" hint="Show progress without grams or litres" value={!!profile.hideNumbers} onChange={(v) => update({ hideNumbers: v })} />
       </Card>
+
+      <Section title="Language">
+        <Row gap={8}>
+          <Chip label="English" selected={lang === 'en'} onPress={() => setLang('en')} />
+          <Chip label="हिन्दी" selected={lang === 'hi'} onPress={() => setLang('hi')} />
+        </Row>
+      </Section>
 
       <Section title="Appearance">
         <Row gap={8}>

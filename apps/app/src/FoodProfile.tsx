@@ -51,6 +51,10 @@ export const CONDITIONS: { key: Condition; label: string }[] = [
   { key: 'insulin', label: 'On insulin or sulfonylureas' },
   { key: 'eating-disorder-history', label: 'Eating disorder history' },
   { key: 'minor', label: 'Under 18' },
+  { key: 'child-under-5', label: 'Child under 5' },
+  { key: 'older-adult-soft', label: 'Prefers soft food' },
+  { key: 'lactation', label: 'Breastfeeding' },
+  { key: 'gerd', label: 'Acidity or reflux' },
 ];
 
 const NIGHT: Routine = { wake: hm('15:00'), sleep: hm('09:00'), meals: { breakfast: hm('16:00'), lunch: hm('21:00'), snack: hm('02:00'), dinner: hm('05:00') }, medication: [] };

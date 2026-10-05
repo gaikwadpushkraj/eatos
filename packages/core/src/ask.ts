@@ -41,11 +41,12 @@ const SLOT_WORDS: Record<string, MealSlot> = {
  * eating. An LLM adapter can replace it later behind the same shape.
  */
 export function parseAsk(text: string, selfId = 'me'): ParsedAsk {
-  const s = text.toLowerCase();
+  // A question is a sentence, not a document: cap it so pathological input cannot stall the parser.
+  const s = text.slice(0, 500).toLowerCase();
   const query: Query = {};
   const understood: string[] = [];
 
-  const minutes = s.match(/(\d+)\s*(?:min|mins|minutes|m\b)/);
+  const minutes = s.match(/(\d{1,4})\s*(?:min|mins|minutes|m\b)/);
   if (minutes) {
     query.maxPrepMin = Number(minutes[1]);
     understood.push(`Ready in ${query.maxPrepMin} minutes or less`);

@@ -6,7 +6,7 @@ import { pantryNames, useSoon } from './housekeeping';
 import { FASTING, fastingGate, hasWord, healthFit } from './rules';
 import { contextAt, contextFit } from './context';
 import { affinityScore, tasteAffinity } from './taste';
-import { dayStart } from './time';
+import { dayStart, hashString } from './time';
 
 export interface Query {
   slot?: MealSlot;
@@ -49,7 +49,7 @@ function eaters(state: State, q: Query): Member[] {
   return all.filter((m) => q.memberIds!.includes(m.id));
 }
 
-function matchesWord(food: Food, word: string): boolean {
+export function matchesWord(food: Food, word: string): boolean {
   const w = word.toLowerCase();
   return hasWord(food.name, w) || food.tags.includes(w) || food.ingredients.some((i) => hasWord(i, w)) || food.cuisine?.replace('-indian', '') === w;
 }
@@ -76,6 +76,8 @@ export function recommend(state: State, catalog: Food[], q: Query, now: number):
   const results: Recommendation[] = [];
   for (const food of catalog) {
     if (q.slot && !food.slots.includes(q.slot)) continue;
+    // A drink or a single fruit is not a main meal.
+    if ((q.slot === 'lunch' || q.slot === 'dinner') && food.nutrients.kcal < 250 && !safe && !q.light) continue;
     if (q.maxPrepMin !== undefined && food.prepMin > q.maxPrepMin) continue;
     if (q.exclude?.some((w) => matchesWord(food, w))) continue;
     if (prefs[food.id]?.excluded) continue;
@@ -162,6 +164,9 @@ export function recommend(state: State, catalog: Food[], q: Query, now: number):
       reasons.push(`Uses ${uses.join(' and ')} before it expires`);
     }
 
+    // A little day-to-day variety: the same good dish should not win every single day.
+    score += ((parseInt(hashString(`${food.id}:${Math.floor((now + (state.profile?.tzOffsetMin ?? 0) * 60_000) / 86_400_000)}`), 36) || 0) % 1000) / 1000 * 1.2;
+
     const pref = prefs[food.id];
     if (pref) score += pref.score;
     if (recent.has(food.id)) score -= 2;
@@ -179,6 +184,7 @@ export function queryNotes(state: State, q: Query, now: number): string[] {
   const notes: string[] = [];
   const fast = activeFast(state, members, now);
   if (fast.gate) notes.push(fast.gate);
+  if (fast.kind && members.some((m) => m.conditions?.some((c) => c === 'diabetes' || c === 'prediabetes' || c === 'hypertension' || c === 'kidney'))) notes.push('If you take medicine for diabetes, blood pressure or kidneys, check with your doctor before a fast, and drink water when the fast allows.');
   const fl = fast.kind ? FASTING[fast.kind] : undefined;
   if (fl && q.slot && fl.skipSlots.includes(q.slot)) notes.push(`${fl.label}: no ${q.slot} today.`);
   return notes;

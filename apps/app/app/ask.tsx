@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { TextInput, View } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
-import { chooseForMe, parseAskWithLlm, RESTRICTIVE, RESTRICTIVE_NOTE } from '@eatos/core';
+import { chooseForMe, matchesWord, parseAskWithLlm, RESTRICTIVE, RESTRICTIVE_NOTE } from '@eatos/core';
 import type { AskOutcome } from '@eatos/core';
 import type { MealSlot } from '@eatos/core';
 import { useKernel } from '../src/kernel';
@@ -44,7 +44,12 @@ export default function Ask() {
     return { ...kernel.answer(withSlot, now), source: withSlot.source, fallbackReason: (withSlot as AskOutcome).fallbackReason };
   }, [kernel, parsed, asked, now, slot, version]);
 
-  const notes = [...(RESTRICTIVE.test(asked) ? [RESTRICTIVE_NOTE] : []), ...kernel.notes(result.query, now)];
+  const unknownWords = (result.query.include ?? []).filter((w) => !kernel.catalog.some((f) => matchesWord(f, w)));
+  const notes = [
+    ...(RESTRICTIVE.test(asked) ? [RESTRICTIVE_NOTE] : []),
+    ...kernel.notes(result.query, now),
+    ...(unknownWords.length ? [`EatOS does not have “${unknownWords.join('”, “')}” yet, so these are the closest picks for you instead.`] : []),
+  ];
 
   const send = (q: string) => {
     setText(q);
@@ -112,7 +117,7 @@ export default function Ask() {
           <Txt v="small">{r.reasons.join('. ')}</Txt>
           {r.missing.length ? <Txt v="small">{`Missing: ${r.missing.join(', ')}`}</Txt> : null}
           <Row wrap gap={8}>
-            <Btn small label="Cook this" onPress={() => router.push(`/cook/${r.food.id}`)} />
+            <Btn small label={r.food.tags.includes('no-cook') ? 'Show me how' : 'Cook this'} onPress={() => router.push(`/cook/${r.food.id}`)} />
             <Btn small kind="outline" label="Love it" onPress={() => submit({ type: 'feedback', foodId: r.food.id, verdict: 'liked' })} />
             <Btn small kind="ghost" label="Not for me" onPress={() => submit({ type: 'feedback', foodId: r.food.id, verdict: 'never' })} />
           </Row>
@@ -121,7 +126,7 @@ export default function Ask() {
 
       {result.results.length ? (
         <Row>
-          <Btn label="Choose for me" kind="lime" style={{ flex: 1 }} onPress={() => setPicked(chooseForMe(result.results)?.food.id ?? null)} />
+          <Btn label="Choose for me" kind="lime" style={{ flex: 1 }} onPress={() => setPicked(chooseForMe(kernel.recommend({ ...result.query, k: 10 }, now))?.food.id ?? null)} />
           <Btn label={why ? 'Hide reasons' : 'Why these?'} kind="outline" style={{ flex: 1 }} onPress={() => setWhy(!why)} />
         </Row>
       ) : null}

@@ -10,6 +10,7 @@ import { Icon } from '../../src/icons';
 import { greeting, PRIORITY_WORD, statusWord, timeLabel } from '../../src/format';
 import { eatFood } from '../../src/actions';
 import { FastingCard } from '../../src/FastingCard';
+import { TimeZoneCard } from '../../src/TimeZoneCard';
 
 function statusTone(task: Task): { label: string; tone?: 'ok' | 'warn' | 'accent' } {
   if (task.state === 'done') return { label: 'Done', tone: 'ok' };
@@ -136,6 +137,7 @@ function Adjusted() {
 function Explore() {
   return (
     <>
+      <TimeZoneCard />
       <FastingCard />
       <Card padding={14} style={{ gap: 8 }}>
         <Txt v="h3">Craving something?</Txt>

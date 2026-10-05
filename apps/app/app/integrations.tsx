@@ -180,7 +180,7 @@ export default function Integrations() {
   const synced = kernel.events.filter((e) => e.id?.startsWith('cal:') || e.id?.startsWith('health:') || e.id?.startsWith('pantry.receipt:')).length;
   return (
     <Screen header={<TopBar title="Connect your world" subtitle={`${synced} records imported · ${capitalise(timeLabel(kernel, now))}`} />}>
-      <Txt v="body" color="muted">The more EatOS knows about your day, the less you have to log. You choose every connection and it all stays on your device.</Txt>
+      <Txt v="body" color="muted">The more EatOS knows about your day, the less you have to log. You choose every connection. Files you import are read on this device, and stay here unless you turn on sync.</Txt>
       <Section title="Day">
         <CalendarCard />
         <HealthCard />

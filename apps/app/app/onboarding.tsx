@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { router } from 'expo-router';
-import { DEFAULT_ROUTINE, makeMember, makeProfile } from '@eatos/core';
-import type { Allergen, Diet, Goal, Member } from '@eatos/core';
+import { CITIES, DEFAULT_ROUTINE, RULE_LABEL, makeMember, makeProfile } from '@eatos/core';
+import type { Allergen, Diet, DietRule, Goal, Kitchen, Member } from '@eatos/core';
 import { useKernel } from '../src/kernel';
 import type { EventInput } from '../src/kernel';
 import { useTheme } from '../src/theme';
@@ -103,6 +103,10 @@ export default function Onboarding() {
   const [medication, setMedication] = useState('');
   const [members, setMembers] = useState<Member[]>([]);
   const [sample, setSample] = useState(true);
+  const [rules, setRules] = useState<DietRule[]>([]);
+  const [spice, setSpice] = useState<0 | 1 | 2 | 3>(2);
+  const [kitchen, setKitchen] = useState<Kitchen>('full');
+  const [city, setCity] = useState<string | undefined>();
 
   const needsHousehold = who.includes('household') || who.includes('caring');
   const steps = needsHousehold ? 4 : 3;
@@ -114,6 +118,8 @@ export default function Onboarding() {
       name: name.trim() || 'You',
       diet,
       allergens,
+      ...(rules.length ? { rules } : {}),
+      spice,
       goals: who.includes('training') ? [...new Set<Goal>([...goals, 'performance'])] : goals,
       weightKg: Number(weight) > 0 ? Number(weight) : undefined,
     });
@@ -122,6 +128,10 @@ export default function Onboarding() {
       members: [self, ...members.map((m) => (who.includes('caring') ? { ...m, managedBy: 'me' } : m))],
       routine: { ...DEFAULT_ROUTINE, medication: medication.trim() ? [{ name: medication.trim(), slot: 'breakfast' }] : [] },
       tzOffsetMin: localOffset(),
+      kitchen,
+      ...(city ? { city } : {}),
+      // Day one is numberless; numbers can be turned on in Profile.
+      hideNumbers: true,
     });
     const events: EventInput[] = [{ type: 'profile.set', profile }];
     if (sample) {
@@ -206,6 +216,34 @@ export default function Onboarding() {
             <Row wrap gap={8}>
               {ALLERGENS.map((a) => (
                 <Chip key={a} label={capitalise(a)} selected={allergens.includes(a)} onPress={() => setAllergens(toggle(allergens, a))} />
+              ))}
+            </Row>
+          </Section>
+          <Section title="Rules at home (never broken)">
+            <Row wrap gap={8}>
+              {(Object.keys(RULE_LABEL) as DietRule[]).map((r) => (
+                <Chip key={r} label={RULE_LABEL[r]} selected={rules.includes(r)} onPress={() => setRules(toggle(rules, r))} />
+              ))}
+            </Row>
+          </Section>
+          <Section title="How hot do you like it?">
+            <Row wrap gap={8}>
+              {([[0, 'No spice'], [1, 'Mild'], [2, 'Medium'], [3, 'Hot']] as const).map(([k, label]) => (
+                <Chip key={k} label={label} selected={spice === k} onPress={() => setSpice(k)} />
+              ))}
+            </Row>
+          </Section>
+          <Section title="Where you cook">
+            <Row wrap gap={8}>
+              {([['full', 'Full kitchen'], ['basic', 'Basic (no oven)'], ['none', 'No kitchen']] as const).map(([k, label]) => (
+                <Chip key={k} label={label} selected={kitchen === k} onPress={() => setKitchen(k)} />
+              ))}
+            </Row>
+          </Section>
+          <Section title="Your city">
+            <Row wrap gap={8}>
+              {Object.entries(CITIES).map(([k, c]) => (
+                <Chip key={k} label={c.name} selected={city === k} onPress={() => setCity(city === k ? undefined : k)} />
               ))}
             </Row>
           </Section>

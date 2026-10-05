@@ -16,9 +16,9 @@ export interface Preference {
 
 /** Long-term memory: decayed preference per food. */
 export function preferences(state: State, now: number): Record<string, Preference> {
-  const out: Record<string, Preference> = {};
-  const lastNever: Record<string, number> = {};
-  const lastLiked: Record<string, number> = {};
+  const out: Record<string, Preference> = Object.create(null);
+  const lastNever: Record<string, number> = Object.create(null);
+  const lastLiked: Record<string, number> = Object.create(null);
   for (const e of state.events) {
     if (e.type !== 'feedback' || e.at > now) continue;
     const p = (out[e.foodId] ??= { foodId: e.foodId, score: 0, excluded: false });

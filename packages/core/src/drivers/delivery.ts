@@ -133,7 +133,7 @@ export function parseMenu(text: string): { items: MenuItem[]; problems: string[]
     if (ids.has(d.id)) return void problems.push(`${label} repeats the id "${d.id}".`);
     if (!num(d.priceCents) || !num(d.kcal) || !num(d.proteinG) || !num(d.etaMin)) return void problems.push(`${label} ("${d.name}") has a number that is not valid.`);
     if (d.allergens !== undefined && !(Array.isArray(d.allergens) && d.allergens.every((a) => typeof a === 'string' && ALLERGEN_LIST.includes(a)))) return void problems.push(`${label} ("${d.name}") lists an unknown allergen.`);
-    if (d.diet !== undefined && !(typeof d.diet === 'string' && d.diet in DIET_RANK)) return void problems.push(`${label} ("${d.name}") has an unknown diet.`);
+    if (d.diet !== undefined && !(typeof d.diet === 'string' && Object.hasOwn(DIET_RANK, d.diet))) return void problems.push(`${label} ("${d.name}") has an unknown diet.`);
     if (d.tags !== undefined && !(Array.isArray(d.tags) && d.tags.every((t) => typeof t === 'string'))) return void problems.push(`${label} ("${d.name}") has invalid tags.`);
     ids.add(d.id);
     items.push({

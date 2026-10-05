@@ -1,12 +1,17 @@
 import type { Food } from './types';
 import { INDIA_CATALOG } from './india';
+import { INDIA_MORE } from './india2';
+import { INDIA_STEPS } from './steps-india';
+import { DIETITIAN_PATCHES } from './patches';
+import { ingredientAllergens } from './rules';
 
 /**
  * Seed catalog. Nutrients are rough per-serving estimates, good enough for
  * recommendations; they are not medical data.
  */
-export const CATALOG: Food[] = [
+const RAW: Food[] = [
   ...INDIA_CATALOG,
+  ...INDIA_MORE,
   // Breakfast
   { id: 'oats-banana', name: 'Oats with banana and yogurt', slots: ['breakfast'], tags: ['warm', 'quick', 'fibre'], diet: 'vegetarian', allergens: ['dairy', 'gluten'], prepMin: 8, nutrients: { kcal: 420, proteinG: 18, fibreG: 8, waterMl: 150 }, ingredients: ['oats', 'banana', 'greek yogurt', 'milk'] },
   { id: 'overnight-oats', name: 'Overnight oats with berries', slots: ['breakfast'], tags: ['quick', 'fibre', 'cold', 'no-cook'], diet: 'vegetarian', allergens: ['dairy', 'gluten'], prepMin: 5, nutrients: { kcal: 380, proteinG: 15, fibreG: 9, waterMl: 150 }, ingredients: ['oats', 'berries', 'milk', 'chia seeds'] },
@@ -47,6 +52,21 @@ export const CATALOG: Food[] = [
   { id: 'recovery-shake', name: 'Milk, banana and oat shake', slots: ['snack'], tags: ['quick', 'cold', 'high-protein', 'recovery', 'no-cook'], diet: 'vegetarian', allergens: ['dairy', 'gluten'], prepMin: 3, nutrients: { kcal: 330, proteinG: 18, fibreG: 4, waterMl: 350 }, ingredients: ['milk', 'banana', 'oats'] },
 ];
 
+const CHOKING = ["popcorn", "roasted-chana", "chikki", "peanut-chaat", "apple-almonds", "apple-seeds", "hummus-carrots", "chana-chaat", "dahi-chivda", "makhana-roasted", "murmura-bhel", "fruit-curd-bowl", "muesli-milk"];
+const CRUNCHY = ["popcorn", "roasted-chana", "chikki", "peanut-chaat", "apple-almonds", "apple-seeds", "hummus-carrots", "chana-chaat", "dahi-chivda", "makhana-roasted", "murmura-bhel", "fruit-curd-bowl", "muesli-milk", "samosa", "kachumber-curd", "sprouts-salad", "chickpea-salad"];
+const SOFT = ["khichdi", "dalia-khichdi", "rice-congee", "curd-rice", "idli-sambar", "idli-chutney-jain", "pongal", "kootu-rice", "moong-khichdi", "khichdi-kadhi", "bajra-khichdi", "banana", "lentil-soup", "rasam-rice", "rasam-rice-satvik", "ragi-malt", "curd-poha", "mishti-doi", "sheer-khurma", "phirni", "payasam", "seviyan", "kerala-stew-appam", "lauki-roti"];
+
+/** The catalogue with the dietitian's corrections and the safety tags for little children and soft diets. */
+export const CATALOG: Food[] = RAW.map((f) => {
+  const patch = DIETITIAN_PATCHES[f.id];
+  const tags = new Set(patch?.tags ?? f.tags);
+  if (CHOKING.includes(f.id)) tags.add('choking-hazard');
+  if (CRUNCHY.includes(f.id)) tags.add('crunchy');
+  if (SOFT.includes(f.id)) tags.add('soft');
+  const merged = { ...f, ...(patch ?? {}) };
+  return { ...merged, tags: [...tags], allergens: [...new Set([...merged.allergens, ...ingredientAllergens(merged.ingredients)])] };
+});
+
 export function foodById(catalog: Food[], id: string): Food | undefined {
   return catalog.find((f) => f.id === id);
 }
@@ -86,6 +106,8 @@ for (const food of CATALOG) {
 /** Steps for a food, with a simple generic fallback. */
 export function stepsFor(food: Food): string[] {
   if (food.steps?.length) return food.steps;
+  const chef = INDIA_STEPS[food.id];
+  if (chef?.length) return chef;
   const list = food.ingredients.join(', ');
   if (food.tags.includes('no-cook')) return [`Get out: ${list}.`, 'Nothing to cook. Chop or portion what needs it.', 'Put it together and enjoy.'];
   if (food.prepMin <= 3) return [`Get out: ${list}.`, 'Put it together and enjoy.'];

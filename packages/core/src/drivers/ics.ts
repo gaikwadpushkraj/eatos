@@ -154,10 +154,12 @@ function expand(e: Raw, from: number, to: number, defaultOffsetMin: number): num
   if (rule.FREQ === 'DAILY') {
     for (let t = e.start; t < to + dur && starts.length < 5000; t += interval * DAY) if (!push(t)) break;
   } else if (rule.FREQ === 'WEEKLY') {
-    const days = rule.BYDAY ? rule.BYDAY.split(',').map((d) => DAY_CODES.indexOf(d.slice(-2))).filter((d) => d >= 0) : [new Date(e.start).getUTCDay()];
+    const byDay = rule.BYDAY ? rule.BYDAY.split(',').map((d) => DAY_CODES.indexOf(d.slice(-2))).filter((d) => d >= 0) : [];
+    // An unknown BYDAY value must not leave us with no day to repeat on (that would loop forever).
+    const days = byDay.length ? byDay : [new Date(e.start).getUTCDay()];
     // Week anchored on the Sunday on or before DTSTART, in UTC wall time of the first event.
     const weekStart = e.start - new Date(e.start).getUTCDay() * DAY;
-    outer: for (let w = 0; starts.length < 5000; w += interval) {
+    outer: for (let w = 0; starts.length < 5000 && w < 20_000; w += interval) {
       for (const d of [...days].sort((a, b) => a - b)) {
         const t = weekStart + (w * 7 + d) * DAY;
         if (t < e.start) continue;
