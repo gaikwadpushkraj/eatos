@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { TextInput, View } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
-import { chooseForMe, parseAskWithLlm } from '@eatos/core';
+import { chooseForMe, parseAskWithLlm, RESTRICTIVE, RESTRICTIVE_NOTE } from '@eatos/core';
 import type { AskOutcome } from '@eatos/core';
 import type { MealSlot } from '@eatos/core';
 import { useKernel } from '../src/kernel';
@@ -43,6 +43,8 @@ export default function Ask() {
     const withSlot = !asked && slot ? { ...base, query: { ...base.query, slot }, understood: [`For ${slot}`, ...base.understood] } : base;
     return { ...kernel.answer(withSlot, now), source: withSlot.source, fallbackReason: (withSlot as AskOutcome).fallbackReason };
   }, [kernel, parsed, asked, now, slot, version]);
+
+  const notes = [...(RESTRICTIVE.test(asked) ? [RESTRICTIVE_NOTE] : []), ...kernel.notes(result.query, now)];
 
   const send = (q: string) => {
     setText(q);
@@ -86,6 +88,12 @@ export default function Ask() {
       <Txt v="body">
         {result.results.length ? `${result.results.length} ${result.results.length === 1 ? 'option fits' : 'options that fit'} right now.` : 'Nothing fits those limits. Try a longer time or fewer exclusions.'}
       </Txt>
+
+      {notes.map((n) => (
+        <Card key={n} tone="soft" padding={12}>
+          <Txt v="small">{n}</Txt>
+        </Card>
+      ))}
 
       {result.results.map((r, i) => (
         <Card key={r.food.id} tone={picked === r.food.id || (!picked && i === 0) ? 'accent' : 'default'}>

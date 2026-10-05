@@ -34,14 +34,23 @@ export function aisleFor(name: string): Aisle {
   return AISLES.find(([, re]) => re.test(name))?.[0] ?? 'Other';
 }
 
+const RAW_MEAT = /\b(chicken|mutton|lamb|fish|prawn|shrimp|crab|salmon|keema|meat)\b/;
+const FRIDGE_DAIRY = /\b(curd|yogurt|yoghurt|milk|paneer|cheese|butter|cream|eggs?|tofu|dahi)\b/;
+
 export function shelfLifeDays(name: string, frozen = false): number {
   if (frozen) return 90;
+  const n = name.toLowerCase();
+  if (RAW_MEAT.test(n)) return 2;
+  if (/\beggs?\b/.test(n)) return 21;
+  if (/\b(curd|yogurt|yoghurt|milk|paneer|tofu|dahi)\b/.test(n)) return 5;
   const a = aisleFor(name);
   return a === 'Produce' ? 5 : a === 'Dairy and protein' ? 7 : a === 'Grains and pulses' ? 180 : 30;
 }
 
 export function locationFor(name: string, frozen = false): PantryLocation {
   if (frozen) return 'freezer';
+  const n = name.toLowerCase();
+  if (RAW_MEAT.test(n) || FRIDGE_DAIRY.test(n)) return 'fridge';
   const a = aisleFor(name);
   return a === 'Dairy and protein' ? 'fridge' : a === 'Produce' ? (/tomato|onion|garlic|banana|potato|lemon|lime|avocado|orange|apple|pear|mango/.test(name) ? 'counter' : 'fridge') : 'cupboard';
 }

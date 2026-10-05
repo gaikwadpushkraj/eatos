@@ -21,11 +21,11 @@ const variants: Record<Variant, TextStyle> = {
   h1: { fontFamily: fonts.semibold, fontSize: 26, letterSpacing: -0.5, lineHeight: 32 },
   h2: { fontFamily: fonts.semibold, fontSize: 20, letterSpacing: -0.2, lineHeight: 26 },
   h3: { fontFamily: fonts.semibold, fontSize: 16, lineHeight: 22 },
-  body: { fontFamily: fonts.regular, fontSize: 15, lineHeight: 22 },
-  bodyStrong: { fontFamily: fonts.medium, fontSize: 15, lineHeight: 22 },
-  small: { fontFamily: fonts.regular, fontSize: 13, lineHeight: 19 },
-  label: { fontFamily: fonts.semibold, fontSize: 13, lineHeight: 18 },
-  mono: { fontFamily: fonts.mono, fontSize: 12, letterSpacing: 0.4, lineHeight: 16 },
+  body: { fontFamily: fonts.regular, fontSize: 16, lineHeight: 23 },
+  bodyStrong: { fontFamily: fonts.medium, fontSize: 16, lineHeight: 23 },
+  small: { fontFamily: fonts.regular, fontSize: 14, lineHeight: 20 },
+  label: { fontFamily: fonts.semibold, fontSize: 14, lineHeight: 19 },
+  mono: { fontFamily: fonts.mono, fontSize: 13, letterSpacing: 0.3, lineHeight: 17 },
 };
 
 export function Txt({ v = 'body', color, style, children, numberOfLines }: { v?: Variant; color?: keyof Colors; style?: StyleProp<TextStyle>; children: ReactNode; numberOfLines?: number }) {

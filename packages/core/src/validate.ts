@@ -13,6 +13,11 @@ const SLOTS = ['breakfast', 'lunch', 'snack', 'dinner'];
 const LOCATIONS = ['fridge', 'freezer', 'cupboard', 'counter'];
 const GOALS = ['more-protein', 'hydration', 'less-waste', 'energy', 'performance'];
 const VERDICTS = ['liked', 'skip', 'never'];
+const RULES = ['jain', 'satvik', 'no-onion-garlic', 'no-egg', 'no-beef', 'no-pork', 'halal'];
+const CONDITIONS = ['diabetes', 'prediabetes', 'hypertension', 'high-cholesterol', 'pcos', 'thyroid', 'anaemia', 'lactose-intolerant', 'celiac', 'gout', 'kidney', 'pregnancy', 'insulin', 'eating-disorder-history', 'minor'];
+const FASTS = ['navratri', 'ekadashi', 'shravan', 'ramzan', 'custom'];
+const BLOCKERS = ['health', 'religion', 'allergy', 'time', 'skill', 'equipment', 'availability', 'household', 'budget', 'habit', 'other'];
+const KITCHENS = ['full', 'basic', 'none'];
 const INTENSITIES = ['low', 'moderate', 'high'];
 
 const MAX_TEXT = 500;
@@ -37,6 +42,10 @@ function member(m: unknown): string | undefined {
   if (!optNum(m.weightKg) || (m.weightKg !== undefined && ((m.weightKg as number) <= 0 || (m.weightKg as number) > 500))) return 'member weight is not valid';
   if (m.mild !== undefined && typeof m.mild !== 'boolean') return 'member mild must be true or false';
   if (!optStr(m.managedBy)) return 'member managedBy is not valid';
+  if (m.rules !== undefined && !list(m.rules, oneOf(RULES))) return 'member rules are not valid';
+  if (m.conditions !== undefined && !list(m.conditions, oneOf(CONDITIONS))) return 'member conditions are not valid';
+  if (m.spice !== undefined && ![0, 1, 2, 3].includes(m.spice as number)) return 'member spice is not valid';
+  if (m.cuisines !== undefined && !list(m.cuisines, str)) return 'member cuisines are not valid';
   return undefined;
 }
 
@@ -53,6 +62,7 @@ function profile(p: unknown): string | undefined {
   if (!list(r.medication, (m) => isObj(m) && str(m.name) && oneOf(SLOTS)(m.slot))) return 'medication is not valid';
   if (!num(p.floorKcal) || !num(p.tzOffsetMin) || Math.abs(p.tzOffsetMin) > 14 * 60) return 'profile numbers are not valid';
   if (p.hideNumbers !== undefined && typeof p.hideNumbers !== 'boolean') return 'hideNumbers must be true or false';
+  if (p.kitchen !== undefined && !oneOf(KITCHENS)(p.kitchen)) return 'kitchen is not valid';
   return undefined;
 }
 
@@ -97,6 +107,10 @@ function body(e: R): string | undefined {
       return str(e.taskId) ? undefined : 'taskId is required';
     case 'medication.taken':
       return str(e.name) ? undefined : 'name is required';
+    case 'fasting.set':
+      return e.kind === undefined || oneOf(FASTS)(e.kind) ? undefined : 'fasting kind is not valid';
+    case 'wish.logged':
+      return str(e.wish) && (e.blocker === undefined || oneOf(BLOCKERS)(e.blocker)) && optStr(e.foodId) ? undefined : 'wish is not valid';
     default:
       return `unknown event type: ${String(e.type)}`;
   }

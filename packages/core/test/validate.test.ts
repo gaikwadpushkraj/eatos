@@ -130,3 +130,20 @@ describe('drivers only emit valid events', () => {
     expect(receiptEvents(`${'x'.repeat(10)} ${'Bananas '.repeat(100)} 1.00`, DAY0).events.every((e) => isValidEvent(e))).toBe(true);
   });
 });
+
+describe('phase 7 events', () => {
+  it('accepts valid fasting and wish events and rejects bad ones', () => {
+    expect(isValidEvent({ type: 'fasting.set', at: 1, kind: 'navratri' })).toBe(true);
+    expect(isValidEvent({ type: 'fasting.set', at: 1 })).toBe(true);
+    expect(isValidEvent({ type: 'fasting.set', at: 1, kind: 'weird' })).toBe(false);
+    expect(isValidEvent({ type: 'wish.logged', at: 1, wish: 'biryani', blocker: 'health' })).toBe(true);
+    expect(isValidEvent({ type: 'wish.logged', at: 1, wish: '', blocker: 'health' })).toBe(false);
+    expect(isValidEvent({ type: 'wish.logged', at: 1, wish: 'x', blocker: 'nope' })).toBe(false);
+  });
+  it('validates new member fields', () => {
+    const m = { id: 'a', name: 'A', diet: 'vegetarian', allergens: [], dislikes: [], goals: [], rules: ['jain'], conditions: ['diabetes'], spice: 2, cuisines: ['gujarati'] };
+    const base = { diet: 'vegetarian' };
+    expect(isValidEvent({ type: 'member.added', at: 1, member: m })).toBe(true);
+    for (const bad of [{ rules: ['x'] }, { conditions: ['x'] }, { spice: 9 }, { cuisines: [1] }]) expect(isValidEvent({ type: 'member.added', at: 1, member: { ...m, ...base, ...bad } })).toBe(false);
+  });
+});

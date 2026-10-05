@@ -84,6 +84,19 @@ describe('EatOS API', () => {
     expect(rec.body.results).toHaveLength(2);
   });
 
+  it('answers wishes and taste cards, and rejects bad input', async () => {
+    await call('POST', '/v1/events', { type: 'profile.set', at: DAY0, profile });
+    const w = await call('POST', '/v1/wish', { text: 'pesto pasta' });
+    expect(w.status).toBe(200);
+    expect(w.body.blockers.length).toBeGreaterThan(0);
+    for (const rung of w.body.ladder) for (const f of rung.foods) expect(f.allergens).not.toContain('nuts');
+    expect((await call('POST', '/v1/wish', {})).status).toBe(400);
+    expect((await call('POST', '/v1/wish', { text: 'x'.repeat(500) })).status).toBe(400);
+    const cards = await call('GET', '/v1/taste-cards');
+    expect(cards.body.foods.length).toBe(8);
+    for (const f of cards.body.foods) expect(f.allergens).not.toContain('nuts');
+  });
+
   it('resolves household conflicts', async () => {
     await call('POST', '/v1/events', { type: 'profile.set', at: DAY0, profile });
     expect((await call('GET', '/v1/resolve?food=pesto-pasta')).body.chosen.id).toBe('basil-pasta-nut-free');

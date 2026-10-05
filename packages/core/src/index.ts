@@ -23,3 +23,8 @@ export * from './vault';
 export * from './validate';
 export * from './quickadd';
 export * from './photo';
+export * from './rules';
+export * from './context';
+export * from './india';
+export * from './aspire';
+export * from './taste';

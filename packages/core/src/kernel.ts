@@ -5,7 +5,9 @@ import { CATALOG, foodById } from './catalog';
 import { buildSchedule, nextMeal, nextTask } from './scheduler';
 import { biggestGap, healthChecks, targets } from './health';
 import type { HealthCheck } from './health';
-import { recommend } from './recommend';
+import { queryNotes, recommend } from './recommend';
+import { alternatives } from './aspire';
+import { nextTasteCards } from './taste';
 import type { Query, Recommendation } from './recommend';
 import { parseAsk } from './ask';
 import type { ParsedAsk } from './ask';
@@ -108,6 +110,21 @@ export class Kernel {
 
   recommend(q: Query, now: number): Recommendation[] {
     return recommend(this.s, this.catalog, q, now);
+  }
+
+  /** Notes about a request, such as why a fast was not planned. */
+  notes(q: Query, now: number): string[] {
+    return queryNotes(this.s, q, now);
+  }
+
+  /** Kind alternatives for something the person wishes to eat but cannot. */
+  wish(text: string, now: number) {
+    return alternatives(this.s, this.catalog, text, now);
+  }
+
+  /** Dishes to ask "would you eat this?" about next, safe for the person and as different as possible. */
+  tasteCards(now: number, k = 8): Food[] {
+    return nextTasteCards(this.s, this.catalog, selfMember(this.s), now, k);
   }
 
   ask(text: string, now: number) {

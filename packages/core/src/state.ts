@@ -1,4 +1,4 @@
-import type { EatEvent, Member, PantryItem, Profile } from './types';
+import type { Blocker, EatEvent, FastingKind, Member, PantryItem, Profile } from './types';
 import { dayStart } from './time';
 
 /**
@@ -11,10 +11,14 @@ export interface State {
   pantry: Record<string, PantryItem>;
   /** Epoch ms when safe mode started, if active. */
   safeModeSince?: number;
+  /** The fast set most recently, if any. It only applies on the day it was set. */
+  fasting?: { kind: FastingKind; since: number };
+  /** Wishes, newest last. */
+  wishes: { id: string; wish: string; blocker?: Blocker; foodId?: string; at: number }[];
 }
 
 export function emptyState(): State {
-  return { events: [], pantry: {} };
+  return { events: [], pantry: {}, wishes: [] };
 }
 
 /** Applies one event. Pure: returns a new state. */
@@ -63,6 +67,13 @@ export function reduce(state: State, event: EatEvent): State {
       break;
     case 'illness.ended':
       delete next.safeModeSince;
+      break;
+    case 'fasting.set':
+      if (event.kind) next.fasting = { kind: event.kind, since: event.at };
+      else delete next.fasting;
+      break;
+    case 'wish.logged':
+      next.wishes = [...state.wishes, { id: event.id ?? `w${event.at}`, wish: event.wish, blocker: event.blocker, foodId: event.foodId, at: event.at }].slice(-100);
       break;
     default:
       break;

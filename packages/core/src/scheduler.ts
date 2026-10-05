@@ -40,7 +40,11 @@ function routineTasks(state: State, now: number): Task[] {
   const p = state.profile!;
   const off = p.tzOffsetMin;
   const r = p.routine;
-  const day = (m: number) => atMinute(now, m, off);
+  // A night routine sleeps (say 09:00) before it wakes (15:00): times before waking belong to the next morning.
+  const wrapped = r.sleep <= r.wake;
+  const shifted = (m: number) => (wrapped && m < r.wake ? m + 1440 : m);
+  const sleepAt = wrapped ? r.sleep + 1440 : r.sleep;
+  const day = (m: number) => atMinute(now, shifted(m), off);
   const tasks: Task[] = [];
   const safe = state.safeModeSince !== undefined;
 
@@ -81,9 +85,9 @@ function routineTasks(state: State, now: number): Task[] {
   const target = targets(state, now).waterMl;
   const every = safe ? 2 * 60 : 3 * 60;
   const points: number[] = [];
-  for (let m = r.wake + 60; m <= r.sleep - 60; m += every) points.push(m);
+  for (let m = r.wake + 60; m <= sleepAt - 60; m += every) points.push(m);
   points.forEach((m, i) => {
-    const at = day(m);
+    const at = atMinute(now, m, off);
     tasks.push(
       task({
         id: `water:${i}`,
@@ -104,8 +108,8 @@ function routineTasks(state: State, now: number): Task[] {
       title: 'Wind down, no caffeine',
       kind: 'routine',
       priority: 3,
-      at: day(r.sleep - 90),
-      deadline: day(r.sleep),
+      at: atMinute(now, sleepAt - 90, off),
+      deadline: atMinute(now, sleepAt, off),
       need: 'routine',
     }),
   );

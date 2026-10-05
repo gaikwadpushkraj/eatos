@@ -41,3 +41,11 @@ export function daysLabel(days: number | undefined): string {
 }
 
 export { aisleFor as aisle, shelfLifeDays } from '@eatos/core';
+
+/** Plain words for the scheduler's priority classes. */
+export const PRIORITY_WORD = { 0: 'Safety first', 1: 'Core', 2: 'Goal', 3: 'Treat' } as const;
+
+/** Plain words for the kernel's one-line status. */
+export function statusWord(status: string): string {
+  return { 'System steady': 'All on track', 'Slightly behind': 'A little behind' }[status] ?? status;
+}

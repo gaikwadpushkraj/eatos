@@ -1,14 +1,15 @@
 import { useMemo } from 'react';
 import { Pressable, View } from 'react-native';
 import { router } from 'expo-router';
-import { intakeToday, PRIORITY_LABEL } from '@eatos/core';
+import { intakeToday } from '@eatos/core';
 import type { HealthCheck, Task } from '@eatos/core';
 import { useKernel } from '../../src/kernel';
 import { useTheme } from '../../src/theme';
 import { Avatar, Btn, Card, Chip, Dot, Meter, Row, Screen, Section, Txt, useWide } from '../../src/ui';
 import { Icon } from '../../src/icons';
-import { greeting, timeLabel } from '../../src/format';
+import { greeting, PRIORITY_WORD, statusWord, timeLabel } from '../../src/format';
 import { eatFood } from '../../src/actions';
+import { FastingCard } from '../../src/FastingCard';
 
 function statusTone(task: Task): { label: string; tone?: 'ok' | 'warn' | 'accent' } {
   if (task.state === 'done') return { label: 'Done', tone: 'ok' };
@@ -62,13 +63,13 @@ function NextUp() {
       <Row style={{ justifyContent: 'space-between' }}>
         <Txt v="mono" color="inkMuted">{`NEXT UP · ${meal.title.toUpperCase()} · ${timeLabel(kernel, meal.at)}`}</Txt>
         <View style={{ backgroundColor: c.lime, borderRadius: 6, paddingHorizontal: 8, paddingVertical: 3 }}>
-          <Txt v="mono" style={{ color: c.onLime }}>{`P${meal.priority} · ${PRIORITY_LABEL[meal.priority]}`}</Txt>
+          <Txt v="mono" style={{ color: c.onLime }}>{PRIORITY_WORD[meal.priority]}</Txt>
         </View>
       </Row>
       <Txt v="h1" color="inkText">{rec.food.name}</Txt>
       <Txt v="body" color="inkMuted">{reasons.join('. ')}.</Txt>
       <Row wrap>
-        <Btn label="Start cooking" kind="lime" onPress={() => router.push(`/cook/${rec.food.id}`)} style={{ flexGrow: 1 }} />
+        <Btn label={rec.food.tags.includes('no-cook') ? 'Show me how' : 'Start cooking'} kind="lime" onPress={() => router.push(`/cook/${rec.food.id}`)} style={{ flexGrow: 1 }} />
         <Btn label="Other options" kind="onInk" onPress={() => router.push(`/ask?slot=${meal.slot ?? ''}`)} style={{ flexGrow: 1 }} />
       </Row>
       <Pressable accessibilityRole="button" onPress={() => eatFood(kernel, submitMany, rec.food, meal.slot ?? 'snack')} style={{ minHeight: 44, justifyContent: 'center' }}>
@@ -88,7 +89,7 @@ function ActiveTask() {
     <Card tone="accent">
       <Row style={{ justifyContent: 'space-between' }}>
         <View style={{ flex: 1, gap: 2 }}>
-          <Txt v="mono" color="accentText">{`NOW · P${task.priority} ${PRIORITY_LABEL[task.priority].toUpperCase()}`}</Txt>
+          <Txt v="mono" color="accentText">{`NOW · ${PRIORITY_WORD[task.priority].toUpperCase()}`}</Txt>
           <Txt v="h3">{task.title}</Txt>
           {task.reasons[0] ? <Txt v="small">{task.reasons[0]}</Txt> : null}
         </View>
@@ -129,6 +130,19 @@ function Adjusted() {
         </View>
       </Row>
     </Card>
+  );
+}
+
+function Explore() {
+  return (
+    <>
+      <FastingCard />
+      <Card padding={14} style={{ gap: 8 }}>
+        <Txt v="h3">Craving something?</Txt>
+        <Txt v="small">Tell EatOS. It shows what works for you, and close alternatives to anything that doesn’t.</Txt>
+        <Btn kind="outline" small label="Open the craving list" onPress={() => router.push('/wishes')} />
+      </Card>
+    </>
   );
 }
 
@@ -230,7 +244,7 @@ export default function Now() {
       <View style={{ gap: 4, flex: 1 }}>
         <Row gap={8}>
           <Dot color={dotColor} />
-          <Txt v="mono">{view.status}</Txt>
+          <Txt v="mono">{statusWord(view.status)}</Txt>
         </Row>
         <Txt v={wide ? 'display' : 'h1'}>{`${greeting(kernel, now)}, ${me?.name ?? 'there'}`}</Txt>
       </View>
@@ -284,6 +298,7 @@ export default function Now() {
               {tiles}
             </Card>
             {quick}
+            <Explore />
             <HouseholdMini />
           </View>
         </View>
@@ -300,6 +315,7 @@ export default function Now() {
       {tiles}
       <Adjusted />
       {quick}
+      <Explore />
       <Schedule compact />
       <AskBar />
     </Screen>

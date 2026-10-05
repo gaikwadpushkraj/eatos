@@ -138,7 +138,7 @@ await run('journey', { width: 390, height: 844 }, 'light', async (page) => {
   if (!(await stored(page, 'eatos.events.v1')).includes('water.logged')) throw new Error('the logged water was not saved immediately');
   const nextUp = async () => (await page.getByText(/^(NEXT UP ·|ALL DONE FOR TODAY)/).filter({ visible: true }).first().textContent()) ?? '';
   const before = await nextUp();
-  await page.getByRole('button', { name: 'Start cooking' }).click();
+  await page.getByRole('button', { name: /Start cooking|Show me how/ }).click();
   await text(page, 'STEP 1 OF');
   const total = Number((await page.getByText(/STEP 1 OF \d+/).first().textContent()).match(/OF (\d+)/)[1]);
   for (let i = 1; i < total; i++) {
@@ -304,6 +304,70 @@ await run('photo', { width: 390, height: 844 }, 'light', async (page) => {
   const [c2] = await Promise.all([page.waitForEvent('filechooser'), page.getByRole('button', { name: 'Choose a photo' }).click()]);
   await c2.setFiles({ name: 'x.png', mimeType: 'image/png', buffer: Buffer.from(png, 'base64') });
   await text(page, 'did not return a usable answer');
+});
+
+// Indian metro food: rules, fasting, wishes with alternatives, taste cards.
+await run('indian', { width: 390, height: 844 }, 'light', async (page) => {
+  await onboard(page, false);
+  await page.goto(base + '/profile');
+  await text(page, 'Your food');
+  await page.getByRole('button', { name: 'Jain', exact: true }).click();
+  await page.getByRole('button', { name: 'Vegetarian', exact: true }).click();
+  await page.getByRole('button', { name: 'Add health options' }).click();
+  await page.getByRole('button', { name: 'Prediabetes' }).click();
+  const log = await stored(page, 'eatos.events.v1');
+  if (!log.includes('"rules":["jain"]') || !log.includes('"conditions":["prediabetes"]')) throw new Error('rules and conditions were not saved');
+  await shot(page, '22-your-food');
+
+  // The Jain rule is a hard rule: nothing with onion or garlic reaches Ask.
+  await page.goto(base + '/ask');
+  await page.getByLabel('Message EatOS').fill('dinner something warm');
+  await page.getByRole('button', { name: 'Send' }).click();
+  await text(page, 'options that fit');
+  const body = await page.evaluate(() => document.body.innerText);
+  for (const bad of ['biryani', 'Pav bhaji with', 'Aloo paratha']) if (body.includes(bad)) throw new Error(`a Jain rule was broken: ${bad}`);
+
+  // A wish that the rule blocks: the Jain version is offered.
+  await page.goto(base + '/wishes');
+  await page.getByLabel('What do you wish you could eat?').fill('pav bhaji');
+  await page.getByRole('button', { name: 'Find alternatives' }).click();
+  await text(page, 'Pav bhaji (Jain style)');
+  await text(page, 'Your rules');
+  await shot(page, '23-wish-alternatives');
+  await page.getByRole('button', { name: 'Save to my wish list' }).click();
+  await text(page, 'Saved to your wish list');
+
+  // Fasting today, and a gate when it would not be safe.
+  await page.goto(base + '/');
+  await page.getByRole('button', { name: 'Navratri fast' }).click();
+  await text(page, 'follow your navratri fast today');
+  await page.goto(base + '/profile');
+  await page.getByRole('button', { name: /Health options/ }).click();
+  await page.getByRole('button', { name: 'On insulin or sulfonylureas' }).click();
+  await page.goto(base + '/');
+  await text(page, 'needs your doctor');
+
+  // Taste cards teach the system.
+  await page.goto(base + '/taste');
+  await text(page, 'Would you eat this?');
+  await page.getByRole('button', { name: 'Yes, love it' }).click();
+  await page.getByRole('button', { name: 'Never for me' }).click();
+  const after = await stored(page, 'eatos.events.v1');
+  if (!after.includes('"verdict":"liked"') || !after.includes('"verdict":"never"')) throw new Error('taste answers were not saved');
+  await shot(page, '24-taste-cards');
+
+  // Things EatOS does not know are never waved through; skipping meals gets a kind answer; a night routine can be set.
+  await page.goto(base + '/wishes');
+  await page.getByLabel('What do you wish you could eat?').fill('protein bar');
+  await page.getByRole('button', { name: 'Find alternatives' }).click();
+  await text(page, 'does not know this dish yet');
+  await page.getByLabel('What do you wish you could eat?').fill('skip dinner to lose weight');
+  await page.getByRole('button', { name: 'Find alternatives' }).click();
+  await text(page, 'Regular meals are the plan');
+  await page.goto(base + '/profile');
+  await page.getByRole('button', { name: 'Night shift' }).click();
+  const night = await stored(page, 'eatos.events.v1');
+  if (!night.includes('"wake":900')) throw new Error('night routine not saved');
 });
 
 // Privacy: device encryption, unlock, encrypted backup, restore on a fresh device.

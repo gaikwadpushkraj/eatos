@@ -53,7 +53,7 @@
           "status": "done",
           "title": "Domain types: priorities, tasks, events, profile, members, foods, pantry",
           "acceptance": [
-            "P0\u2013P3 priority classes",
+            "P0–P3 priority classes",
             "Discriminated union of events"
           ]
         },
@@ -519,6 +519,120 @@
             "Apple Developer and Google Play accounts, signing credentials, store listings and privacy policy",
             "Answer Apple's export-compliance and Google's data-safety questionnaires",
             "First production build submitted with eas submit"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "P7",
+      "title": "Phase 7: Food intelligence for the Indian metro",
+      "summary": "Recommend what a person wants, needs and wishes for but cannot have, with kind alternatives, for a metropolitan Indian resident.",
+      "tasks": [
+        {
+          "key": "7.1",
+          "sprint": 10,
+          "area": "docs",
+          "status": "done",
+          "title": "Research: wants, needs, blocked wishes for the Indian metro resident",
+          "acceptance": [
+            "Five parallel research tracks: culture and region, medical and physiology, environment and lifestyle, recommender science and data collection, Indian food data and substitutions",
+            "Report with evidence tiers, a design, 8 personas and an assumptions list in docs/research"
+          ]
+        },
+        {
+          "key": "7.2",
+          "sprint": 10,
+          "area": "core",
+          "status": "done",
+          "title": "Indian dish catalogue",
+          "acceptance": [
+            "About 110 dishes with ingredients, cuisine, spice and tags the rules read",
+            "Regional coverage: Gujarati, Punjabi, South Indian, Bengali, Hyderabadi and Eid, Maharashtrian, Kerala",
+            "At least 25 no-cook dishes, 5 for dinner"
+          ]
+        },
+        {
+          "key": "7.3",
+          "sprint": 10,
+          "area": "core",
+          "status": "done",
+          "title": "Constraint engine and safety gates",
+          "acceptance": [
+            "Hard rules: allergies, coeliac, Jain, satvik, no onion or garlic, no egg, no beef, no pork, halal, pregnancy hazards",
+            "Whole-word matching so nothing hides inside another word",
+            "Declared conditions only rank food; EatOS never infers or diagnoses; asks a clinician where needed",
+            "Fasts are never planned for insulin, pregnancy, minors or eating-disorder history; skipping meals and fast weight loss get a kind refusal"
+          ]
+        },
+        {
+          "key": "7.4",
+          "sprint": 10,
+          "area": "core",
+          "status": "done",
+          "title": "Fasting days",
+          "acceptance": [
+            "Navratri, Ekadashi, Shravan and Ramzan from one tap, lapsing at midnight",
+            "Ramzan removes lunch and favours iftar dishes"
+          ]
+        },
+        {
+          "key": "7.5",
+          "sprint": 11,
+          "area": "core",
+          "status": "done",
+          "title": "Context: season, hour, kitchen, night routines",
+          "acceptance": [
+            "Season, monsoon and summer rules; late night relative to each person's sleep",
+            "Kitchen: full, basic, none",
+            "Night-shift routines schedule meals and water across midnight"
+          ]
+        },
+        {
+          "key": "7.6",
+          "sprint": 11,
+          "area": "core",
+          "status": "done",
+          "title": "Taste profile and taste cards",
+          "acceptance": [
+            "Cards start with the food a person grew up with, are safe for the whole table, respect kitchen and spice",
+            "Answers move later rankings"
+          ]
+        },
+        {
+          "key": "7.7",
+          "sprint": 11,
+          "area": "core",
+          "status": "done",
+          "title": "Wishes and alternatives",
+          "acceptance": [
+            "Why a wish is blocked, a ladder of versions, near neighbours and same-job dishes, all passing every rule",
+            "Unknown dishes are never waved through",
+            "Whole-word matching, health-filtered alternatives"
+          ]
+        },
+        {
+          "key": "7.8",
+          "sprint": 11,
+          "area": "app",
+          "status": "done",
+          "title": "App: Your food, fasting, wish list, taste cards, household rules",
+          "acceptance": [
+            "Profile: diet, rules, spice, cuisines, day shape, kitchen, optional health",
+            "Today: fasting card and craving entry; plain-language labels",
+            "Household members can carry rules and conditions",
+            "Larger minimum text"
+          ]
+        },
+        {
+          "key": "7.9",
+          "sprint": 12,
+          "area": "qa",
+          "status": "done",
+          "title": "Persona agents and fixes",
+          "acceptance": [
+            "Eight persona agents drive the real web build and report in persona_reports",
+            "Their findings are fixed or logged in docs/DECISIONS.md",
+            "Persona harness runs in unit tests: zero hard-rule violations in any month or hour"
           ]
         }
       ]

@@ -107,6 +107,13 @@ export function createApi({ dataDir, clock = Date.now, dataKey, kdf, corsOrigin:
           const q = (await readJson(req)) as Query;
           return send(res, 200, { results: k.recommend(q, now) });
         }
+        case 'POST /v1/wish': {
+          const body = (await readJson(req)) as { text?: unknown };
+          if (typeof body.text !== 'string' || !body.text.trim() || body.text.length > 200) throw new HttpError(400, 'text is required (up to 200 characters)');
+          return send(res, 200, k.wish(body.text, now));
+        }
+        case 'GET /v1/taste-cards':
+          return send(res, 200, { foods: k.tasteCards(now, 8) });
         case 'POST /v1/ask': {
           const body = (await readJson(req)) as { text?: unknown };
           if (typeof body.text !== 'string' || !body.text.trim()) throw new HttpError(400, 'text is required');

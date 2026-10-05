@@ -51,7 +51,7 @@ describe('quick add: where and until when', () => {
   it('uses typical places and shelf lives, and says the date is a guess', () => {
     const milk = one('milk');
     expect(milk).toMatchObject({ location: 'fridge', guessed: true, known: true });
-    expect(milk.expiresAt).toBe(day(0) + 7 * DAY);
+    expect(milk.expiresAt).toBe(day(0) + 5 * DAY);
     expect(one('basmati rice')).toMatchObject({ location: 'cupboard', known: true });
     expect(one('dragonfruit')).toMatchObject({ known: false, location: 'cupboard', guessed: true });
   });
@@ -122,5 +122,14 @@ describe('quick add: events and restock', () => {
     ]);
     expect(restockSuggestions(k.state, NOW)).toEqual([{ name: 'eggs', times: 2 }, { name: 'milk', times: 1 }]);
     expect(restockSuggestions(k.state, NOW, 1)).toHaveLength(1);
+  });
+});
+
+describe('quick add: food safety defaults', () => {
+  it('keeps raw meat short, dairy cold and eggs for weeks', () => {
+    expect(one('chicken')).toMatchObject({ location: 'fridge', expiresAt: day(0) + 2 * DAY });
+    expect(one('curd')).toMatchObject({ location: 'fridge', expiresAt: day(0) + 5 * DAY });
+    expect(one('paneer')).toMatchObject({ location: 'fridge' });
+    expect(one('eggs')).toMatchObject({ location: 'fridge', expiresAt: day(0) + 21 * DAY });
   });
 });

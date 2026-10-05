@@ -1,8 +1,12 @@
-import type { Food, MealSlot, Member, NeedKind } from './types';
+import type { FastingKind, Food, MealSlot, Member, NeedKind } from './types';
 import type { State } from './state';
 import { fitFor } from './household';
 import { preferences, recentlyEaten } from './memory';
 import { pantryNames, useSoon } from './housekeeping';
+import { FASTING, fastingGate, hasWord, healthFit } from './rules';
+import { contextAt, contextFit } from './context';
+import { affinityScore, tasteAffinity } from './taste';
+import { dayStart } from './time';
 
 export interface Query {
   slot?: MealSlot;
@@ -15,6 +19,10 @@ export interface Query {
   memberIds?: string[];
   need?: NeedKind;
   light?: boolean;
+  /** Words that name a dish, ingredient or cuisine to favour. */
+  include?: string[];
+  /** Wanted protein in grams; dishes below it rank lower. */
+  minProteinG?: number;
   k?: number;
 }
 
@@ -26,6 +34,15 @@ export interface Recommendation {
   missing: string[];
 }
 
+/** The fast that applies today for these eaters, or why it is not planned. */
+export function activeFast(state: State, members: Member[], now: number): { kind?: FastingKind; gate?: string } {
+  const f = state.fasting;
+  const off = state.profile?.tzOffsetMin ?? 0;
+  if (!f || f.since > now || dayStart(f.since, off) !== dayStart(now, off)) return {};
+  const gate = fastingGate(members);
+  return gate ? { gate } : { kind: f.kind };
+}
+
 function eaters(state: State, q: Query): Member[] {
   const all = state.profile?.members ?? [];
   if (!q.memberIds?.length) return all;
@@ -34,7 +51,7 @@ function eaters(state: State, q: Query): Member[] {
 
 function matchesWord(food: Food, word: string): boolean {
   const w = word.toLowerCase();
-  return food.name.toLowerCase().includes(w) || food.tags.includes(w) || food.ingredients.some((i) => i.includes(w));
+  return hasWord(food.name, w) || food.tags.includes(w) || food.ingredients.some((i) => hasWord(i, w)) || food.cuisine?.replace('-indian', '') === w;
 }
 
 /**
@@ -48,6 +65,13 @@ export function recommend(state: State, catalog: Food[], q: Query, now: number):
   const have = pantryNames(state, now);
   const expiring = useSoon(state, now).map((p) => p.name.toLowerCase());
   const safe = state.safeModeSince !== undefined;
+  const ctx = contextAt(now, state.profile?.tzOffsetMin ?? 0, state.profile?.routine);
+  const aff = tasteAffinity(state, catalog, now);
+  const fast = activeFast(state, members, now);
+  const rule = fast.kind ? FASTING[fast.kind] : undefined;
+  // A fast day with no meal in this slot (for example lunch in Ramzan).
+  if (rule && q.slot && rule.skipSlots.includes(q.slot)) return [];
+  const kitchen = state.profile?.kitchen ?? 'full';
 
   const results: Recommendation[] = [];
   for (const food of catalog) {
@@ -55,6 +79,9 @@ export function recommend(state: State, catalog: Food[], q: Query, now: number):
     if (q.maxPrepMin !== undefined && food.prepMin > q.maxPrepMin) continue;
     if (q.exclude?.some((w) => matchesWord(food, w))) continue;
     if (prefs[food.id]?.excluded) continue;
+    if (rule?.deny(food)) continue;
+    if (kitchen === 'none' && !food.tags.includes('no-cook')) continue;
+    if (kitchen !== 'full' && food.tags.includes('oven')) continue;
     const fits = members.map((m) => ({ m, fit: fitFor(food, m) }));
     if (fits.some((f) => f.fit.hard)) continue;
 
@@ -66,11 +93,48 @@ export function recommend(state: State, catalog: Food[], q: Query, now: number):
     const everyone = members.length > 1 && soft.length === 0;
     if (everyone) score += 1;
 
+    const need = q.need;
+    // Declared conditions, spice and cuisine: soft, never removing a food.
+    for (const { m } of fits) {
+      const h = healthFit(food, m);
+      // Someone's health nudge is never diluted by the rest of the table; a good fit for one is shared.
+      score += h.delta < 0 ? h.delta : h.delta / Math.max(1, members.length);
+      for (const r of h.reasons) if (members.length === 1 && !reasons.includes(r)) reasons.push(r);
+      if (m.cuisines?.length && food.cuisine && m.cuisines.includes(food.cuisine)) {
+        score += 1.5 / members.length;
+        if (members.length === 1) reasons.push('A taste you grew up with');
+      }
+      if (m.spice !== undefined && food.spice === m.spice) score += 0.5 / members.length;
+    }
+    const cf = contextFit(food, ctx);
+    score += cf.delta;
+    reasons.push(...cf.reasons);
+    const liked = affinityScore(food, aff);
+    score += liked;
+    if (liked >= 1.5) reasons.push('Close to dishes you enjoy');
+    if (rule && rule.label && !reasons.includes(`Fits your ${rule.label.toLowerCase()}`)) reasons.push(`Fits your ${rule.label.toLowerCase()}`);
+
+    for (const word of q.include ?? []) {
+      if (matchesWord(food, word)) {
+        score += 3;
+        if (!reasons.includes(`Matches “${word}”`)) reasons.push(`Matches “${word}”`);
+      }
+    }
+    if (q.minProteinG !== undefined && food.nutrients.proteinG < q.minProteinG) score -= (q.minProteinG - food.nutrients.proteinG) / 6;
+    // A recovery snack has to bring protein; water alone is not one.
+    if (need === 'recovery' && food.nutrients.proteinG < 10) score -= 4;
+    if (fast.kind === 'ramzan' && !fast.gate) {
+      if (q.slot === 'dinner' && food.tags.includes('iftar')) {
+        score += 3;
+        reasons.push('A gentle way to break the fast');
+      }
+      if (q.slot === 'breakfast' && (food.nutrients.fibreG >= 5 || food.nutrients.proteinG >= 12)) score += 1.5;
+    }
+
     for (const tag of q.tags ?? []) {
       if (food.tags.includes(tag)) score += 2;
     }
 
-    const need = q.need;
     if (need === 'protein' || need === 'recovery') {
       score += food.nutrients.proteinG / 8;
       if (food.nutrients.proteinG >= 20) reasons.push(`${food.nutrients.proteinG} g protein closes today's gap`);
@@ -107,6 +171,17 @@ export function recommend(state: State, catalog: Food[], q: Query, now: number):
     results.push({ food, score, reasons, missing });
   }
   return results.sort((a, b) => b.score - a.score || a.food.prepMin - b.food.prepMin).slice(0, q.k ?? 3);
+}
+
+/** Plain notes about a request: why a fast was not planned, things to ask a clinician. */
+export function queryNotes(state: State, q: Query, now: number): string[] {
+  const members = eaters(state, q);
+  const notes: string[] = [];
+  const fast = activeFast(state, members, now);
+  if (fast.gate) notes.push(fast.gate);
+  const fl = fast.kind ? FASTING[fast.kind] : undefined;
+  if (fl && q.slot && fl.skipSlots.includes(q.slot)) notes.push(`${fl.label}: no ${q.slot} today.`);
+  return notes;
 }
 
 /** Uniform pick from the shortlist for "Choose for me". */
