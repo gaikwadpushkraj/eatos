@@ -342,6 +342,38 @@
           "acceptance": [
             "Event log saved on the device and restored on launch"
           ]
+        },
+        {
+          "key": "4.9",
+          "sprint": 6,
+          "area": "app",
+          "status": "done",
+          "title": "Quick add: one smart box for the pantry",
+          "acceptance": [
+            "Say it in a sentence: \"2 eggs, spinach till Friday, rice 1 kg in the cupboard\"",
+            "Understands amounts, units, number words, places and dates in words, with typical shelf lives when no date is given",
+            "Live preview of what was understood; change a place or remove an item with a tap",
+            "Enter or one button adds everything",
+            "One-tap restock chips for things used up recently",
+            "Whole names only: plant milk is never reduced to dairy milk",
+            "Accessible in every state, covered by the browser tests"
+          ]
+        },
+        {
+          "key": "4.10",
+          "sprint": 6,
+          "area": "app",
+          "status": "done",
+          "title": "Photo add: fill pantry details from a photo",
+          "acceptance": [
+            "Take a photo, choose a photo, and on the web drop or paste one",
+            "Optional, uses the person's own Claude key; says how to turn it on when it is off",
+            "Only the resized photo and a fixed instruction are sent; the photo is never stored",
+            "Reads names, amounts, places and printed use-by dates; estimates shelf life otherwise and says so",
+            "Model output is validated field by field; text in a photo is data, not instructions",
+            "Results appear in the quick add preview and nothing is saved until confirmed",
+            "Failures explain themselves; covered by unit and browser tests"
+          ]
         }
       ]
     },
@@ -472,7 +504,8 @@
             "Web build deploys to GitHub Pages and works under a sub-path",
             "A tagged release re-runs every check and attaches the web build",
             "API ships as a Docker image with encrypted storage required",
-            "docs/RELEASE.md lists every step, including the ones only the account owner can do"
+            "docs/RELEASE.md lists every step, including the ones only the account owner can do",
+            "Web app is live on GitHub Pages: https://gaikwadpushkraj.github.io/eatos/"
           ]
         },
         {
@@ -480,9 +513,8 @@
           "sprint": 9,
           "area": "release",
           "status": "todo",
-          "title": "Publish to the app stores and turn on Pages (owner action)",
+          "title": "Publish to the app stores (owner action)",
           "acceptance": [
-            "Repository: Settings > Pages > Source: GitHub Actions",
             "Expo account, eas init, and the EXPO_TOKEN secret",
             "Apple Developer and Google Play accounts, signing credentials, store listings and privacy policy",
             "Answer Apple's export-compliance and Google's data-safety questionnaires",

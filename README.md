@@ -17,6 +17,7 @@ recommendations.
 - **Recommends food with reasons**, never breaking an allergy or diet for anyone eating, using what is in your pantry and what is about to expire.
 - **Looks after a household**: each person's needs, a table of who each dinner works for, and "two wishes, one meal" swaps such as a nut-free pesto.
 - **Plans the week**, with batch cooking, and builds the grocery list.
+- **Adds to your pantry the way you'd say it**: type or dictate "2 eggs, spinach till Friday, rice 1 kg" and confirm with one tap; things you've run out of come back as one-tap suggestions. Or drop, paste or snap a photo of your shopping, a shelf or a receipt and Claude (your own key, off by default) fills in names, amounts, places and printed use-by dates for you to confirm.
 - **Ask EatOS** in plain words ("something warm, 15 minutes, no rice"). It works on the device with no network; you can optionally let Claude read it with your own key.
 - **Connects to your day**: calendar (.ics), Apple Health export or CSV, grocery receipts, delivery menus.
 - **Stays private**: data lives on your device, optionally encrypted with a passphrase; sync to your own server is off by default. Export, encrypted backups, restore and full delete are built in.

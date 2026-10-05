@@ -136,3 +136,31 @@ request is rejected with a reason); it can never throw inside a reducer or
 make a person's data unloadable. The sync server keeps each log in
 **arrival order**, because a device's sync position is an index into it;
 it is never re-sorted by time except when compaction starts a new epoch.
+
+## Quick add (`quickadd.ts`)
+
+Adding to the pantry is one sentence, not a form. `parseQuickAdd` splits a
+sentence into items and reads amounts ("2", "500g", "a dozen", "x4"),
+places ("in the freezer", "frozen"), and use-by dates in words ("till
+Friday", "in 3 days", "by 12 Oct"). Without a date it uses the typical
+shelf life for that food and place, and says so. Names keep the spelling
+recipes use so the pantry satisfies them; a phrase with extra words is
+never reduced to a known word inside it ("almond milk" is not "milk").
+`restockSuggestions` lists what was used up in the last 60 days and is
+not in the pantry now, most often first.
+
+## Photo add (`photo.ts`, app `src/photo.ts`, `src/llm.ts`)
+
+Optional and off unless Claude is enabled with the person's own key. The
+kernel does no I/O: `readPhotoItems` takes a `PhotoCompleter` from the shell,
+which sends one photo (resized to at most 1568 px, JPEG) with a fixed
+instruction and a strict JSON schema. Nothing else is sent: no profile,
+allergies, pantry or history. The photo is never stored. The reply is
+untrusted: `sanitizePhotoItems` checks every field, keeps only real dates
+within a sensible range (otherwise it estimates a typical shelf life and
+says so), clamps amounts, drops duplicates and caps the list at 20. The
+result becomes the same preview items as quick add, so nothing is saved
+until the person confirms. Text printed in a photo is treated as data.
+A missing key, bad image, timeout, refusal or unreadable answer explains
+itself and changes nothing. Inputs: take a photo, choose a photo, and on the
+web drag-and-drop or paste.
