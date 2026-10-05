@@ -20,3 +20,4 @@ export * from './drivers/receipt';
 export * from './drivers/delivery';
 export * from './llm-ask';
 export * from './vault';
+export * from './validate';

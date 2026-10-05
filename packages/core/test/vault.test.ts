@@ -71,7 +71,7 @@ describe('vault', () => {
 });
 
 describe('backups', () => {
-  const events: EatEvent[] = [{ type: 'water.logged', at: DAY0, ml: 300, id: 'w1' }, { type: 'sleep.logged', at: DAY0 + 5 } as EatEvent];
+  const events: EatEvent[] = [{ type: 'water.logged', at: DAY0, ml: 300, id: 'w1' }, { type: 'sleep.logged', at: DAY0 + 5, hours: 7 } as EatEvent];
 
   it('round-trips an encrypted backup and requires the passphrase', async () => {
     const text = await encryptBackup(events, 'pw', seeded(6), DAY0, FAST);

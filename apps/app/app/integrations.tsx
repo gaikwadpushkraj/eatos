@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { View } from 'react-native';
-import { DAY, deliveryOptions, newCalendarEvents, parseAppleHealth, parseHealthCsv, parseIcs, receiptEvents } from '@eatos/core';
+import { DAY, deliveryOptions, newCalendarEvents, orderEvents, parseAppleHealth, parseHealthCsv, parseIcs, parseMenu, receiptEvents } from '@eatos/core';
 import type { EatEvent, MenuItem } from '@eatos/core';
 import { useKernel } from '../src/kernel';
 import { pickTextFile } from '../src/pick';
@@ -135,15 +135,14 @@ function DeliveryCard() {
   const [error, setError] = useState('');
 
   const load = (source: string) => {
-    try {
-      const parsed = JSON.parse(source) as MenuItem[];
-      if (!Array.isArray(parsed) || parsed.some((m) => !m.id || !m.name)) throw new Error('Each dish needs an id and a name.');
-      setMenu(parsed);
-      setError('');
-    } catch (e) {
+    const { items, problems } = parseMenu(source);
+    if (!items.length) {
       setMenu(null);
-      setError(e instanceof Error ? e.message : 'That is not a valid menu.');
+      setError(problems[0] ?? 'No dishes found.');
+      return;
     }
+    setMenu(items);
+    setError(problems.length ? `${problems.length} dish${problems.length === 1 ? '' : 'es'} skipped: ${problems[0]}` : '');
   };
 
   const shown = menu ? deliveryOptions(kernel.state, menu, { k: 5 }, now) : [];
@@ -165,7 +164,7 @@ function DeliveryCard() {
             <Card key={o.item.id} tone="soft" padding={12}>
               <Txt v="bodyStrong">{`${o.item.name} · ${o.item.restaurant}`}</Txt>
               <Txt v="small">{[o.item.priceCents ? `£${(o.item.priceCents / 100).toFixed(2)}` : '', ...o.reasons].filter(Boolean).join(' · ')}</Txt>
-              <Btn small kind="outline" label="I ordered this" onPress={() => submitMany([{ type: 'intake.logged', slot: kernel.now(now).nextMeal?.slot ?? 'dinner', nutrients: { kcal: o.item.kcal ?? 600, proteinG: o.item.proteinG ?? 0 }, memberId: kernel.state.profile?.selfId }])} />
+              <Btn small kind="outline" label="I ordered this" onPress={() => submitMany(orderEvents(kernel.state, o.item, kernel.now(now).nextMeal?.slot ?? 'dinner', now) as never)} />
             </Card>
           ))}
           {!shown.length ? <Txt v="small">Nothing on this menu is safe for everyone eating.</Txt> : null}

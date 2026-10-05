@@ -1,5 +1,6 @@
 import type { EatEvent } from '../types';
 import { DAY, MINUTE } from '../time';
+import { isValidEvent } from '../validate';
 
 /**
  * Calendar driver: turns an iCalendar (.ics) feed into `calendar.busy`
@@ -191,7 +192,8 @@ export function parseIcs(text: string, opts: IcsOptions, tzOffsetMin = 0): EatEv
       });
     }
   }
-  return out.sort((a, b) => (a as { start: number }).start - (b as { start: number }).start);
+  // Only well-formed events leave the driver (for example, timed events over a week long are not meetings).
+  return out.filter(isValidEvent).sort((a, b) => (a as { start: number }).start - (b as { start: number }).start);
 }
 
 /** Events a feed would add that the kernel does not have yet. */

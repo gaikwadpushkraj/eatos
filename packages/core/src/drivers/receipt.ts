@@ -1,6 +1,7 @@
 import type { Allergen, EatEvent, PantryLocation } from '../types';
 import { CATALOG } from '../catalog';
 import { DAY, hashString } from '../time';
+import { isValidEvent } from '../validate';
 
 /**
  * Grocery driver: turns a pasted or exported receipt into pantry items.
@@ -114,7 +115,7 @@ export function receiptEvents(text: string, boughtAt: number, source = 'receipt'
       },
     };
   });
-  return { events, unknown };
+  return { events: events.filter(isValidEvent), unknown };
 }
 
 /** Allergens that commonly hide in a receipt item, for a heads-up in the UI. */

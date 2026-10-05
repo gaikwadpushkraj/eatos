@@ -126,3 +126,13 @@ are clamped, exclusions must be single lowercase words. A missing key,
 error, refusal, timeout, bad JSON or empty answer all fall back to the
 rule parser. Allergies and diets are never part of the query the model
 shapes; the recommender enforces them afterwards for everyone eating.
+
+## Trust boundaries (`validate.ts`)
+
+Everything that enters the kernel from outside is checked per event type
+before it reaches a reducer: sync from a server or device, backups, driver
+output, and stored logs on load. A malformed event is dropped (or the
+request is rejected with a reason); it can never throw inside a reducer or
+make a person's data unloadable. The sync server keeps each log in
+**arrival order**, because a device's sync position is an index into it;
+it is never re-sorted by time except when compaction starts a new epoch.

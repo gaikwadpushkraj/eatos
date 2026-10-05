@@ -221,4 +221,49 @@ describe('EatOS API', () => {
       expect((await call('GET', '/v1/events', undefined, 'keep')).body.events).toHaveLength(1);
     });
   });
+
+  describe('robustness', () => {
+    const ev = (id: string, at: number, ml = 100) => ({ id, type: 'water.logged', at, ml });
+    const sync = (body: unknown, user = 'rob') => call('POST', '/v1/sync', body, user);
+
+    it('keeps arrival order across a restart, so a device never skips an event', async () => {
+      // Arrival order is [late-timestamp, early-timestamp]: time order would swap them.
+      await sync({ since: 0, events: [ev('E1', T('10:00'))] });
+      const a = (await sync({ since: 0, events: [] })).body; // device A has seen position 1
+      expect(a.cursor).toBe(1);
+      await sync({ since: 0, events: [ev('E2', T('08:00'))] }); // device B adds an earlier-dated event later
+
+      await new Promise((r) => server.close(r));
+      await start();
+      const after = (await sync({ since: a.cursor, epoch: a.epoch, events: [] })).body;
+      expect(after.events.map((e: { id: string }) => e.id)).toEqual(['E2']);
+    });
+
+    it('rejects malformed events with a clear message and leaves the batch unapplied', async () => {
+      for (const bad of [
+        { type: 'pantry.added', at: 1 },
+        { type: 'water.logged', at: DAY0, ml: -5 },
+        { type: 'water.logged', at: DAY0, ml: 'lots' },
+        { type: 'calendar.busy', at: DAY0, start: 5, end: 1 },
+        { type: 'profile.set', at: DAY0, profile: { selfId: 'x' } },
+        { type: 'feedback', at: DAY0, foodId: 'a', verdict: 'maybe' },
+      ]) {
+        const res = await call('POST', '/v1/events', [{ type: 'water.logged', at: DAY0, ml: 1 }, bad], 'strict');
+        expect(res.status).toBe(400);
+        expect(res.body.error.length).toBeGreaterThan(5);
+      }
+      expect((await call('GET', '/v1/events', undefined, 'strict')).body.events).toHaveLength(0);
+      expect((await sync({ since: 0, events: [{ id: 's1', type: 'pantry.added', at: 1 }] }, 'strict')).status).toBe(400);
+      expect((await call('POST', '/v1/events', Array.from({ length: 1001 }, () => ({ type: 'water.logged', ml: 1 })), 'strict')).status).toBe(413);
+    });
+
+    it('a stored log containing a malformed event still loads, skipping only that event', async () => {
+      writeFileSync(join(dir, 'dirty.json'), JSON.stringify([{ type: 'pantry.added', at: 1, id: 'bad' }, ev('ok1', T('09:00'), 250), { nope: true }]));
+      await new Promise((r) => server.close(r));
+      await start();
+      const res = await call('GET', '/v1/health', undefined, 'dirty');
+      expect(res.status).toBe(200);
+      expect(res.body.checks[0].actual).toBe(250);
+    });
+  });
 });

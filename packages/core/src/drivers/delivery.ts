@@ -106,3 +106,48 @@ export function orderEvents(state: State, item: MenuItem, slot: MealSlot, at: nu
   ];
   return events;
 }
+
+const ALLERGEN_LIST = ['nuts', 'peanuts', 'dairy', 'gluten', 'egg', 'soy', 'fish', 'shellfish', 'sesame'];
+
+/**
+ * Reads a pasted menu (JSON text) and keeps only well-formed dishes. Numbers
+ * must be numbers; allergens must be known; anything else is dropped with a
+ * note, so the app never builds events from nonsense.
+ */
+export function parseMenu(text: string): { items: MenuItem[]; problems: string[] } {
+  let raw: unknown;
+  try {
+    raw = JSON.parse(text);
+  } catch {
+    return { items: [], problems: ['That is not valid JSON.'] };
+  }
+  if (!Array.isArray(raw)) return { items: [], problems: ['A menu is a list of dishes.'] };
+  const items: MenuItem[] = [];
+  const problems: string[] = [];
+  const ids = new Set<string>();
+  raw.slice(0, 500).forEach((r, i) => {
+    const d = r as Record<string, unknown>;
+    const label = `Dish ${i + 1}`;
+    const num = (v: unknown) => v === undefined || (typeof v === 'number' && Number.isFinite(v) && v >= 0 && v < 1e6);
+    if (!d || typeof d !== 'object' || typeof d.id !== 'string' || !d.id || typeof d.name !== 'string' || !d.name) return void problems.push(`${label} needs an id and a name.`);
+    if (ids.has(d.id)) return void problems.push(`${label} repeats the id "${d.id}".`);
+    if (!num(d.priceCents) || !num(d.kcal) || !num(d.proteinG) || !num(d.etaMin)) return void problems.push(`${label} ("${d.name}") has a number that is not valid.`);
+    if (d.allergens !== undefined && !(Array.isArray(d.allergens) && d.allergens.every((a) => typeof a === 'string' && ALLERGEN_LIST.includes(a)))) return void problems.push(`${label} ("${d.name}") lists an unknown allergen.`);
+    if (d.diet !== undefined && !(typeof d.diet === 'string' && d.diet in DIET_RANK)) return void problems.push(`${label} ("${d.name}") has an unknown diet.`);
+    if (d.tags !== undefined && !(Array.isArray(d.tags) && d.tags.every((t) => typeof t === 'string'))) return void problems.push(`${label} ("${d.name}") has invalid tags.`);
+    ids.add(d.id);
+    items.push({
+      id: d.id.slice(0, 100),
+      name: d.name.slice(0, 200),
+      restaurant: typeof d.restaurant === 'string' ? d.restaurant.slice(0, 200) : '',
+      ...(d.priceCents !== undefined ? { priceCents: d.priceCents as number } : {}),
+      ...(d.allergens !== undefined ? { allergens: d.allergens as Allergen[] } : {}),
+      ...(d.diet !== undefined ? { diet: d.diet as Diet } : {}),
+      ...(d.tags !== undefined ? { tags: (d.tags as string[]).slice(0, 20) } : {}),
+      ...(d.kcal !== undefined ? { kcal: d.kcal as number } : {}),
+      ...(d.proteinG !== undefined ? { proteinG: d.proteinG as number } : {}),
+      ...(d.etaMin !== undefined ? { etaMin: d.etaMin as number } : {}),
+    });
+  });
+  return { items, problems };
+}

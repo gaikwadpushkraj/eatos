@@ -14,6 +14,7 @@ import { fitMatrix, resolveRequest } from './household';
 import { explainToday } from './explain';
 import { groceryList, planWeek } from './plan';
 import { hashString, newId } from './time';
+import { isValidEvent } from './validate';
 
 export interface NowView {
   next?: Task;
@@ -48,7 +49,8 @@ export class Kernel {
 
   constructor(opts: KernelOptions = {}) {
     this.catalog = opts.catalog ?? CATALOG;
-    this.s = opts.events ? replay(opts.events.map(withId)) : emptyState();
+    // Stored logs are trusted less than live input: skip anything malformed instead of failing to start.
+    this.s = opts.events ? replay(opts.events.filter(isValidEvent).map(withId)) : emptyState();
     this.onEvent = opts.onEvent;
   }
 
@@ -80,7 +82,8 @@ export class Kernel {
    */
   merge(events: EatEvent[]): EatEvent[] {
     const have = new Set(this.s.events.map((e) => e.id));
-    const added = events.filter((e) => e.id && !have.has(e.id) && (have.add(e.id), true));
+    // Events from other devices or a server are checked before they reach the reducers.
+    const added = events.filter((e) => isValidEvent(e) && e.id && !have.has(e.id) && (have.add(e.id), true));
     if (!added.length) return [];
     this.s = replay([...this.s.events, ...added]);
     for (const e of added) this.onEvent?.(e, this.s);

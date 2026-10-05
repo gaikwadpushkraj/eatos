@@ -115,3 +115,23 @@ describe('delivery driver', () => {
     expect(k.events.at(-1)!.at).toBeGreaterThan(DAY0);
   });
 });
+
+describe('menu parsing', () => {
+  it('keeps good dishes and explains the rest', async () => {
+    const { parseMenu } = await import('../src');
+    const { items, problems } = parseMenu(JSON.stringify([
+      { id: 'a', name: 'Good', allergens: ['dairy'], diet: 'vegetarian', kcal: 500, etaMin: 20 },
+      { id: 'b', name: 'Bad number', kcal: 'lots' },
+      { id: 'c', name: 'Bad allergen', allergens: ['gluten-free'] },
+      { id: 'a', name: 'Duplicate' },
+      { name: 'No id' },
+      { id: 'd', name: 'Bad diet', diet: 'carnivore' },
+      { id: 'e', name: 'No info' },
+    ]));
+    expect(items.map((i) => i.id)).toEqual(['a', 'e']);
+    expect(items[1]!.allergens).toBeUndefined(); // unknown stays unknown, never "none"
+    expect(problems).toHaveLength(5);
+    expect(parseMenu('nope').problems[0]).toMatch(/valid JSON/);
+    expect(parseMenu('{}').problems[0]).toMatch(/list/);
+  });
+});

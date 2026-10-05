@@ -1,5 +1,6 @@
 import type { EatEvent } from '../types';
 import { HOUR, MINUTE } from '../time';
+import { isValidEvent } from '../validate';
 
 /**
  * Health driver: turns exported health data into EatOS events.
@@ -94,7 +95,7 @@ export function parseAppleHealth(xml: string, opts: HealthImportOptions = {}): E
     }
   }
   flush();
-  return events.sort((x, y) => x.at - y.at);
+  return events.filter(isValidEvent).sort((x, y) => x.at - y.at);
 }
 
 /** `type,start,end,value` rows. Dates are ISO or "YYYY-MM-DD HH:MM:SS +0000". */
@@ -120,5 +121,5 @@ export function parseHealthCsv(csv: string, opts: HealthImportOptions = {}): Eat
       events.push({ type: 'water.logged', id: `health:water:${start}`, at: to, ml: Math.round(value) });
     }
   }
-  return events.sort((x, y) => x.at - y.at);
+  return events.filter(isValidEvent).sort((x, y) => x.at - y.at);
 }

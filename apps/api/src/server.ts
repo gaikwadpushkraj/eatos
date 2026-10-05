@@ -1,15 +1,9 @@
 import { createServer } from 'node:http';
 import type { IncomingMessage, Server, ServerResponse } from 'node:http';
 import type { EatEvent, Query, SyncRequest } from '@eatos/core';
-import { makeBackup } from '@eatos/core';
+import { eventProblem, makeBackup } from '@eatos/core';
 import { Store, StoreLockedError, validUserId } from './store';
 import type { StoreOptions } from './store';
-
-const EVENT_TYPES = new Set<EatEvent['type']>([
-  'profile.set', 'member.added', 'member.removed', 'intake.logged', 'water.logged', 'workout.completed',
-  'sleep.logged', 'calendar.busy', 'illness.started', 'illness.ended', 'pantry.added', 'pantry.used',
-  'pantry.removed', 'feedback', 'task.done', 'task.skipped', 'medication.taken',
-]);
 
 const MAX_BODY = 1_000_000;
 
@@ -50,11 +44,11 @@ function send(res: ServerResponse, status: number, body: unknown) {
 }
 
 function validateEvent(raw: unknown, now: number): EatEvent {
-  if (!raw || typeof raw !== 'object') throw new HttpError(400, 'event must be an object');
-  const e = raw as Record<string, unknown>;
-  if (typeof e.type !== 'string' || !EVENT_TYPES.has(e.type as EatEvent['type'])) throw new HttpError(400, `unknown event type: ${String(e.type)}`);
-  if (e.at !== undefined && typeof e.at !== 'number') throw new HttpError(400, 'at must be epoch ms');
-  return { ...e, at: (e.at as number | undefined) ?? now } as EatEvent;
+  // Stamp events without a time, then check the whole shape so a bad one never reaches the kernel or the log.
+  const stamped = raw && typeof raw === 'object' && !Array.isArray(raw) && (raw as { at?: unknown }).at === undefined ? { ...(raw as object), at: now } : raw;
+  const problem = eventProblem(stamped);
+  if (problem) throw new HttpError(400, problem);
+  return stamped as EatEvent;
 }
 
 export interface ServerOptions extends StoreOptions {
@@ -91,7 +85,10 @@ export function createApi({ dataDir, clock = Date.now, dataKey, kdf, corsOrigin:
         case 'POST /v1/events': {
           const body = await readJson(req);
           const list = Array.isArray(body) ? body : [body];
-          const accepted = list.map((raw) => k.submit(validateEvent(raw, now)));
+          if (list.length > 1000) throw new HttpError(413, 'at most 1000 events per request');
+          // Check the whole batch first so a bad event never leaves it half applied.
+          const checked = list.map((raw) => validateEvent(raw, now));
+          const accepted = checked.map((e) => k.submit(e));
           return send(res, 201, { accepted });
         }
         case 'GET /v1/events':
@@ -139,6 +136,7 @@ export function createApi({ dataDir, clock = Date.now, dataKey, kdf, corsOrigin:
           if (typeof since !== 'number' || !Number.isInteger(since)) throw new HttpError(400, 'since must be an integer');
           if (body.epoch !== undefined && typeof body.epoch !== 'string') throw new HttpError(400, 'epoch must be a string');
           const raw = Array.isArray(body.events) ? body.events : [];
+          if (raw.length > 20_000) throw new HttpError(413, 'too many events in one sync');
           const events = raw.map((e) => {
             const ev = validateEvent(e, now);
             if (typeof ev.id !== 'string' || !ev.id) throw new HttpError(400, 'synced events need an id');

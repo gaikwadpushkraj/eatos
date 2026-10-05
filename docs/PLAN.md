@@ -94,18 +94,19 @@ Sprint 6
 - 4.7 Responsive web layout (dashboard on wide screens)
 - 4.8 Local persistence of the event log
 
-### Phase 5: Sync and integrations (Sprints 7 and 8)
+### Phase 5: Sync and integrations (Sprints 7 and 8, done)
 - 5.1 Device to server sync of event logs (done)
-- 5.2 Calendar driver
-- 5.3 Health data and wearable drivers
-- 5.4 Grocery and delivery drivers
-- 5.5 Optional LLM adapter for Ask EatOS
+- 5.2 Calendar driver (done)
+- 5.3 Health data and wearable drivers (done)
+- 5.4 Grocery and delivery drivers (done)
+- 5.5 Optional LLM adapter for Ask EatOS (done)
 
-### Phase 6: Hardening and release (Sprint 9, future)
+### Phase 6: Hardening and release (Sprint 9)
 - 6.1 Encryption at rest and data export or delete
-- 6.2 Accessibility audit
-- 6.3 End-to-end tests
-- 6.4 Store and web release
+- 6.2 Accessibility audit (done)
+- 6.3 End-to-end tests (done)
+- 6.4 Release pipeline: app config, icons, EAS, Pages, Docker, release guide (done)
+- 6.5 Publish to the app stores and turn on Pages (owner action: needs your accounts)
 
 ## Definition of done
 - Code is typed, tested with Vitest and passes `pnpm -r typecheck` and `pnpm -r test`.

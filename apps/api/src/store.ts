@@ -1,7 +1,7 @@
 import { mkdirSync, readFileSync, writeFileSync, existsSync, renameSync, rmSync } from 'node:fs';
 import { join } from 'node:path';
 import { randomBytes, randomUUID } from 'node:crypto';
-import { DEFAULT_KDF, Kernel, Vault, isEnvelope, serveSync } from '@eatos/core';
+import { DEFAULT_KDF, Kernel, Vault, isEnvelope, isValidEvent, serveSync, withId } from '@eatos/core';
 import type { EatEvent, KdfParams, SyncRequest, SyncResponse } from '@eatos/core';
 
 const USER_ID = /^[a-zA-Z0-9_-]{1,64}$/;
@@ -73,9 +73,11 @@ export class Store {
     }
     // Older files were a bare array of events.
     const log: UserLog = Array.isArray(body) ? { epoch: randomUUID(), events: body } : ((body as UserLog | null) ?? { epoch: randomUUID(), events: [] });
+    // Keep ARRIVAL order: a device's sync position is an index into this list, so it must never be
+    // re-sorted (the kernel sorts by time, which would make devices skip events after a restart).
+    // Malformed events are dropped here so one bad record can never make a user's data unloadable.
+    log.events = Array.isArray(log.events) ? log.events.filter(isValidEvent).map(withId) : [];
     const kernel = new Kernel({ events: log.events });
-    // The kernel gives id-less events stable ids; keep the log in step.
-    log.events = [...kernel.events];
     const entry: Entry = { kernel, log, ids: new Set(log.events.map((e) => e.id!)), vault };
     kernel.setListener((e) => {
       if (entry.ids.has(e.id!)) return;
@@ -139,6 +141,7 @@ export class Store {
   /** After compaction the log is rewritten under a new epoch. */
   async compacted(userId: string) {
     const entry = await this.entry(userId);
+    // A new epoch makes every device resync from the start, so the new (time) order is safe.
     entry.log = { epoch: randomUUID(), events: [...entry.kernel.events] };
     entry.ids = new Set(entry.log.events.map((e) => e.id!));
     this.save(userId);

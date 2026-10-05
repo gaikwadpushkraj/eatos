@@ -2,6 +2,7 @@ import { xchacha20poly1305 } from '@noble/ciphers/chacha.js';
 import { scryptAsync } from '@noble/hashes/scrypt.js';
 import type { EatEvent } from './types';
 import { withId } from './kernel';
+import { eventProblem } from './validate';
 
 /**
  * Encryption for data at rest and for backups.
@@ -185,7 +186,8 @@ function validateBackup(raw: unknown): EatEvent[] {
   if (!b || b.app !== 'eatos' || b.format !== 1 || !Array.isArray(b.events)) throw new BackupError('invalid', 'This is not an EatOS backup');
   if (b.events.length > MAX_BACKUP_EVENTS) throw new BackupError('invalid', 'This backup is too large');
   for (const e of b.events) {
-    if (!e || typeof e !== 'object' || typeof (e as EatEvent).type !== 'string' || typeof (e as EatEvent).at !== 'number') throw new BackupError('invalid', 'The backup contains a broken event');
+    const problem = eventProblem(e);
+    if (problem) throw new BackupError('invalid', `The backup contains a broken event: ${problem}`);
   }
   return (b.events as EatEvent[]).map(withId);
 }
