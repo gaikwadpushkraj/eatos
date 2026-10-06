@@ -1,7 +1,7 @@
 import type { Blocker, Condition, DietRule, Food, Member } from './types';
 import type { State } from './state';
 import { selfMember } from './state';
-import { FASTING, RESTRICTIVE, RESTRICTIVE_NOTE, hardProblem, hasWord, healthFit, textProblem } from './rules';
+import { FASTING, RESTRICTIVE, kitchenOk, RESTRICTIVE_NOTE, hardProblem, hasWord, healthFit, textProblem } from './rules';
 import { activeFast, recommend } from './recommend';
 import { pantryNames } from './housekeeping';
 
@@ -100,8 +100,7 @@ function allowed(food: Food, m: Member | undefined, state: State, now: number): 
   // Alternatives are for the table: nothing that breaks a rule for anyone in the household.
   if ((state.profile?.members ?? []).some((o) => hardProblem(food, o))) return false;
   const kitchen = state.profile?.kitchen ?? 'full';
-  if (kitchen === 'none' && !food.tags.includes('no-cook')) return false;
-  if (kitchen !== 'full' && food.tags.includes('oven')) return false;
+  if (!kitchenOk(food, kitchen)) return false;
   const fast = activeFast(state, m ? [m] : [], now);
   if (fast.kind && FASTING[fast.kind].deny(food)) return false;
   return true;
@@ -130,7 +129,7 @@ export function alternatives(state: State, catalog: Food[], wish: string, now: n
     const denied = fast.kind ? FASTING[fast.kind].deny(food) : undefined;
     if (denied) blockers.push({ kind: 'religion', detail: `Not part of today’s ${FASTING[fast.kind!].label.toLowerCase()} (${denied})` });
     const kitchen = state.profile?.kitchen ?? 'full';
-    if (kitchen === 'none' && !food.tags.includes('no-cook')) blockers.push({ kind: 'equipment', detail: 'Needs a kitchen' });
+    if (!kitchenOk(food, kitchen)) blockers.push({ kind: 'equipment', detail: kitchen === 'kettle' ? 'Needs a stove' : 'Needs a kitchen' });
     const others = (state.profile?.members ?? []).filter((m) => m.id !== me.id && hardProblem(food, m));
     if (others.length) blockers.push({ kind: 'household', detail: `${others.map((m) => m.name).join(' and ')} cannot eat it` });
   }

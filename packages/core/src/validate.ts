@@ -17,7 +17,7 @@ const RULES = ['jain', 'satvik', 'no-onion-garlic', 'no-egg', 'no-beef', 'no-por
 const CONDITIONS = ['diabetes', 'prediabetes', 'hypertension', 'high-cholesterol', 'pcos', 'thyroid', 'anaemia', 'lactose-intolerant', 'celiac', 'gout', 'kidney', 'pregnancy', 'insulin', 'eating-disorder-history', 'minor', 'child-under-5', 'older-adult-soft', 'lactation', 'gerd'];
 const FASTS = ['navratri', 'ekadashi', 'shravan', 'ramzan', 'custom'];
 const BLOCKERS = ['health', 'religion', 'allergy', 'time', 'skill', 'equipment', 'availability', 'household', 'budget', 'habit', 'other'];
-const KITCHENS = ['full', 'basic', 'none'];
+const KITCHENS = ['full', 'basic', 'kettle', 'none'];
 const INTENSITIES = ['low', 'moderate', 'high'];
 
 const MAX_TEXT = 500;

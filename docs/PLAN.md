@@ -126,6 +126,10 @@ Sprint 6
 - 8.4 Sunrise and sunset, time zones
 - 8.5 Hindi UI and onboarding
 - 8.6 Catalogue growth and chef steps
+- 8.7 Festival and fasting calendar
+- 8.8 Cook for N people
+- 8.9 Kettle or microwave kitchen
+- 8.10 Family plans and avoid lists
 
 ## Definition of done
 - Code is typed, tested with Vitest and passes `pnpm -r typecheck` and `pnpm -r test`.

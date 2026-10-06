@@ -364,3 +364,32 @@ describe('cook-challenged fixes', () => {
     expect(r.missing).not.toContain('toor dal');
   });
 });
+
+describe('festival calendar', () => {
+  it('finds Navratri and Diwali and returns nothing on a plain day', async () => {
+    const { festivalsOn } = await import('../src/festivals');
+    const IST2 = 330;
+    expect(festivalsOn(Date.UTC(2026, 9, 12, 6) - IST2 * 60_000, IST2).some((f) => f.fasting === 'navratri')).toBe(true);
+    expect(festivalsOn(Date.UTC(2026, 10, 8, 6) - IST2 * 60_000, IST2).length).toBeGreaterThan(0);
+    expect(festivalsOn(Date.UTC(2026, 9, 25, 6) - IST2 * 60_000, IST2).filter((f) => f.fasting === 'navratri')).toEqual([]);
+  });
+});
+
+describe('scaling', () => {
+  it('scales amounts with units and leaves times and whistles alone', async () => {
+    const { scaleAmounts } = await import('../src/scaling');
+    expect(scaleAmounts('Pressure cook 1/2 cup dal and 400 g chicken for 4 whistles, 20 minutes.', 3)).toBe('Pressure cook 1 1/2 cup dal and 1200 g chicken for 4 whistles, 20 minutes.');
+    expect(scaleAmounts('Add 2 eggs and 1 tsp salt', 0.5)).toBe('Add 1 eggs and 1/2 tsp salt');
+    expect(scaleAmounts('Simmer 10 minutes at 75 C', 2)).toBe('Simmer 10 minutes at 75 C');
+  });
+});
+
+describe('kettle kitchen', () => {
+  it('allows no-cook and kettle dishes only, and more than a hostel with nothing', () => {
+    const k = kernelFor({ name: 'h', member: { diet: 'vegetarian' }, profile: { kitchen: 'kettle' }, wishes: [] });
+    const foods = k.recommend({ k: 500 }, base + 5 * 3_600_000).map((r) => r.food);
+    expect(foods.length).toBeGreaterThan(10);
+    for (const f of foods) expect(f.tags.includes('no-cook') || f.tags.includes('kettle'), f.id).toBe(true);
+    expect(foods.some((f) => f.tags.includes('kettle'))).toBe(true);
+  });
+});

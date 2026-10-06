@@ -110,7 +110,7 @@ export type FastingKind = 'navratri' | 'ekadashi' | 'shravan' | 'ramzan' | 'cust
 /** Why a wished-for food is out of reach. */
 export type Blocker = 'health' | 'religion' | 'allergy' | 'time' | 'skill' | 'equipment' | 'availability' | 'household' | 'budget' | 'habit' | 'other';
 
-export type Kitchen = 'full' | 'basic' | 'none';
+export type Kitchen = 'full' | 'basic' | 'kettle' | 'none';
 
 export type Goal = 'more-protein' | 'hydration' | 'less-waste' | 'energy' | 'performance';
 
