@@ -10,3 +10,4 @@ dist-shots/
 dist-pages/
 persona-shots/
 apps/app/scripts/_*.mjs
+apps/app/scripts/_*
