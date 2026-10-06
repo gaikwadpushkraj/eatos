@@ -32,7 +32,8 @@ export default function Household() {
   const clash = (f: (typeof dinners)[number]) => members.reduce((n, m) => n + (fitFor(f, m).hard ? 2 : fitFor(f, m).ok ? 0 : 1), 0);
   const conflicts = dinners
     .filter((f) => !tonight.some((r) => r.food.id === f.id) && clash(f) > 0)
-    .sort((a, b) => clash(b) - clash(a))
+    // Dishes that have a safe variant come first, so the swap can be shown.
+    .sort((a, b) => clash(b) - clash(a) || Number(kernel.catalog.some((v) => v.variantOf === b.id)) - Number(kernel.catalog.some((v) => v.variantOf === a.id)))
     .slice(0, 3);
   const matrixFoods = [...tonight.map((r) => r.food), ...conflicts];
   const matrix = fitMatrix(matrixFoods, members);
