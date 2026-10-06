@@ -368,6 +368,11 @@ await run('indian', { width: 390, height: 844 }, 'light', async (page) => {
   await page.getByRole('button', { name: 'Night shift' }).click();
   const night = await stored(page, 'eatos.events.v1');
   if (!night.includes('"wake":900')) throw new Error('night routine not saved');
+  // Hindi: the whole screen switches, and English comes back.
+  await page.getByRole('button', { name: 'हिन्दी' }).click();
+  await text(page, 'प्रोफ़ाइल और सेटिंग');
+  await page.getByRole('button', { name: 'English' }).click();
+  await text(page, 'Profile and settings');
 });
 
 // Privacy: device encryption, unlock, encrypted backup, restore on a fresh device.
@@ -513,7 +518,7 @@ await run('llm', { width: 390, height: 844 }, 'light', async (page) => {
   await page.getByLabel('Message EatOS').fill('something warm for lunch');
   await page.getByRole('button', { name: 'Send' }).click();
   await text(page, 'Read on this device');
-  await text(page, 'Ready in');
+  await text(page, 'options that fit');
 });
 
 // Sync: device A turns sync on, device B joins with the same code.

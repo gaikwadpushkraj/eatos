@@ -131,7 +131,7 @@ export class Vault {
   /** Opens an envelope with a passphrase and returns the unlocked vault and its plaintext. */
   static async unlock(env: Envelope, passphrase: string): Promise<{ vault: Vault; data: string }> {
     if (!isEnvelope(env)) throw new VaultError('invalid', 'Not an EatOS encrypted file');
-    if (!Number.isInteger(Math.log2(env.N)) || env.N < 2 || env.N > 2 ** 20 || env.r < 1 || env.r > 16 || env.p < 1 || env.p > 4) throw new VaultError('invalid', 'Unsupported key settings');
+    if (!Number.isInteger(Math.log2(env.N)) || env.N < 2 || env.N > 2 ** 17 || env.r < 1 || env.r > 16 || env.p < 1 || env.p > 4) throw new VaultError('invalid', 'Unsupported key settings');
     const vault = new Vault(await deriveKey(passphrase, fromBase64(env.salt), env), { N: env.N, r: env.r, p: env.p }, env.salt);
     return { vault, data: vault.open(env) };
   }

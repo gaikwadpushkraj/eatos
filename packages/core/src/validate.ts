@@ -13,8 +13,8 @@ const SLOTS = ['breakfast', 'lunch', 'snack', 'dinner'];
 const LOCATIONS = ['fridge', 'freezer', 'cupboard', 'counter'];
 const GOALS = ['more-protein', 'hydration', 'less-waste', 'energy', 'performance'];
 const VERDICTS = ['liked', 'skip', 'never'];
-const RULES = ['jain', 'satvik', 'no-onion-garlic', 'no-egg', 'no-beef', 'no-pork', 'halal'];
-const CONDITIONS = ['diabetes', 'prediabetes', 'hypertension', 'high-cholesterol', 'pcos', 'thyroid', 'anaemia', 'lactose-intolerant', 'celiac', 'gout', 'kidney', 'pregnancy', 'insulin', 'eating-disorder-history', 'minor'];
+const RULES = ['jain', 'satvik', 'no-onion-garlic', 'no-egg', 'no-beef', 'no-pork', 'halal', 'before-sunset'];
+const CONDITIONS = ['diabetes', 'prediabetes', 'hypertension', 'high-cholesterol', 'pcos', 'thyroid', 'anaemia', 'lactose-intolerant', 'celiac', 'gout', 'kidney', 'pregnancy', 'insulin', 'eating-disorder-history', 'minor', 'child-under-5', 'older-adult-soft', 'lactation', 'gerd'];
 const FASTS = ['navratri', 'ekadashi', 'shravan', 'ramzan', 'custom'];
 const BLOCKERS = ['health', 'religion', 'allergy', 'time', 'skill', 'equipment', 'availability', 'household', 'budget', 'habit', 'other'];
 const KITCHENS = ['full', 'basic', 'none'];
@@ -26,8 +26,9 @@ const MAX_LIST = 200;
 type R = Record<string, unknown>;
 const isObj = (x: unknown): x is R => !!x && typeof x === 'object' && !Array.isArray(x);
 const num = (x: unknown): x is number => typeof x === 'number' && Number.isFinite(x);
-const str = (x: unknown): x is string => typeof x === 'string' && x.length > 0 && x.length <= MAX_TEXT;
-const optStr = (x: unknown) => x === undefined || (typeof x === 'string' && x.length <= MAX_TEXT);
+const BANNED_KEYS = new Set(['__proto__', 'constructor', 'prototype']);
+const str = (x: unknown): x is string => typeof x === 'string' && x.length > 0 && x.length <= MAX_TEXT && !BANNED_KEYS.has(x);
+const optStr = (x: unknown) => x === undefined || (typeof x === 'string' && x.length <= MAX_TEXT && !BANNED_KEYS.has(x));
 const optNum = (x: unknown) => x === undefined || num(x);
 const list = (x: unknown, ok: (v: unknown) => boolean) => Array.isArray(x) && x.length <= MAX_LIST && x.every(ok);
 const oneOf = (set: string[]) => (x: unknown) => typeof x === 'string' && set.includes(x);
@@ -35,7 +36,7 @@ const oneOf = (set: string[]) => (x: unknown) => typeof x === 'string' && set.in
 function member(m: unknown): string | undefined {
   if (!isObj(m)) return 'member must be an object';
   if (!str(m.id) || !str(m.name)) return 'member needs an id and a name';
-  if (typeof m.diet !== 'string' || !(m.diet in DIET_RANK)) return 'member diet is not valid';
+  if (typeof m.diet !== 'string' || !Object.hasOwn(DIET_RANK, m.diet)) return 'member diet is not valid';
   if (!list(m.allergens, oneOf(ALLERGENS))) return 'member allergens are not valid';
   if (!list(m.dislikes, str)) return 'member dislikes are not valid';
   if (!list(m.goals, oneOf(GOALS))) return 'member goals are not valid';
@@ -63,6 +64,7 @@ function profile(p: unknown): string | undefined {
   if (!num(p.floorKcal) || !num(p.tzOffsetMin) || Math.abs(p.tzOffsetMin) > 14 * 60) return 'profile numbers are not valid';
   if (p.hideNumbers !== undefined && typeof p.hideNumbers !== 'boolean') return 'hideNumbers must be true or false';
   if (p.kitchen !== undefined && !oneOf(KITCHENS)(p.kitchen)) return 'kitchen is not valid';
+  if (p.city !== undefined && !oneOf(['mumbai', 'delhi', 'bengaluru', 'hyderabad', 'chennai', 'kolkata', 'pune'])(p.city)) return 'city is not valid';
   return undefined;
 }
 

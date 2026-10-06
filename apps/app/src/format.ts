@@ -11,6 +11,7 @@ export function timeLabel(kernel: Kernel, t: number): string {
 
 export function greeting(kernel: Kernel, now: number): string {
   const h = Number(timeLabel(kernel, now).slice(0, 2));
+  if (h < 4) return 'Hello';
   return h < 12 ? 'Good morning' : h < 18 ? 'Good afternoon' : 'Good evening';
 }
 

@@ -30,13 +30,12 @@ async function readJson(req: IncomingMessage): Promise<unknown> {
 }
 
 /** Origin allowed to call the API from a browser. Set EATOS_CORS_ORIGIN in production. */
-let corsOrigin = '*';
+let corsOrigin = '';
 
 function send(res: ServerResponse, status: number, body: unknown) {
   res.writeHead(status, {
     'content-type': 'application/json',
-    'access-control-allow-origin': corsOrigin,
-    vary: 'origin',
+    ...(corsOrigin ? { 'access-control-allow-origin': corsOrigin, vary: 'origin' } : {}),
     'access-control-allow-headers': 'content-type, x-user-id',
     'access-control-allow-methods': 'GET, POST, DELETE, OPTIONS',
   });
@@ -63,9 +62,11 @@ export interface ServerOptions extends StoreOptions {
  * The EatOS API. Every route is a kernel syscall. The user is chosen by
  * the `x-user-id` header (auth is out of scope for the local server).
  */
-export function createApi({ dataDir, clock = Date.now, dataKey, kdf, corsOrigin: origin = '*' }: ServerOptions): Server {
+export function createApi({ dataDir, clock = Date.now, dataKey, kdf, corsOrigin: origin = '' }: ServerOptions): Server {
   corsOrigin = origin;
   const store = new Store(dataDir, { dataKey, kdf });
+  const seenUsers = new Set<string>();
+  const maxUsers = Number(process.env.EATOS_MAX_USERS ?? 200);
 
   return createServer(async (req, res) => {
     try {
@@ -75,6 +76,11 @@ export function createApi({ dataDir, clock = Date.now, dataKey, kdf, corsOrigin:
 
       const userId = String(req.headers['x-user-id'] ?? 'me');
       if (!validUserId(userId)) throw new HttpError(400, 'invalid x-user-id');
+      // Each new user costs a key derivation, so the number of users one server will create is capped.
+      if (!seenUsers.has(userId)) {
+        if (seenUsers.size >= maxUsers) throw new HttpError(429, 'too many users on this server');
+        seenUsers.add(userId);
+      }
       const k = await store.kernel(userId);
       const nowParam = url.searchParams.get('now');
       const now = nowParam ? Number(nowParam) : clock();
@@ -116,7 +122,7 @@ export function createApi({ dataDir, clock = Date.now, dataKey, kdf, corsOrigin:
           return send(res, 200, { foods: k.tasteCards(now, 8) });
         case 'POST /v1/ask': {
           const body = (await readJson(req)) as { text?: unknown };
-          if (typeof body.text !== 'string' || !body.text.trim()) throw new HttpError(400, 'text is required');
+          if (typeof body.text !== 'string' || !body.text.trim() || body.text.length > 500) throw new HttpError(400, 'text is required (up to 500 characters)');
           return send(res, 200, k.ask(body.text, now));
         }
         case 'GET /v1/pantry':

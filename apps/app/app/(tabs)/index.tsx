@@ -10,6 +10,7 @@ import { Icon } from '../../src/icons';
 import { greeting, PRIORITY_WORD, statusWord, timeLabel } from '../../src/format';
 import { eatFood } from '../../src/actions';
 import { FastingCard } from '../../src/FastingCard';
+import { TimeZoneCard } from '../../src/TimeZoneCard';
 
 function statusTone(task: Task): { label: string; tone?: 'ok' | 'warn' | 'accent' } {
   if (task.state === 'done') return { label: 'Done', tone: 'ok' };
@@ -27,6 +28,14 @@ function HealthTile({ check, hide }: { check: HealthCheck; hide?: boolean }) {
   const unit = check.unit === 'ml' ? 'L' : check.unit;
   const fmt = (n: number) => (check.unit === 'ml' ? (n / 1000).toFixed(1) : String(Math.round(n)));
   const word = { ok: 'On track', behind: 'A bit behind', critical: 'Behind', paused: 'Paused' }[check.status];
+  if (check.status === 'paused' && check.note === 'Your dietitian sets this limit for you') {
+    return (
+      <Card padding={12} style={{ flex: 1, minWidth: 100, gap: 8 }}>
+        <Txt v="small">{check.label}</Txt>
+        <Txt v="small">Your dietitian sets this limit for you</Txt>
+      </Card>
+    );
+  }
   return (
     <Card padding={12} style={{ flex: 1, minWidth: 100, gap: 8 }}>
       <Txt v="small">{check.label}</Txt>
@@ -134,8 +143,16 @@ function Adjusted() {
 }
 
 function Explore() {
+  const { kernel } = useKernel();
+  const kidney = kernel.me()?.conditions?.includes('kidney');
   return (
     <>
+      {kidney ? (
+        <Card tone="soft" padding={14}>
+          <Txt v="small">Follow your dietitian’s plan for fluids, protein and potassium. EatOS does not set limits for you.</Txt>
+        </Card>
+      ) : null}
+      <TimeZoneCard />
       <FastingCard />
       <Card padding={14} style={{ gap: 8 }}>
         <Txt v="h3">Craving something?</Txt>
@@ -264,7 +281,7 @@ export default function Now() {
 
   const quick = (
     <Row wrap gap={8}>
-      <Chip label="+ 250 ml water" onPress={() => submit({ type: 'water.logged', ml: 250 })} />
+      {kernel.me()?.conditions?.includes('kidney') ? null : <Chip label="+ 250 ml water" onPress={() => submit({ type: 'water.logged', ml: 250 })} />}
       <Chip label="I worked out" onPress={() => submit({ type: 'workout.completed', minutes: 45, intensity: 'moderate' })} />
       <Chip label="Ask EatOS" onPress={() => router.push('/ask')} />
     </Row>

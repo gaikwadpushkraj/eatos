@@ -10,8 +10,14 @@ import { DIET_RANK } from './types';
  */
 
 /** Whole-word match, plural-tolerant, so "rum" does not match "drumstick" or "ice" match "rice". */
+const WORD_RE = new Map<string, RegExp>();
 export function hasWord(text: string, word: string): boolean {
-  return new RegExp(`\\b${word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?:s|es)?\\b`, 'i').test(text);
+  let re = WORD_RE.get(word);
+  if (!re) {
+    re = new RegExp(`\\b${word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?:s|es)?\\b`, 'i');
+    WORD_RE.set(word, re);
+  }
+  return re.test(text);
 }
 const has = (food: Food, words: string[]) => food.ingredients.find((i) => words.some((w) => hasWord(i, w)));
 
@@ -28,6 +34,8 @@ const RULE_DENY: Record<DietRule, string[]> = {
   'no-beef': ['beef', 'veal'],
   'no-pork': ['pork', 'bacon', 'ham', 'sausage'],
   halal: ['pork', 'bacon', 'ham', 'sausage', 'alcohol', 'wine', 'beer', 'rum', 'gelatin'],
+  // A timing rule only: it changes when dinner is planned, not what is in it.
+  'before-sunset': [],
 };
 
 export const RULE_LABEL: Record<DietRule, string> = {
@@ -38,10 +46,11 @@ export const RULE_LABEL: Record<DietRule, string> = {
   'no-beef': 'No beef',
   'no-pork': 'No pork',
   halal: 'Halal',
+  'before-sunset': 'Eat before sunset',
 };
 
 /** Ingredients that are unsafe in pregnancy. Everything else is left to the person's clinician. */
-const PREGNANCY_HAZARD = ['raw papaya', 'raw egg', 'unpasteurised', 'unpasteurized', 'alcohol', 'wine', 'beer', 'raw sprouts', 'sprouts', 'raw fish', 'swordfish', 'shark', 'raw milk'];
+const PREGNANCY_HAZARD = ['raw papaya', 'raw egg', 'unpasteurised', 'unpasteurized', 'alcohol', 'wine', 'beer', 'raw fish', 'swordfish', 'shark', 'raw milk', 'liver', 'pate', 'king mackerel', 'tilefish', 'marlin', 'sushi', 'sashimi', 'oyster', 'smoked salmon', 'raw meat', 'undercooked', 'green papaya', 'kaccha papita', 'unripe papaya', 'brie', 'camembert', 'blue cheese', 'bhang', 'whisky', 'liquor', 'vodka', 'rum'];
 
 export function allergensOf(m: Member): Allergen[] {
   return m.conditions?.includes('celiac') && !m.allergens.includes('gluten') ? [...m.allergens, 'gluten'] : m.allergens;
@@ -57,9 +66,11 @@ export function hardProblem(food: Food, m: Member): string | undefined {
     if (hit) return `Not ${RULE_LABEL[rule].toLowerCase()} (${hit})`;
   }
   if (m.conditions?.includes('pregnancy')) {
-    const hit = has(food, PREGNANCY_HAZARD);
+    const hit = has(food, PREGNANCY_HAZARD) ?? (food.tags.includes('raw-sprouts') ? 'raw sprouts' : undefined);
     if (hit) return `Not advised in pregnancy (${hit})`;
   }
+  // Small children can choke on whole nuts, popcorn and raw hard sticks, and honey is not for babies.
+  if (m.conditions?.includes('child-under-5') && (food.tags.includes('choking-hazard') || has(food, ['honey']))) return 'Not safe for a child under 5 (choking)';
   return undefined;
 }
 
@@ -109,6 +120,25 @@ export function healthFit(food: Food, m: Member): HealthFit {
   if (c.includes('kidney') && t('high-potassium')) delta -= 3;
   if (c.includes('lactose-intolerant') && t('lactose')) delta -= 4;
   if (c.includes('pregnancy') && t('street')) delta -= 3;
+  if (c.includes('older-adult-soft')) {
+    if (t('crunchy')) delta -= 4;
+    if (t('soft')) {
+      delta += 1.5;
+      reasons.push('Soft and easy to chew');
+    }
+  }
+  if (c.includes('gerd')) {
+    if (t('spicy') || (food.spice ?? 0) >= 3) delta -= 2;
+    if (t('fried')) delta -= 2;
+    if (t('gentle')) delta += 1;
+  }
+  if (c.includes('lactation')) {
+    if (t('iron') || t('high-protein')) delta += 1;
+    if (food.nutrients.waterMl >= 250) delta += 0.5;
+  }
+  if (c.includes('high-cholesterol') || c.includes('hypertension')) {
+    if (t('lactose') && t('fried')) delta -= 0.5;
+  }
   return { delta, reasons };
 }
 
@@ -119,6 +149,7 @@ export function askDoctorFlags(m: Member): string[] {
   if (c.includes('kidney')) out.push('Kidney conditions need limits set for you. Please follow your dietitian’s plan.');
   if (c.includes('insulin')) out.push('Food timing matters with insulin or sulfonylureas. Please plan meals and any fasting with your doctor.');
   if (c.includes('pregnancy')) out.push('Supplements and any change in diet in pregnancy are for your clinician to guide.');
+  if (c.includes('lactation')) out.push('Ask your doctor or lactation consultant about iron or other supplements while feeding.');
   if (c.includes('thyroid')) out.push('Some medicines work best at a set time apart from food. Ask your doctor or pharmacist.');
   return out;
 }
@@ -165,7 +196,7 @@ const TEXT_ALLERGEN: Record<string, string[]> = {
   nuts: ['almond', 'cashew', 'walnut', 'pistachio', 'pesto'],
   peanuts: ['peanut', 'chikki'],
   dairy: ['milk', 'cheese', 'paneer', 'curd', 'yogurt', 'yoghurt', 'ghee', 'butter', 'lassi', 'kheer', 'ice cream', 'raita', 'rasmalai', 'rasgulla', 'rosogolla', 'mishti doi'],
-  gluten: ['roti', 'naan', 'bread', 'pav', 'pasta', 'pizza', 'noodles', 'maida', 'paratha', 'cake', 'biscuit'],
+  gluten: ['roti', 'naan', 'bread', 'pav', 'pasta', 'pizza', 'noodles', 'maida', 'paratha', 'cake', 'biscuit', 'beer', 'ale', 'lager', 'malt', 'papad', 'papdi', 'papadam', 'sooji', 'semolina', 'rava', 'seviyan', 'vermicelli', 'upma', 'halwa', 'momos', 'hing', 'asafoetida', 'dalia', 'kulcha', 'puri', 'samosa', 'kachori', 'barley', 'wheat'],
   egg: ['egg', 'omelette', 'omelet', 'bhurji', 'mayonnaise'],
   soy: ['soy', 'tofu', 'soya'],
   fish: ['fish', 'ilish', 'hilsa', 'salmon', 'surmai', 'pomfret'],
@@ -204,6 +235,26 @@ export function textProblem(text: string, m: Member): string | undefined {
 }
 
 /** Wishes or requests about skipping meals, crash dieting or fast weight loss. EatOS never helps with these. */
-export const RESTRICTIVE = /\b(skip(ping)? (a )?(meal|dinner|lunch|breakfast)|lose weight|weight loss|slim|starv\w*|crash diet|detox|cleanse|low[- ]calorie|cut calories|burn fat|fat burn\w*|purge|binge)\b/i;
+export const RESTRICTIVE = /\b(skip(ping)? (a )?(meal|dinner|lunch|breakfast)|lose (?:\\w+ )?weight|weight loss|slim|starv\w*|crash diet|detox|cleanse|low[- ]calorie|cut calories|burn fat|fat burn\w*|purge|binge|intermittent fasting|omad|water fast|dry fast|keto|laxative|diet pill|fat burner)\b/i;
 
 export const RESTRICTIVE_NOTE = 'EatOS does not help with skipping meals or losing weight fast. Regular meals are the plan. If food, weight or eating is on your mind a lot, talking to someone you trust or a doctor can help.';
+
+const INGREDIENT_ALLERGENS: [Allergen, string[]][] = [
+  ['gluten', ['wheat', 'wheat flour', 'maida', 'semolina', 'sooji', 'pasta', 'bread', 'pav', 'naan', 'noodles', 'vermicelli', 'tortilla', 'pizza dough', 'oats', 'broken wheat', 'muesli', 'soy sauce', 'hing', 'asafoetida', 'papad', 'papadam', 'sambar powder', 'rasam powder', 'biryani masala', 'bhaji masala', 'pav bhaji masala', 'bisi bele bath masala', 'dhansak masala', 'barley', 'kulcha', 'malt', 'bhajani', 'rava', 'dalia', 'suji']],
+  ['dairy', ['milk', 'curd', 'yogurt', 'greek yogurt', 'paneer', 'ghee', 'butter', 'cream', 'cheese', 'parmesan', 'mozzarella', 'milk powder', 'khoya', 'dahi', 'malai']],
+  ['egg', ['egg', 'eggs', 'mayonnaise']],
+  ['peanuts', ['peanut', 'peanuts', 'peanut butter', 'roasted peanuts', 'groundnut']],
+  ['nuts', ['almonds', 'cashews', 'pine nuts', 'walnuts', 'pistachios', 'hazelnuts']],
+  ['sesame', ['sesame', 'sesame seeds', 'hummus', 'tahini']],
+  ['soy', ['tofu', 'soya chunks', 'soya chaap', 'soy sauce', 'soya']],
+  ['fish', ['fish', 'hilsa fish', 'salmon', 'pomfret', 'rohu']],
+  ['shellfish', ['prawns', 'prawn', 'shrimp', 'crab']],
+];
+
+/** Allergens implied by an ingredient list, so a dish can never list ghee and forget dairy. */
+export function ingredientAllergens(ingredients: string[]): Allergen[] {
+  const text = ingredients.join(' | ').replace(/peanut butter/g, 'peanut paste').replace(/coconut milk|coconut cream/g, 'coconut fat').replace(/almond milk|soy milk|oat milk/g, 'plant drink');
+  const out: Allergen[] = [];
+  for (const [a, words] of INGREDIENT_ALLERGENS) if (words.some((w) => hasWord(text, w)) || (a === 'peanuts' && /peanut paste/.test(text))) out.push(a);
+  return out;
+}

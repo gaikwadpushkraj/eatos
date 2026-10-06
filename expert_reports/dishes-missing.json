@@ -1,0 +1,2130 @@
+[
+ {
+  "id": "aloo-gobi-roti",
+  "name": "Aloo gobi with roti",
+  "cuisine": "punjabi",
+  "slots": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegan",
+  "tags": [
+   "warm",
+   "comfort",
+   "fibre"
+  ],
+  "allergens": [
+   "gluten"
+  ],
+  "prepMin": 30,
+  "spice": 1,
+  "kcal": 430,
+  "protein": 11,
+  "fibre": 9,
+  "water": 120,
+  "ingredients": [
+   "cauliflower",
+   "potatoes",
+   "wheat flour",
+   "onion",
+   "tomatoes",
+   "garlic",
+   "ginger",
+   "cumin",
+   "turmeric",
+   "mustard oil"
+  ]
+ },
+ {
+  "id": "baingan-bharta-roti",
+  "name": "Baingan bharta with roti",
+  "cuisine": "punjabi",
+  "slots": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegan",
+  "tags": [
+   "warm",
+   "fibre",
+   "low-gi"
+  ],
+  "allergens": [
+   "gluten"
+  ],
+  "prepMin": 35,
+  "spice": 2,
+  "kcal": 400,
+  "protein": 10,
+  "fibre": 10,
+  "water": 130,
+  "ingredients": [
+   "brinjal",
+   "wheat flour",
+   "onion",
+   "tomatoes",
+   "garlic",
+   "ginger",
+   "green chilli",
+   "coriander"
+  ]
+ },
+ {
+  "id": "kadhi-pakora-rice",
+  "name": "Punjabi kadhi pakora with rice",
+  "cuisine": "punjabi",
+  "slots": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegetarian",
+  "tags": [
+   "warm",
+   "comfort",
+   "lactose"
+  ],
+  "allergens": [
+   "dairy"
+  ],
+  "prepMin": 40,
+  "spice": 1,
+  "kcal": 560,
+  "protein": 15,
+  "fibre": 6,
+  "water": 300,
+  "ingredients": [
+   "curd",
+   "besan",
+   "rice",
+   "onion",
+   "garlic",
+   "ginger",
+   "fenugreek seeds",
+   "turmeric",
+   "mustard oil"
+  ]
+ },
+ {
+  "id": "dal-palak-rice",
+  "name": "Dal palak with rice",
+  "cuisine": "north-indian",
+  "slots": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegetarian",
+  "tags": [
+   "warm",
+   "comfort",
+   "fibre",
+   "iron"
+  ],
+  "allergens": [
+   "dairy"
+  ],
+  "prepMin": 30,
+  "spice": 1,
+  "kcal": 490,
+  "protein": 18,
+  "fibre": 10,
+  "water": 280,
+  "ingredients": [
+   "toor dal",
+   "spinach",
+   "rice",
+   "onion",
+   "garlic",
+   "ginger",
+   "tomatoes",
+   "ghee",
+   "cumin"
+  ]
+ },
+ {
+  "id": "mixed-veg-roti",
+  "name": "Mixed vegetable sabzi with roti and curd",
+  "cuisine": "north-indian",
+  "slots": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegetarian",
+  "tags": [
+   "warm",
+   "fibre",
+   "lactose"
+  ],
+  "allergens": [
+   "dairy",
+   "gluten"
+  ],
+  "prepMin": 30,
+  "spice": 1,
+  "kcal": 440,
+  "protein": 13,
+  "fibre": 9,
+  "water": 180,
+  "ingredients": [
+   "carrots",
+   "peas",
+   "beans",
+   "cauliflower",
+   "potatoes",
+   "wheat flour",
+   "onion",
+   "tomatoes",
+   "garlic",
+   "ginger",
+   "curd"
+  ]
+ },
+ {
+  "id": "gobi-paratha",
+  "name": "Gobi paratha with curd",
+  "cuisine": "punjabi",
+  "slots": [
+   "breakfast",
+   "lunch"
+  ],
+  "diet": "vegetarian",
+  "tags": [
+   "warm",
+   "comfort",
+   "fibre",
+   "lactose"
+  ],
+  "allergens": [
+   "dairy",
+   "gluten"
+  ],
+  "prepMin": 30,
+  "spice": 2,
+  "kcal": 400,
+  "protein": 11,
+  "fibre": 6,
+  "water": 120,
+  "ingredients": [
+   "wheat flour",
+   "cauliflower",
+   "ginger",
+   "green chilli",
+   "ajwain",
+   "curd",
+   "butter"
+  ]
+ },
+ {
+  "id": "paneer-paratha",
+  "name": "Paneer paratha with curd",
+  "cuisine": "punjabi",
+  "slots": [
+   "breakfast",
+   "lunch"
+  ],
+  "diet": "vegetarian",
+  "tags": [
+   "warm",
+   "comfort",
+   "high-protein",
+   "lactose"
+  ],
+  "allergens": [
+   "dairy",
+   "gluten"
+  ],
+  "prepMin": 25,
+  "spice": 1,
+  "kcal": 470,
+  "protein": 19,
+  "fibre": 5,
+  "water": 110,
+  "ingredients": [
+   "wheat flour",
+   "paneer",
+   "green chilli",
+   "coriander",
+   "curd",
+   "ghee"
+  ]
+ },
+ {
+  "id": "masoor-dal-rice",
+  "name": "Masoor dal with rice and salad",
+  "cuisine": "north-indian",
+  "slots": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegan",
+  "tags": [
+   "warm",
+   "comfort",
+   "iron",
+   "fibre"
+  ],
+  "allergens": [],
+  "prepMin": 25,
+  "spice": 1,
+  "kcal": 470,
+  "protein": 17,
+  "fibre": 9,
+  "water": 260,
+  "ingredients": [
+   "red lentils",
+   "rice",
+   "onion",
+   "garlic",
+   "tomatoes",
+   "cumin",
+   "turmeric",
+   "cucumber",
+   "mustard oil"
+  ]
+ },
+ {
+  "id": "aloo-matar-roti",
+  "name": "Aloo matar with roti",
+  "cuisine": "north-indian",
+  "slots": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegan",
+  "tags": [
+   "warm",
+   "comfort"
+  ],
+  "allergens": [
+   "gluten"
+  ],
+  "prepMin": 30,
+  "spice": 1,
+  "kcal": 450,
+  "protein": 12,
+  "fibre": 9,
+  "water": 140,
+  "ingredients": [
+   "potatoes",
+   "peas",
+   "wheat flour",
+   "onion",
+   "tomatoes",
+   "garlic",
+   "ginger",
+   "cumin"
+  ]
+ },
+ {
+  "id": "kadai-paneer-roti",
+  "name": "Kadai paneer with roti",
+  "cuisine": "punjabi",
+  "slots": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegetarian",
+  "tags": [
+   "warm",
+   "comfort",
+   "high-protein"
+  ],
+  "allergens": [
+   "dairy",
+   "gluten"
+  ],
+  "prepMin": 30,
+  "spice": 2,
+  "kcal": 560,
+  "protein": 24,
+  "fibre": 6,
+  "water": 120,
+  "ingredients": [
+   "paneer",
+   "capsicum",
+   "wheat flour",
+   "onion",
+   "tomatoes",
+   "garlic",
+   "ginger",
+   "coriander seeds",
+   "butter",
+   "cream"
+  ]
+ },
+ {
+  "id": "puri-aloo",
+  "name": "Poori with aloo sabzi",
+  "cuisine": "north-indian",
+  "slots": [
+   "breakfast",
+   "lunch"
+  ],
+  "diet": "vegan",
+  "tags": [
+   "warm",
+   "comfort",
+   "fried",
+   "high-gi"
+  ],
+  "allergens": [
+   "gluten"
+  ],
+  "prepMin": 35,
+  "spice": 1,
+  "kcal": 520,
+  "protein": 9,
+  "fibre": 5,
+  "water": 100,
+  "ingredients": [
+   "wheat flour",
+   "potatoes",
+   "tomatoes",
+   "ginger",
+   "green chilli",
+   "cumin",
+   "oil"
+  ]
+ },
+ {
+  "id": "litti-chokha",
+  "name": "Litti chokha",
+  "cuisine": "bihari",
+  "slots": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegetarian",
+  "tags": [
+   "warm",
+   "comfort",
+   "fibre",
+   "iron"
+  ],
+  "allergens": [
+   "dairy",
+   "gluten"
+  ],
+  "prepMin": 45,
+  "spice": 2,
+  "kcal": 520,
+  "protein": 16,
+  "fibre": 12,
+  "water": 120,
+  "ingredients": [
+   "wheat flour",
+   "sattu",
+   "garlic",
+   "ginger",
+   "onion",
+   "ajwain",
+   "mustard oil",
+   "ghee",
+   "brinjal",
+   "tomatoes",
+   "potatoes",
+   "green chilli"
+  ]
+ },
+ {
+  "id": "sattu-paratha",
+  "name": "Sattu paratha with curd",
+  "cuisine": "bihari",
+  "slots": [
+   "breakfast",
+   "lunch"
+  ],
+  "diet": "vegetarian",
+  "tags": [
+   "warm",
+   "high-protein",
+   "fibre",
+   "lactose"
+  ],
+  "allergens": [
+   "dairy",
+   "gluten"
+  ],
+  "prepMin": 25,
+  "spice": 2,
+  "kcal": 430,
+  "protein": 17,
+  "fibre": 8,
+  "water": 110,
+  "ingredients": [
+   "wheat flour",
+   "sattu",
+   "onion",
+   "garlic",
+   "ginger",
+   "green chilli",
+   "ajwain",
+   "mustard oil",
+   "curd"
+  ]
+ },
+ {
+  "id": "thalipeeth",
+  "name": "Thalipeeth with curd",
+  "cuisine": "maharashtrian",
+  "slots": [
+   "breakfast",
+   "lunch"
+  ],
+  "diet": "vegetarian",
+  "tags": [
+   "warm",
+   "fibre",
+   "iron",
+   "lactose"
+  ],
+  "allergens": [
+   "dairy",
+   "sesame"
+  ],
+  "prepMin": 25,
+  "spice": 2,
+  "kcal": 330,
+  "protein": 11,
+  "fibre": 8,
+  "water": 110,
+  "ingredients": [
+   "bhajani flour",
+   "onion",
+   "coriander",
+   "green chilli",
+   "cumin",
+   "sesame seeds",
+   "curd"
+  ]
+ },
+ {
+  "id": "vada-pav",
+  "name": "Vada pav",
+  "cuisine": "mumbai",
+  "slots": [
+   "snack",
+   "breakfast"
+  ],
+  "diet": "vegan",
+  "tags": [
+   "warm",
+   "street",
+   "fried",
+   "high-gi"
+  ],
+  "allergens": [
+   "gluten"
+  ],
+  "prepMin": 25,
+  "spice": 2,
+  "kcal": 300,
+  "protein": 7,
+  "fibre": 3,
+  "water": 40,
+  "ingredients": [
+   "potatoes",
+   "besan",
+   "pav",
+   "garlic",
+   "ginger",
+   "green chilli",
+   "mustard seeds",
+   "curry leaves",
+   "oil"
+  ]
+ },
+ {
+  "id": "pithla-bhakri",
+  "name": "Zunka (pithla) with bhakri",
+  "cuisine": "maharashtrian",
+  "slots": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegan",
+  "tags": [
+   "warm",
+   "comfort",
+   "fibre",
+   "iron"
+  ],
+  "allergens": [],
+  "prepMin": 25,
+  "spice": 2,
+  "kcal": 400,
+  "protein": 15,
+  "fibre": 9,
+  "water": 140,
+  "ingredients": [
+   "besan",
+   "jowar flour",
+   "onion",
+   "garlic",
+   "green chilli",
+   "mustard seeds",
+   "turmeric"
+  ]
+ },
+ {
+  "id": "varan-bhat",
+  "name": "Varan bhat with ghee and lemon",
+  "cuisine": "maharashtrian",
+  "slots": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegetarian",
+  "tags": [
+   "warm",
+   "gentle",
+   "comfort"
+  ],
+  "allergens": [
+   "dairy"
+  ],
+  "prepMin": 25,
+  "spice": 0,
+  "kcal": 450,
+  "protein": 14,
+  "fibre": 6,
+  "water": 300,
+  "ingredients": [
+   "toor dal",
+   "rice",
+   "ghee",
+   "turmeric",
+   "hing",
+   "jaggery",
+   "lemon"
+  ]
+ },
+ {
+  "id": "puran-poli",
+  "name": "Puran poli",
+  "cuisine": "maharashtrian",
+  "slots": [
+   "snack",
+   "lunch"
+  ],
+  "diet": "vegetarian",
+  "tags": [
+   "sweet",
+   "festive",
+   "comfort"
+  ],
+  "allergens": [
+   "dairy",
+   "gluten"
+  ],
+  "prepMin": 60,
+  "spice": 0,
+  "kcal": 380,
+  "protein": 9,
+  "fibre": 5,
+  "water": 40,
+  "ingredients": [
+   "wheat flour",
+   "chana dal",
+   "jaggery",
+   "ghee",
+   "cardamom",
+   "nutmeg"
+  ]
+ },
+ {
+  "id": "undhiyu",
+  "name": "Undhiyu with puri",
+  "cuisine": "gujarati",
+  "slots": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegan",
+  "tags": [
+   "warm",
+   "festive",
+   "fibre",
+   "fried"
+  ],
+  "allergens": [
+   "gluten",
+   "peanuts",
+   "sesame"
+  ],
+  "prepMin": 70,
+  "spice": 2,
+  "kcal": 560,
+  "protein": 13,
+  "fibre": 12,
+  "water": 120,
+  "ingredients": [
+   "surti papdi",
+   "raw banana",
+   "sweet potato",
+   "purple yam",
+   "potatoes",
+   "brinjal",
+   "garlic",
+   "ginger",
+   "green chilli",
+   "coconut",
+   "peanuts",
+   "sesame seeds",
+   "besan",
+   "wheat flour",
+   "oil"
+  ]
+ },
+ {
+  "id": "gujarati-dal-bhat",
+  "name": "Gujarati dal bhat with shaak and rotli",
+  "cuisine": "gujarati",
+  "slots": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegetarian",
+  "tags": [
+   "warm",
+   "comfort",
+   "fibre"
+  ],
+  "allergens": [
+   "dairy",
+   "gluten",
+   "peanuts"
+  ],
+  "prepMin": 40,
+  "spice": 1,
+  "kcal": 520,
+  "protein": 16,
+  "fibre": 9,
+  "water": 280,
+  "ingredients": [
+   "toor dal",
+   "rice",
+   "wheat flour",
+   "jaggery",
+   "kokum",
+   "ginger",
+   "green chilli",
+   "peanuts",
+   "ghee",
+   "mustard seeds",
+   "bottle gourd",
+   "tomatoes"
+  ]
+ },
+ {
+  "id": "handvo",
+  "name": "Handvo with chutney",
+  "cuisine": "gujarati",
+  "slots": [
+   "breakfast",
+   "snack"
+  ],
+  "diet": "vegetarian",
+  "tags": [
+   "warm",
+   "fibre",
+   "ferment",
+   "lactose"
+  ],
+  "allergens": [
+   "dairy",
+   "sesame"
+  ],
+  "prepMin": 40,
+  "spice": 1,
+  "kcal": 290,
+  "protein": 10,
+  "fibre": 6,
+  "water": 60,
+  "ingredients": [
+   "rice",
+   "chana dal",
+   "toor dal",
+   "urad dal",
+   "bottle gourd",
+   "ginger",
+   "green chilli",
+   "sesame seeds",
+   "mustard seeds",
+   "curd",
+   "oil"
+  ]
+ },
+ {
+  "id": "khandvi",
+  "name": "Khandvi",
+  "cuisine": "gujarati",
+  "slots": [
+   "snack",
+   "breakfast"
+  ],
+  "diet": "vegetarian",
+  "tags": [
+   "quick",
+   "light",
+   "lactose"
+  ],
+  "allergens": [
+   "dairy",
+   "sesame"
+  ],
+  "prepMin": 25,
+  "spice": 1,
+  "kcal": 210,
+  "protein": 8,
+  "fibre": 2,
+  "water": 60,
+  "ingredients": [
+   "besan",
+   "buttermilk",
+   "ginger",
+   "green chilli",
+   "mustard seeds",
+   "sesame seeds",
+   "coconut",
+   "coriander",
+   "hing"
+  ]
+ },
+ {
+  "id": "dal-baati-churma",
+  "name": "Dal baati churma",
+  "cuisine": "rajasthani",
+  "slots": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegetarian",
+  "tags": [
+   "warm",
+   "festive",
+   "comfort",
+   "fibre"
+  ],
+  "allergens": [
+   "dairy",
+   "gluten"
+  ],
+  "prepMin": 70,
+  "spice": 1,
+  "kcal": 780,
+  "protein": 22,
+  "fibre": 12,
+  "water": 150,
+  "ingredients": [
+   "wheat flour",
+   "ghee",
+   "toor dal",
+   "chana dal",
+   "moong dal",
+   "urad dal",
+   "garlic",
+   "ginger",
+   "onion",
+   "tomatoes",
+   "jaggery",
+   "cumin"
+  ]
+ },
+ {
+  "id": "gatte-sabzi-roti",
+  "name": "Gatte ki sabzi with roti",
+  "cuisine": "rajasthani",
+  "slots": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegetarian",
+  "tags": [
+   "warm",
+   "comfort",
+   "high-protein"
+  ],
+  "allergens": [
+   "dairy",
+   "gluten"
+  ],
+  "prepMin": 40,
+  "spice": 2,
+  "kcal": 520,
+  "protein": 18,
+  "fibre": 8,
+  "water": 130,
+  "ingredients": [
+   "besan",
+   "curd",
+   "wheat flour",
+   "ghee",
+   "ginger",
+   "green chilli",
+   "asafoetida",
+   "red chilli",
+   "coriander seeds",
+   "turmeric"
+  ]
+ },
+ {
+  "id": "bisi-bele-bath",
+  "name": "Bisi bele bath with boondi",
+  "cuisine": "karnataka",
+  "slots": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegetarian",
+  "tags": [
+   "warm",
+   "comfort",
+   "fibre"
+  ],
+  "allergens": [
+   "dairy",
+   "nuts"
+  ],
+  "prepMin": 45,
+  "spice": 2,
+  "kcal": 520,
+  "protein": 15,
+  "fibre": 10,
+  "water": 300,
+  "ingredients": [
+   "rice",
+   "toor dal",
+   "carrots",
+   "peas",
+   "beans",
+   "tamarind",
+   "bisi bele bath powder",
+   "onion",
+   "ghee",
+   "curry leaves",
+   "cashew nuts",
+   "coconut"
+  ]
+ },
+ {
+  "id": "akki-roti",
+  "name": "Akki roti with coconut chutney",
+  "cuisine": "karnataka",
+  "slots": [
+   "breakfast",
+   "lunch"
+  ],
+  "diet": "vegan",
+  "tags": [
+   "warm",
+   "gentle",
+   "quick"
+  ],
+  "allergens": [],
+  "prepMin": 25,
+  "spice": 1,
+  "kcal": 300,
+  "protein": 6,
+  "fibre": 4,
+  "water": 90,
+  "ingredients": [
+   "rice flour",
+   "onion",
+   "dill",
+   "green chilli",
+   "coconut",
+   "cumin",
+   "curry leaves"
+  ]
+ },
+ {
+  "id": "neer-dosa",
+  "name": "Neer dosa with coconut chutney",
+  "cuisine": "karnataka",
+  "slots": [
+   "breakfast"
+  ],
+  "diet": "vegan",
+  "tags": [
+   "warm",
+   "light",
+   "gentle",
+   "low-sodium"
+  ],
+  "allergens": [],
+  "prepMin": 20,
+  "spice": 0,
+  "kcal": 260,
+  "protein": 5,
+  "fibre": 3,
+  "water": 100,
+  "ingredients": [
+   "rice",
+   "coconut",
+   "green chilli",
+   "ginger"
+  ]
+ },
+ {
+  "id": "tomato-pappu-rice",
+  "name": "Tomato pappu with rice and ghee",
+  "cuisine": "andhra",
+  "slots": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegetarian",
+  "tags": [
+   "warm",
+   "comfort",
+   "gentle"
+  ],
+  "allergens": [
+   "dairy"
+  ],
+  "prepMin": 30,
+  "spice": 2,
+  "kcal": 480,
+  "protein": 15,
+  "fibre": 8,
+  "water": 280,
+  "ingredients": [
+   "toor dal",
+   "tomatoes",
+   "rice",
+   "onion",
+   "garlic",
+   "green chilli",
+   "turmeric",
+   "ghee",
+   "mustard seeds",
+   "curry leaves"
+  ]
+ },
+ {
+  "id": "gutti-vankaya-rice",
+  "name": "Gutti vankaya curry with rice",
+  "cuisine": "andhra",
+  "slots": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegan",
+  "tags": [
+   "warm",
+   "fibre"
+  ],
+  "allergens": [
+   "peanuts",
+   "sesame"
+  ],
+  "prepMin": 40,
+  "spice": 3,
+  "kcal": 470,
+  "protein": 11,
+  "fibre": 10,
+  "water": 150,
+  "ingredients": [
+   "brinjal",
+   "rice",
+   "onion",
+   "garlic",
+   "ginger",
+   "peanuts",
+   "sesame seeds",
+   "coconut",
+   "tamarind",
+   "red chilli",
+   "oil"
+  ]
+ },
+ {
+  "id": "uttapam",
+  "name": "Onion tomato uttapam with chutney",
+  "cuisine": "south-indian",
+  "slots": [
+   "breakfast",
+   "dinner"
+  ],
+  "diet": "vegan",
+  "tags": [
+   "warm",
+   "comfort",
+   "high-gi"
+  ],
+  "allergens": [],
+  "prepMin": 20,
+  "spice": 1,
+  "kcal": 320,
+  "protein": 9,
+  "fibre": 5,
+  "water": 90,
+  "ingredients": [
+   "rice",
+   "urad dal",
+   "onion",
+   "tomatoes",
+   "green chilli",
+   "coriander",
+   "coconut",
+   "ginger"
+  ]
+ },
+ {
+  "id": "meen-curry-kerala",
+  "name": "Kerala meen curry with rice",
+  "cuisine": "kerala",
+  "slots": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "pescatarian",
+  "tags": [
+   "warm",
+   "high-protein"
+  ],
+  "allergens": [
+   "fish"
+  ],
+  "prepMin": 35,
+  "spice": 3,
+  "kcal": 520,
+  "protein": 28,
+  "fibre": 4,
+  "water": 220,
+  "ingredients": [
+   "fish",
+   "rice",
+   "coconut",
+   "kudampuli",
+   "shallots",
+   "garlic",
+   "ginger",
+   "curry leaves",
+   "turmeric",
+   "red chilli",
+   "coconut oil"
+  ]
+ },
+ {
+  "id": "puttu-kadala",
+  "name": "Puttu with kadala curry",
+  "cuisine": "kerala",
+  "slots": [
+   "breakfast"
+  ],
+  "diet": "vegan",
+  "tags": [
+   "warm",
+   "fibre",
+   "high-protein"
+  ],
+  "allergens": [],
+  "prepMin": 30,
+  "spice": 2,
+  "kcal": 430,
+  "protein": 15,
+  "fibre": 12,
+  "water": 100,
+  "ingredients": [
+   "rice flour",
+   "coconut",
+   "black chickpeas",
+   "shallots",
+   "garlic",
+   "ginger",
+   "curry leaves",
+   "coconut oil",
+   "mustard seeds"
+  ]
+ },
+ {
+  "id": "cabbage-thoran-rice",
+  "name": "Cabbage thoran with rice and sambar",
+  "cuisine": "kerala",
+  "slots": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegan",
+  "tags": [
+   "warm",
+   "fibre",
+   "light"
+  ],
+  "allergens": [],
+  "prepMin": 30,
+  "spice": 1,
+  "kcal": 470,
+  "protein": 13,
+  "fibre": 10,
+  "water": 260,
+  "ingredients": [
+   "cabbage",
+   "coconut",
+   "rice",
+   "toor dal",
+   "shallots",
+   "garlic",
+   "green chilli",
+   "curry leaves",
+   "mustard seeds",
+   "tamarind",
+   "tomatoes",
+   "coconut oil"
+  ]
+ },
+ {
+  "id": "parotta-egg-roast",
+  "name": "Kerala parotta with egg roast",
+  "cuisine": "kerala",
+  "slots": [
+   "dinner",
+   "lunch"
+  ],
+  "diet": "vegetarian",
+  "tags": [
+   "warm",
+   "comfort",
+   "fried",
+   "high-protein"
+  ],
+  "allergens": [
+   "egg",
+   "gluten"
+  ],
+  "prepMin": 40,
+  "spice": 3,
+  "kcal": 640,
+  "protein": 20,
+  "fibre": 4,
+  "water": 100,
+  "ingredients": [
+   "maida",
+   "eggs",
+   "onion",
+   "tomatoes",
+   "garlic",
+   "ginger",
+   "curry leaves",
+   "coconut oil",
+   "red chilli",
+   "fennel"
+  ]
+ },
+ {
+  "id": "chicken-chettinad-rice",
+  "name": "Chicken Chettinad with rice",
+  "cuisine": "south-indian",
+  "slots": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "omnivore",
+  "tags": [
+   "warm",
+   "high-protein"
+  ],
+  "allergens": [],
+  "prepMin": 45,
+  "spice": 3,
+  "kcal": 640,
+  "protein": 34,
+  "fibre": 4,
+  "water": 180,
+  "ingredients": [
+   "chicken",
+   "rice",
+   "onion",
+   "tomatoes",
+   "garlic",
+   "ginger",
+   "coconut",
+   "black pepper",
+   "fennel",
+   "curry leaves",
+   "red chilli"
+  ]
+ },
+ {
+  "id": "goan-fish-curry-rice",
+  "name": "Goan fish curry with rice",
+  "cuisine": "goan",
+  "slots": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "pescatarian",
+  "tags": [
+   "warm",
+   "high-protein"
+  ],
+  "allergens": [
+   "fish"
+  ],
+  "prepMin": 35,
+  "spice": 2,
+  "kcal": 540,
+  "protein": 28,
+  "fibre": 4,
+  "water": 240,
+  "ingredients": [
+   "fish",
+   "rice",
+   "coconut",
+   "kokum",
+   "onion",
+   "garlic",
+   "ginger",
+   "tamarind",
+   "red chilli",
+   "turmeric",
+   "coconut oil"
+  ]
+ },
+ {
+  "id": "pork-vindaloo-rice",
+  "name": "Pork vindaloo with rice",
+  "cuisine": "goan",
+  "slots": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "omnivore",
+  "tags": [
+   "warm",
+   "comfort",
+   "high-protein"
+  ],
+  "allergens": [],
+  "prepMin": 60,
+  "spice": 3,
+  "kcal": 720,
+  "protein": 30,
+  "fibre": 3,
+  "water": 160,
+  "ingredients": [
+   "pork",
+   "rice",
+   "onion",
+   "garlic",
+   "ginger",
+   "vinegar",
+   "red chilli",
+   "cumin",
+   "cinnamon",
+   "clove",
+   "tamarind"
+  ]
+ },
+ {
+  "id": "masor-tenga-rice",
+  "name": "Masor tenga with rice",
+  "cuisine": "assamese",
+  "slots": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "pescatarian",
+  "tags": [
+   "warm",
+   "light",
+   "high-protein"
+  ],
+  "allergens": [
+   "fish"
+  ],
+  "prepMin": 35,
+  "spice": 1,
+  "kcal": 470,
+  "protein": 27,
+  "fibre": 3,
+  "water": 260,
+  "ingredients": [
+   "fish",
+   "rice",
+   "tomatoes",
+   "lemon",
+   "garlic",
+   "ginger",
+   "fenugreek seeds",
+   "coriander",
+   "turmeric",
+   "mustard oil"
+  ]
+ },
+ {
+  "id": "veg-momos",
+  "name": "Steamed veg momos with chutney",
+  "cuisine": "northeast",
+  "slots": [
+   "snack",
+   "dinner"
+  ],
+  "diet": "vegan",
+  "tags": [
+   "warm",
+   "street",
+   "light"
+  ],
+  "allergens": [
+   "gluten",
+   "sesame",
+   "soy"
+  ],
+  "prepMin": 35,
+  "spice": 2,
+  "kcal": 260,
+  "protein": 8,
+  "fibre": 4,
+  "water": 90,
+  "ingredients": [
+   "maida",
+   "cabbage",
+   "carrots",
+   "onion",
+   "garlic",
+   "ginger",
+   "spring onion",
+   "soy sauce",
+   "sesame oil",
+   "red chilli"
+  ]
+ },
+ {
+  "id": "rogan-josh-rice",
+  "name": "Kashmiri rogan josh with rice",
+  "cuisine": "kashmiri",
+  "slots": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "omnivore",
+  "tags": [
+   "warm",
+   "festive",
+   "high-protein"
+  ],
+  "allergens": [
+   "dairy"
+  ],
+  "prepMin": 70,
+  "spice": 2,
+  "kcal": 720,
+  "protein": 36,
+  "fibre": 3,
+  "water": 170,
+  "ingredients": [
+   "mutton",
+   "rice",
+   "onion",
+   "garlic",
+   "ginger",
+   "curd",
+   "kashmiri chilli",
+   "fennel",
+   "dry ginger",
+   "cardamom",
+   "cloves",
+   "mustard oil",
+   "ghee"
+  ]
+ },
+ {
+  "id": "haak-rice",
+  "name": "Haak (collard greens) with rice",
+  "cuisine": "kashmiri",
+  "slots": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegan",
+  "tags": [
+   "warm",
+   "light",
+   "fibre",
+   "iron"
+  ],
+  "allergens": [],
+  "prepMin": 25,
+  "spice": 1,
+  "kcal": 400,
+  "protein": 8,
+  "fibre": 8,
+  "water": 250,
+  "ingredients": [
+   "collard greens",
+   "rice",
+   "mustard oil",
+   "kashmiri chilli",
+   "asafoetida",
+   "garlic",
+   "onion"
+  ]
+ },
+ {
+  "id": "dalma-rice",
+  "name": "Dalma with rice",
+  "cuisine": "odia",
+  "slots": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegan",
+  "tags": [
+   "warm",
+   "gentle",
+   "fibre"
+  ],
+  "allergens": [],
+  "prepMin": 35,
+  "spice": 1,
+  "kcal": 460,
+  "protein": 16,
+  "fibre": 10,
+  "water": 260,
+  "ingredients": [
+   "toor dal",
+   "rice",
+   "pumpkin",
+   "raw banana",
+   "brinjal",
+   "potatoes",
+   "ginger",
+   "cumin",
+   "turmeric",
+   "coconut",
+   "mustard oil"
+  ]
+ },
+ {
+  "id": "pakhala-bhata",
+  "name": "Pakhala bhata with badi chura",
+  "cuisine": "odia",
+  "slots": [
+   "lunch"
+  ],
+  "diet": "vegetarian",
+  "tags": [
+   "cold",
+   "cooling",
+   "light",
+   "lactose",
+   "no-cook"
+  ],
+  "allergens": [
+   "dairy"
+  ],
+  "prepMin": 15,
+  "spice": 0,
+  "kcal": 380,
+  "protein": 8,
+  "fibre": 3,
+  "water": 350,
+  "ingredients": [
+   "fermented rice",
+   "curd",
+   "roasted cumin",
+   "mint",
+   "lemon",
+   "green chilli",
+   "onion",
+   "potatoes",
+   "urad dal badi",
+   "mustard oil"
+  ]
+ },
+ {
+  "id": "pani-puri",
+  "name": "Pani puri",
+  "cuisine": "mumbai",
+  "slots": [
+   "snack"
+  ],
+  "diet": "vegan",
+  "tags": [
+   "street",
+   "cold",
+   "fried",
+   "high-sodium"
+  ],
+  "allergens": [
+   "gluten"
+  ],
+  "prepMin": 25,
+  "spice": 2,
+  "kcal": 260,
+  "protein": 5,
+  "fibre": 4,
+  "water": 120,
+  "ingredients": [
+   "semolina",
+   "wheat flour",
+   "potatoes",
+   "chickpeas",
+   "mint",
+   "tamarind",
+   "jaggery",
+   "black salt",
+   "cumin",
+   "green chilli",
+   "ginger"
+  ]
+ },
+ {
+  "id": "bhel-puri",
+  "name": "Bhel puri",
+  "cuisine": "mumbai",
+  "slots": [
+   "snack"
+  ],
+  "diet": "vegan",
+  "tags": [
+   "street",
+   "quick",
+   "high-gi"
+  ],
+  "allergens": [
+   "gluten",
+   "peanuts"
+  ],
+  "prepMin": 10,
+  "spice": 2,
+  "kcal": 280,
+  "protein": 7,
+  "fibre": 5,
+  "water": 60,
+  "ingredients": [
+   "puffed rice",
+   "sev",
+   "onion",
+   "tomatoes",
+   "potatoes",
+   "peanuts",
+   "tamarind",
+   "mint",
+   "green chilli",
+   "raw mango",
+   "garlic chutney",
+   "coriander"
+  ]
+ },
+ {
+  "id": "dahi-vada",
+  "name": "Dahi vada",
+  "cuisine": "north-indian",
+  "slots": [
+   "snack",
+   "lunch"
+  ],
+  "diet": "vegetarian",
+  "tags": [
+   "cold",
+   "cooling",
+   "lactose",
+   "fried"
+  ],
+  "allergens": [
+   "dairy"
+  ],
+  "prepMin": 30,
+  "spice": 1,
+  "kcal": 330,
+  "protein": 13,
+  "fibre": 4,
+  "water": 150,
+  "ingredients": [
+   "urad dal",
+   "curd",
+   "tamarind",
+   "cumin",
+   "black salt",
+   "ginger",
+   "green chilli",
+   "oil"
+  ]
+ },
+ {
+  "id": "aloo-tikki-chaat",
+  "name": "Aloo tikki chaat",
+  "cuisine": "north-indian",
+  "slots": [
+   "snack"
+  ],
+  "diet": "vegetarian",
+  "tags": [
+   "street",
+   "fried",
+   "warm",
+   "lactose"
+  ],
+  "allergens": [
+   "dairy",
+   "gluten"
+  ],
+  "prepMin": 25,
+  "spice": 2,
+  "kcal": 360,
+  "protein": 8,
+  "fibre": 5,
+  "water": 80,
+  "ingredients": [
+   "potatoes",
+   "bread",
+   "curd",
+   "tamarind",
+   "mint",
+   "onion",
+   "ginger",
+   "green chilli",
+   "chickpeas",
+   "chaat masala",
+   "oil"
+  ]
+ },
+ {
+  "id": "kachori-sabzi",
+  "name": "Kachori with aloo sabzi",
+  "cuisine": "north-indian",
+  "slots": [
+   "breakfast",
+   "snack"
+  ],
+  "diet": "vegan",
+  "tags": [
+   "warm",
+   "fried",
+   "street",
+   "high-sodium"
+  ],
+  "allergens": [
+   "gluten"
+  ],
+  "prepMin": 40,
+  "spice": 2,
+  "kcal": 480,
+  "protein": 10,
+  "fibre": 6,
+  "water": 100,
+  "ingredients": [
+   "maida",
+   "moong dal",
+   "potatoes",
+   "tomatoes",
+   "ginger",
+   "fennel",
+   "green chilli",
+   "hing",
+   "oil"
+  ]
+ },
+ {
+  "id": "masala-omelette",
+  "name": "Masala omelette with toast",
+  "cuisine": "pan-indian",
+  "slots": [
+   "breakfast"
+  ],
+  "diet": "vegetarian",
+  "tags": [
+   "warm",
+   "quick",
+   "high-protein"
+  ],
+  "allergens": [
+   "egg",
+   "gluten"
+  ],
+  "prepMin": 10,
+  "spice": 2,
+  "kcal": 340,
+  "protein": 19,
+  "fibre": 3,
+  "water": 60,
+  "ingredients": [
+   "eggs",
+   "onion",
+   "tomatoes",
+   "green chilli",
+   "coriander",
+   "bread",
+   "butter"
+  ]
+ },
+ {
+  "id": "anda-paratha",
+  "name": "Egg paratha",
+  "cuisine": "bengali",
+  "slots": [
+   "breakfast",
+   "dinner"
+  ],
+  "diet": "vegetarian",
+  "tags": [
+   "warm",
+   "comfort",
+   "fried",
+   "high-protein"
+  ],
+  "allergens": [
+   "egg",
+   "gluten"
+  ],
+  "prepMin": 20,
+  "spice": 2,
+  "kcal": 440,
+  "protein": 17,
+  "fibre": 3,
+  "water": 70,
+  "ingredients": [
+   "wheat flour",
+   "eggs",
+   "onion",
+   "green chilli",
+   "coriander",
+   "oil"
+  ]
+ },
+ {
+  "id": "jeera-rice-dal",
+  "name": "Jeera rice with moong dal",
+  "cuisine": "north-indian",
+  "slots": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegetarian",
+  "tags": [
+   "warm",
+   "gentle",
+   "light"
+  ],
+  "allergens": [
+   "dairy"
+  ],
+  "prepMin": 25,
+  "spice": 0,
+  "kcal": 440,
+  "protein": 14,
+  "fibre": 6,
+  "water": 300,
+  "ingredients": [
+   "rice",
+   "moong dal",
+   "cumin",
+   "ghee",
+   "turmeric",
+   "ginger",
+   "coriander"
+  ]
+ },
+ {
+  "id": "rice-kheer",
+  "name": "Rice kheer",
+  "cuisine": "north-indian",
+  "slots": [
+   "snack"
+  ],
+  "diet": "vegetarian",
+  "tags": [
+   "sweet",
+   "festive",
+   "cooling",
+   "lactose"
+  ],
+  "allergens": [
+   "dairy",
+   "nuts"
+  ],
+  "prepMin": 40,
+  "spice": 0,
+  "kcal": 320,
+  "protein": 8,
+  "fibre": 1,
+  "water": 120,
+  "ingredients": [
+   "milk",
+   "rice",
+   "sugar",
+   "cardamom",
+   "almonds",
+   "pistachios"
+  ]
+ },
+ {
+  "id": "suji-halwa",
+  "name": "Suji halwa",
+  "cuisine": "north-indian",
+  "slots": [
+   "snack",
+   "breakfast"
+  ],
+  "diet": "vegetarian",
+  "tags": [
+   "sweet",
+   "festive",
+   "warm"
+  ],
+  "allergens": [
+   "dairy",
+   "gluten",
+   "nuts"
+  ],
+  "prepMin": 20,
+  "spice": 0,
+  "kcal": 340,
+  "protein": 5,
+  "fibre": 2,
+  "water": 40,
+  "ingredients": [
+   "semolina",
+   "ghee",
+   "sugar",
+   "cardamom",
+   "cashew nuts",
+   "raisins"
+  ]
+ },
+ {
+  "id": "gajar-halwa",
+  "name": "Gajar halwa",
+  "cuisine": "punjabi",
+  "slots": [
+   "snack"
+  ],
+  "diet": "vegetarian",
+  "tags": [
+   "sweet",
+   "festive",
+   "warm",
+   "lactose"
+  ],
+  "allergens": [
+   "dairy",
+   "nuts"
+  ],
+  "prepMin": 60,
+  "spice": 0,
+  "kcal": 360,
+  "protein": 7,
+  "fibre": 3,
+  "water": 60,
+  "ingredients": [
+   "carrots",
+   "milk",
+   "ghee",
+   "sugar",
+   "khoya",
+   "cardamom",
+   "almonds",
+   "cashew nuts"
+  ]
+ },
+ {
+  "id": "sweet-lassi",
+  "name": "Sweet lassi",
+  "cuisine": "punjabi",
+  "slots": [
+   "snack"
+  ],
+  "diet": "vegetarian",
+  "tags": [
+   "cold",
+   "cooling",
+   "lactose",
+   "no-cook",
+   "sweet"
+  ],
+  "allergens": [
+   "dairy"
+  ],
+  "prepMin": 5,
+  "spice": 0,
+  "kcal": 230,
+  "protein": 8,
+  "fibre": 0,
+  "water": 250,
+  "ingredients": [
+   "curd",
+   "milk",
+   "sugar",
+   "cardamom"
+  ]
+ },
+ {
+  "id": "masala-chai",
+  "name": "Masala chai with biscuits",
+  "cuisine": "pan-indian",
+  "slots": [
+   "breakfast",
+   "snack"
+  ],
+  "diet": "vegetarian",
+  "tags": [
+   "warm",
+   "quick",
+   "lactose"
+  ],
+  "allergens": [
+   "dairy",
+   "gluten"
+  ],
+  "prepMin": 8,
+  "spice": 1,
+  "kcal": 150,
+  "protein": 4,
+  "fibre": 1,
+  "water": 180,
+  "ingredients": [
+   "tea leaves",
+   "milk",
+   "sugar",
+   "ginger",
+   "cardamom",
+   "biscuits",
+   "wheat flour"
+  ]
+ },
+ {
+  "id": "tomato-soup",
+  "name": "Tomato soup with bread",
+  "cuisine": "pan-indian",
+  "slots": [
+   "dinner",
+   "snack"
+  ],
+  "diet": "vegetarian",
+  "tags": [
+   "warm",
+   "gentle",
+   "light"
+  ],
+  "allergens": [
+   "dairy",
+   "gluten"
+  ],
+  "prepMin": 20,
+  "spice": 0,
+  "kcal": 210,
+  "protein": 5,
+  "fibre": 3,
+  "water": 300,
+  "ingredients": [
+   "tomatoes",
+   "onion",
+   "garlic",
+   "ginger",
+   "butter",
+   "bread",
+   "black pepper",
+   "carrots"
+  ]
+ },
+ {
+  "id": "bombay-sandwich",
+  "name": "Bombay veg grilled sandwich",
+  "cuisine": "mumbai",
+  "slots": [
+   "breakfast",
+   "snack"
+  ],
+  "diet": "vegetarian",
+  "tags": [
+   "street",
+   "warm",
+   "quick"
+  ],
+  "allergens": [
+   "dairy",
+   "gluten"
+  ],
+  "prepMin": 12,
+  "spice": 1,
+  "kcal": 340,
+  "protein": 9,
+  "fibre": 5,
+  "water": 60,
+  "ingredients": [
+   "bread",
+   "potatoes",
+   "beetroot",
+   "cucumber",
+   "tomatoes",
+   "onion",
+   "green chutney",
+   "butter",
+   "cheese"
+  ]
+ },
+ {
+  "id": "ragi-mudde-saaru",
+  "name": "Ragi mudde with greens saaru",
+  "cuisine": "karnataka",
+  "slots": [
+   "lunch",
+   "dinner"
+  ],
+  "diet": "vegan",
+  "tags": [
+   "warm",
+   "fibre",
+   "iron",
+   "low-gi"
+  ],
+  "allergens": [],
+  "prepMin": 35,
+  "spice": 1,
+  "kcal": 420,
+  "protein": 13,
+  "fibre": 12,
+  "water": 260,
+  "ingredients": [
+   "ragi flour",
+   "toor dal",
+   "spinach",
+   "tomatoes",
+   "onion",
+   "garlic",
+   "tamarind",
+   "mustard seeds",
+   "curry leaves"
+  ]
+ },
+ {
+  "id": "rava-idli",
+  "name": "Rava idli with sambar",
+  "cuisine": "south-indian",
+  "slots": [
+   "breakfast"
+  ],
+  "diet": "vegetarian",
+  "tags": [
+   "warm",
+   "quick",
+   "comfort"
+  ],
+  "allergens": [
+   "dairy",
+   "gluten",
+   "nuts"
+  ],
+  "prepMin": 25,
+  "spice": 1,
+  "kcal": 300,
+  "protein": 9,
+  "fibre": 5,
+  "water": 200,
+  "ingredients": [
+   "semolina",
+   "curd",
+   "cashew nuts",
+   "mustard seeds",
+   "toor dal",
+   "onion",
+   "tomatoes",
+   "drumstick",
+   "tamarind",
+   "ginger"
+  ]
+ }
+]

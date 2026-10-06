@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { TextInput, View } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
-import { chooseForMe, parseAskWithLlm, RESTRICTIVE, RESTRICTIVE_NOTE } from '@eatos/core';
+import { chooseForMe, matchesWord, parseAskWithLlm, RESTRICTIVE, RESTRICTIVE_NOTE } from '@eatos/core';
 import type { AskOutcome } from '@eatos/core';
 import type { MealSlot } from '@eatos/core';
 import { useKernel } from '../src/kernel';
@@ -9,7 +9,7 @@ import { useTheme, fonts } from '../src/theme';
 import { Btn, Card, Chip, IconBtn, Row, Screen, Txt, TopBar } from '../src/ui';
 import { loadLlmConfig, makeCompleter } from '../src/llm';
 
-const PROMPTS = ['Something warm, 15 minutes', 'A light snack', 'High protein dinner', 'Comfort food for everyone', 'Gentle, I feel unwell'];
+const PROMPTS = ['Something warm, 15 minutes', 'A light snack', 'High protein dinner', 'Comfort food for everyone', 'Gentle, I feel unwell', 'Surprise me', 'Same as yesterday'];
 
 export default function Ask() {
   const { kernel, now, submit, version } = useKernel();
@@ -44,7 +44,12 @@ export default function Ask() {
     return { ...kernel.answer(withSlot, now), source: withSlot.source, fallbackReason: (withSlot as AskOutcome).fallbackReason };
   }, [kernel, parsed, asked, now, slot, version]);
 
-  const notes = [...(RESTRICTIVE.test(asked) ? [RESTRICTIVE_NOTE] : []), ...kernel.notes(result.query, now)];
+  const unknownWords = (result.query.include ?? []).filter((w) => !kernel.catalog.some((f) => matchesWord(f, w)));
+  const notes = [
+    ...(RESTRICTIVE.test(asked) ? [RESTRICTIVE_NOTE] : []),
+    ...kernel.notes(result.query, now),
+    ...(unknownWords.length ? [`EatOS does not have “${unknownWords.join('”, “')}” yet, so these are the closest picks for you instead.`] : []),
+  ];
 
   const send = (q: string) => {
     setText(q);
@@ -77,7 +82,7 @@ export default function Ask() {
         </View>
       ) : (
         <Row wrap gap={8}>
-          {PROMPTS.map((p) => (
+          {PROMPTS.filter((p) => !(kernel.me()?.conditions?.includes('kidney') && /protein/i.test(p))).map((p) => (
             <Chip key={p} label={p} onPress={() => send(p)} />
           ))}
         </Row>
@@ -104,7 +109,7 @@ export default function Ask() {
           </Row>
           <Row wrap gap={6}>
             <Chip label={`${r.food.prepMin} min`} />
-            <Chip label={`${r.food.nutrients.proteinG} g protein`} />
+            {kernel.me()?.conditions?.includes('kidney') ? null : <Chip label={`${r.food.nutrients.proteinG} g protein`} />}
             {r.food.tags.slice(0, 2).map((t) => (
               <Chip key={t} label={t} />
             ))}
@@ -112,7 +117,7 @@ export default function Ask() {
           <Txt v="small">{r.reasons.join('. ')}</Txt>
           {r.missing.length ? <Txt v="small">{`Missing: ${r.missing.join(', ')}`}</Txt> : null}
           <Row wrap gap={8}>
-            <Btn small label="Cook this" onPress={() => router.push(`/cook/${r.food.id}`)} />
+            <Btn small label={r.food.tags.includes('no-cook') ? 'Show me how' : 'Cook this'} onPress={() => router.push(`/cook/${r.food.id}`)} />
             <Btn small kind="outline" label="Love it" onPress={() => submit({ type: 'feedback', foodId: r.food.id, verdict: 'liked' })} />
             <Btn small kind="ghost" label="Not for me" onPress={() => submit({ type: 'feedback', foodId: r.food.id, verdict: 'never' })} />
           </Row>
@@ -121,7 +126,7 @@ export default function Ask() {
 
       {result.results.length ? (
         <Row>
-          <Btn label="Choose for me" kind="lime" style={{ flex: 1 }} onPress={() => setPicked(chooseForMe(result.results)?.food.id ?? null)} />
+          <Btn label="Choose for me" kind="lime" style={{ flex: 1 }} onPress={() => setPicked(chooseForMe(kernel.recommend({ ...result.query, k: 10 }, now))?.food.id ?? null)} />
           <Btn label={why ? 'Hide reasons' : 'Why these?'} kind="outline" style={{ flex: 1 }} onPress={() => setWhy(!why)} />
         </Row>
       ) : null}

@@ -38,6 +38,8 @@ interface Swap {
   match: RegExp;
   when: (Condition | DietRule)[];
   picks: string[];
+  /** Conditions for which this swap is not offered. */
+  skipFor?: Condition[];
   why: string;
   tips?: { text: string; evidence: 'guideline' | 'trial' | 'tradition' }[];
 }
@@ -53,7 +55,7 @@ const SWAPS: Swap[] = [
   { match: /samosa|vada pav|kachori|pakora|bhajiya|fried/i, when: ['diabetes', 'prediabetes', 'high-cholesterol', 'hypertension'], picks: ['roasted-chana', 'dhokla', 'sprouts-salad', 'murmura-bhel', 'idli-sambar'], why: 'Same snack hour with less oil and refined flour.' },
   { match: /jalebi|gulab|mithai|halwa|sweet|ladoo|barfi|cake|ice cream/i, when: ['diabetes', 'prediabetes', 'pcos'], picks: ['sweet-curd-mango', 'fruit-curd-bowl', 'makhana-kheer'], why: 'A small sweet after a meal beats a large one alone; fruit and curd keep the sweetness.', tips: [{ text: 'Have mithai after a meal, in a small portion, rather than on an empty stomach.', evidence: 'guideline' }] },
   { match: /mutton|liver|prawn|crab|organ|keema/i, when: ['gout'], picks: ['boiled-eggs', 'paneer-tikka-salad', 'dal-tadka-rice'], why: 'Lower-purine proteins that still fill you up.' },
-  { match: /whey|protein (bar|shake|powder)|supplement/i, when: [], picks: ['paneer-tikka-salad', 'soya-chunk-curry', 'sprouts-salad', 'besan-chilla', 'fruit-curd-bowl'], why: 'Whole-food vegetarian protein; ICMR-NIN 2024 advises food over protein supplements.' },
+  { match: /whey|protein (bar|shake|powder)|supplement/i, when: [], skipFor: ['kidney'], picks: ['paneer-tikka-salad', 'soya-chunk-curry', 'sprouts-salad', 'besan-chilla', 'fruit-curd-bowl'], why: 'Whole-food vegetarian protein; ICMR-NIN 2024 advises food over protein supplements.' },
   { match: /chaat|pani puri|gol gappa|street|raw|sushi|cheese|papaya/i, when: ['pregnancy'], picks: ['murmura-bhel', 'fruit-chaat', 'dhokla', 'curd-rice'], why: 'Freshly cooked or home-made versions of the same cravings. Street food hygiene cannot be checked.' },
 ];
 
@@ -137,8 +139,8 @@ export function alternatives(state: State, catalog: Food[], wish: string, now: n
     const t = textProblem(wish, me);
     if (t) blockers.push({ kind: kindOf(t, me), detail: t });
   }
-  const swaps = SWAPS.filter((s) => s.match.test(text) && (s.when.length === 0 || s.when.some((w) => mine.has(w))));
-  if (!blockers.length && swaps.some((x) => x.when.length)) blockers.push({ kind: swaps.find((x) => x.when.length)!.when.some((w) => ['jain', 'satvik', 'no-onion-garlic', 'no-beef', 'halal'].includes(w) && mine.has(w)) ? 'religion' : 'health', detail: 'It conflicts with what you told EatOS about your food.' });
+  const swaps = SWAPS.filter((s) => s.match.test(text) && !s.skipFor?.some((c) => mine.has(c)) && (s.when.length === 0 || s.when.some((w) => mine.has(w))));
+  if (!blockers.length && swaps.some((x) => x.when.length)) blockers.push({ kind: swaps.find((x) => x.when.length)!.when.some((w) => ['jain', 'satvik', 'no-onion-garlic', 'no-beef', 'halal'].includes(w) && mine.has(w)) ? 'religion' : 'health', detail: 'EatOS ranks this lower with the health settings you chose. It is not ruled out.' });
   for (const s of swaps) tips.push(...(s.tips ?? []));
 
   const ladder: Rung[] = [];
@@ -184,9 +186,10 @@ export function alternatives(state: State, catalog: Food[], wish: string, now: n
   let later: string | undefined;
   const kinds = new Set(blockers.map((b) => b.kind));
   const skip = blockers.some((b) => /pregnan/i.test(b.detail) || /gluten/i.test(b.detail));
-  if (skip) later = 'This one is best skipped for now. If you are unsure about anything, ask your clinician.';
+  if (skip) later = blockers.some((b) => /gluten/i.test(b.detail)) ? 'Not for you, not even a little. Even small amounts matter with coeliac disease, so EatOS never says a bite is fine. Check labels on hing, masalas, besan and papad.' : 'This one is best skipped for now. If you are unsure about anything, ask your clinician.';
   else if (kinds.has('allergy')) later = 'This is not safe for you. If a restaurant says they can make it without the allergen, EatOS cannot check that, so ask them directly.';
   else if (kinds.has('religion')) later = 'It stays out while the rule applies. Keep it for a day the rule allows, or ask the cook about the version above.';
+  else if (kinds.has('health') && me?.conditions?.includes('kidney')) later = 'Ask your dietitian how this fits your plan. EatOS does not set limits for you.';
   else if (kinds.has('health')) later = 'Keep the real thing for a weekend meal in a smaller portion, with vegetables and dal or curd alongside.';
   else if (kinds.has('equipment')) later = 'Keep it for when you have a kitchen, or look for a ready version from a place you trust.';
   else if (kinds.has('household')) later = 'Cook it on a day when the others eat out, or make the shared base and add it on the side.';

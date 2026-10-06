@@ -24,7 +24,7 @@ const TAG_WORDS: Record<string, string> = {
   easy: 'gentle',
 };
 
-const STOP = new Set(['something', 'anything', 'for', 'the', 'and', 'with', 'what', 'can', 'make', 'have', 'want', 'need', 'some', 'tonight', 'today', 'tomorrow', 'now', 'please', 'give', 'show', 'ideas', 'idea', 'meal', 'food', 'eat', 'eating', 'minutes', 'minute', 'mins', 'min', 'quick', 'fast', 'hurry', 'time', 'too', 'light', 'small', 'heavy', 'protein', 'fibre', 'fiber', 'workout', 'gym', 'just', 'only', 'myself', 'everyone', 'family', 'all', 'household', 'kids', 'that', 'this', 'are', 'you', 'got', 'good', 'nice', 'tasty', 'hungry', 'feel', 'feeling', 'like', 'least', 'grams', 'over', 'more', 'than']);
+const STOP = new Set(['one', 'hand', 'handed', 'feeding', 'while', 'eat', 'breastfeeding', 'nursing', 'cook', 'surprise', 'new', 'never', 'tried', 'different', 'same', 'yesterday', 'again', 'before', 'something', 'anything', 'for', 'the', 'and', 'with', 'what', 'can', 'make', 'have', 'want', 'need', 'some', 'tonight', 'today', 'tomorrow', 'now', 'please', 'give', 'show', 'ideas', 'idea', 'meal', 'food', 'eat', 'eating', 'minutes', 'minute', 'mins', 'min', 'quick', 'fast', 'hurry', 'time', 'too', 'light', 'small', 'heavy', 'protein', 'fibre', 'fiber', 'workout', 'gym', 'just', 'only', 'myself', 'everyone', 'family', 'all', 'household', 'kids', 'that', 'this', 'are', 'you', 'got', 'good', 'nice', 'tasty', 'hungry', 'feel', 'feeling', 'like', 'least', 'grams', 'over', 'more', 'than']);
 
 const SLOT_WORDS: Record<string, MealSlot> = {
   breakfast: 'breakfast',
@@ -41,11 +41,12 @@ const SLOT_WORDS: Record<string, MealSlot> = {
  * eating. An LLM adapter can replace it later behind the same shape.
  */
 export function parseAsk(text: string, selfId = 'me'): ParsedAsk {
-  const s = text.toLowerCase();
+  // A question is a sentence, not a document: cap it so pathological input cannot stall the parser.
+  const s = text.slice(0, 500).toLowerCase();
   const query: Query = {};
   const understood: string[] = [];
 
-  const minutes = s.match(/(\d+)\s*(?:min|mins|minutes|m\b)/);
+  const minutes = s.match(/(\d{1,4})\s*(?:min|mins|minutes|m\b)/);
   if (minutes) {
     query.maxPrepMin = Number(minutes[1]);
     understood.push(`Ready in ${query.maxPrepMin} minutes or less`);
@@ -83,6 +84,23 @@ export function parseAsk(text: string, selfId = 'me'): ParsedAsk {
     query.minProteinG = Math.min(120, Number(minProtein[1]));
     query.need = 'protein';
     understood.push(`At least ${query.minProteinG} g protein`);
+  }
+  if (/\b(one[- ]hand(?:ed)?|while feeding|eat while|breastfeeding|nursing)\b/.test(s)) {
+    query.maxPrepMin = Math.min(query.maxPrepMin ?? 5, 5);
+    query.tags = [...new Set([...(query.tags ?? []), 'no-cook'])];
+    understood.push('Easy to eat with one hand, no cooking');
+  }
+  if (/\bno[- ]?cook\b/.test(s)) {
+    query.tags = [...new Set([...(query.tags ?? []), 'no-cook'])];
+    understood.push('No cooking');
+  }
+  if (/\b(surprise|something new|never tried|new to me|something different)\b/.test(s)) {
+    query.novel = true;
+    understood.push('Something new for you');
+  }
+  if (/\b(same as yesterday|same again|same as before)\b/.test(s)) {
+    query.sameAsYesterday = true;
+    understood.push('The same as yesterday');
   }
   if (/\b(light|small|not too heavy)\b/.test(s)) {
     query.light = true;

@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { t, useLang } from './i18n';
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, View, useWindowDimensions } from 'react-native';
 import type { StyleProp, TextInputProps, TextStyle, ViewStyle } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -31,9 +32,10 @@ const variants: Record<Variant, TextStyle> = {
 export function Txt({ v = 'body', color, style, children, numberOfLines }: { v?: Variant; color?: keyof Colors; style?: StyleProp<TextStyle>; children: ReactNode; numberOfLines?: number }) {
   const { c } = useTheme();
   const defaultColor: keyof Colors = v === 'small' || v === 'mono' || v === 'label' ? 'muted' : 'text';
+  useLang();
   return (
     <Text numberOfLines={numberOfLines} style={[variants[v], { color: c[color ?? defaultColor] }, style]}>
-      {children}
+      {typeof children === 'string' ? t(children) : children}
     </Text>
   );
 }
@@ -110,7 +112,7 @@ export function Btn({ label, onPress, kind = 'primary', icon, disabled, style, a
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityLabel={accessibilityLabel ?? label}
+      accessibilityLabel={t(accessibilityLabel ?? label)}
       accessibilityState={{ disabled: !!disabled }}
       disabled={disabled}
       onPress={onPress}
@@ -121,7 +123,7 @@ export function Btn({ label, onPress, kind = 'primary', icon, disabled, style, a
       ]}
     >
       {icon ? <Icon name={icon} size={18} color={k.fg} /> : null}
-      <Text style={[variants.bodyStrong, { color: k.fg, fontFamily: fonts.semibold, fontSize: small ? 14 : 15 }]}>{label}</Text>
+      <Text style={[variants.bodyStrong, { color: k.fg, fontFamily: fonts.semibold, fontSize: small ? 14 : 15 }]}>{t(label)}</Text>
     </Pressable>
   );
 }
@@ -131,7 +133,7 @@ export function IconBtn({ icon, label, onPress, filled }: { icon: IconName; labe
   return (
     <Pressable
       accessibilityRole="button"
-      accessibilityLabel={label}
+      accessibilityLabel={t(label)}
       onPress={onPress}
       style={[styles.iconBtn, filled && { backgroundColor: c.accent, borderRadius: 22 }]}
     >
@@ -145,7 +147,7 @@ export function Chip({ label, selected, onPress, tone }: { label: string; select
   const toneBg = tone === 'warn' ? c.warnBg : tone === 'ok' ? c.okBg : tone === 'accent' ? c.accentSoft : c.surfaceAlt;
   const toneFg = tone === 'warn' ? c.warnText : tone === 'ok' ? c.okText : tone === 'accent' ? c.accentText : c.text;
   const body = (
-    <Text style={[variants.small, { color: selected ? c.bg : toneFg, fontFamily: fonts.medium }]}>{label}</Text>
+    <Text style={[variants.small, { color: selected ? c.bg : toneFg, fontFamily: fonts.medium }]}>{t(label)}</Text>
   );
   if (!onPress) return <View style={[styles.chip, { backgroundColor: toneBg }]}>{body}</View>;
   return (
@@ -176,7 +178,7 @@ export function Field({ label, ...props }: TextInputProps & { label: string }) {
     <View style={{ gap: 6 }}>
       <Txt v="label">{label}</Txt>
       <TextInput
-        accessibilityLabel={label}
+        accessibilityLabel={t(label)}
         placeholderTextColor={c.muted}
         {...props}
         style={[styles.input, { backgroundColor: c.surface, borderColor: c.borderStrong, color: c.text }, props.style]}
@@ -200,14 +202,14 @@ export function Toggle({ label, hint, value, onChange }: { label: string; hint?:
   );
 }
 
-export function Check({ label, checked, onChange, detail }: { label: string; checked: boolean; onChange: (v: boolean) => void; detail?: string }) {
+export function Check({ label, checked, onChange, detail, strike }: { label: string; checked: boolean; onChange: (v: boolean) => void; detail?: string; strike?: boolean }) {
   const { c } = useTheme();
   return (
     <Pressable accessibilityRole="checkbox" accessibilityState={{ checked }} aria-checked={checked} accessibilityLabel={label} onPress={() => onChange(!checked)} style={styles.checkRow}>
       <View style={[styles.box, { borderColor: checked ? c.accent : c.muted, backgroundColor: checked ? c.accent : 'transparent' }]}>
         {checked ? <Icon name="check" size={14} color={c.onAccent} strokeWidth={3} /> : null}
       </View>
-      <Text style={[variants.body, { flex: 1, color: checked ? c.muted : c.text, textDecorationLine: checked ? 'line-through' : 'none' }]}>{label}</Text>
+      <Text style={[variants.body, { flex: 1, color: checked && strike ? c.muted : c.text, textDecorationLine: checked && strike ? 'line-through' : 'none' }]}>{label}</Text>
       {detail ? <Txt v="small">{detail}</Txt> : null}
     </Pressable>
   );

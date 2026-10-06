@@ -111,6 +111,15 @@ export function healthChecks(state: State, catalog: Food[], now: number): Health
       }
     }
   }
+  // With a kidney condition, fluid and protein limits are set by the person's dietitian, so EatOS does not push them.
+  if (selfMember(state)?.conditions?.includes('kidney')) {
+    for (const c of checks) {
+      if (c.key === 'hydration' || c.key === 'protein') {
+        c.status = 'paused';
+        c.note = 'Your dietitian sets this limit for you';
+      }
+    }
+  }
   // Safety floor: late in the day with very little eaten.
   const floor: HealthCheck = {
     key: 'energy-floor',

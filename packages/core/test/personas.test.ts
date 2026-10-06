@@ -172,7 +172,7 @@ describe('fixes from persona testing', () => {
     expect(k.wish('ice cream', base).food?.id).not.toBe('dal-tadka-rice');
     expect(k.wish('butter naan', base).food?.id).not.toBe('peanut-butter-banana');
     expect(k.wish('mutton biryani', base).food?.id).toBe('mutton-biryani');
-    expect(k.wish('masala chai', base).food).toBeUndefined();
+    expect(k.wish('kombucha', base).food).toBeUndefined();
   });
   it('wish alternatives respect declared health conditions', () => {
     const k = kernelFor(PERSONAS[1]!);
@@ -226,5 +226,65 @@ describe('fixes from persona testing', () => {
     expect(k.tasteCards(base, 8).some((c) => c.cuisine === 'punjabi')).toBe(true);
     const h = kernelFor(PERSONAS[7]!);
     for (const c of h.tasteCards(base, 8)) expect(c.tags).toContain('no-cook');
+  });
+});
+
+describe('round 2 safety', () => {
+  it('a child under 5 is never offered a choking hazard, even when the adults could eat it', () => {
+    const k = new Kernel();
+    const me = makeMember({ id: 'me', name: 'Neha', diet: 'vegetarian' });
+    const kid = makeMember({ id: 'k', name: 'Aarav', diet: 'vegetarian', conditions: ['child-under-5', 'minor'] });
+    k.submit({ type: 'profile.set', at: base - 86_400_000, profile: makeProfile({ members: [me, kid], tzOffsetMin: IST }) });
+    const ids = k.recommend({ k: 400 }, base + 5 * 3_600_000).map((r) => r.food.id);
+    expect(ids).not.toContain('popcorn');
+    expect(ids).not.toContain('roasted-chana');
+    expect(ids.length).toBeGreaterThan(10);
+  });
+  it('soft-food preference ranks soft dishes first and demotes crunchy ones', () => {
+    const k = kernelFor({ name: 'kamla', member: { diet: 'vegetarian', rules: ['no-onion-garlic'], conditions: ['older-adult-soft', 'diabetes'] }, wishes: [] });
+    const snack = k.recommend({ slot: 'snack', k: 3 }, base + 10 * 3_600_000);
+    for (const r of snack) expect(r.food.tags).not.toContain('crunchy');
+  });
+  it('diabetes alone still warns about fasting and medicines without refusing', () => {
+    const k = kernelFor({ name: 'd', member: { diet: 'omnivore', conditions: ['diabetes'] }, wishes: [] });
+    k.submit({ type: 'fasting.set', at: base + 3_600_000, kind: 'navratri' });
+    const notes = k.notes({}, base + 5 * 3_600_000).join(' ');
+    expect(notes).toMatch(/check with your doctor/);
+    expect(k.recommend({ slot: 'dinner', k: 3 }, base + 5 * 3_600_000).length).toBeGreaterThan(0);
+  });
+  it('fad-diet requests get the kind answer too', () => {
+    const k = kernelFor(PERSONAS[1]!);
+    expect(k.wish('omad keto diet pills', base).later).toMatch(/regular meals/i);
+  });
+});
+
+describe('kidney: no pushing of fluids or protein', () => {
+  it('pauses the hydration and protein checks and sends no water reminders', () => {
+    const k = kernelFor({ name: 'lakshmi', member: { diet: 'vegetarian', conditions: ['kidney'] }, wishes: [] });
+    const checks = k.health(base + 12 * 3_600_000);
+    for (const c of checks.filter((x) => x.key === 'hydration' || x.key === 'protein')) expect(c.status).toBe('paused');
+    expect(k.schedule(base + 12 * 3_600_000).some((t) => t.kind === 'hydration')).toBe(false);
+  });
+});
+
+describe('surprise me and same as yesterday', () => {
+  it('parse and steer the ranking', () => {
+    const k = kernelFor(PERSONAS[1]!);
+    expect(k.ask('surprise me', base).query.novel).toBe(true);
+    const lunchAt = base - 86_400_000 + 13 * 3_600_000;
+    k.submit({ type: 'intake.logged', at: lunchAt, foodId: 'rajma-chawal', slot: 'lunch' });
+    const r = k.ask('same as yesterday for lunch', base + 12 * 3_600_000);
+    expect(r.query.sameAsYesterday).toBe(true);
+    expect(r.results[0]!.food.id).toBe('rajma-chawal');
+  });
+});
+
+describe('coeliac: hidden gluten', () => {
+  it('asafoetida, papad and commercial masalas count as gluten, and wishes are caught by words', () => {
+    const k = kernelFor({ name: 'riya', member: { diet: 'vegetarian', conditions: ['celiac'] }, wishes: [] });
+    const ids = k.recommend({ k: 500 }, base + 5 * 3_600_000).map((r) => r.food.id);
+    for (const bad of ['kachumber-curd', 'sambar-rice', 'idli-sambar', 'bisi-bele-bath']) expect(ids, bad).not.toContain(bad);
+    for (const w of ['beer', 'papad', 'sooji halwa', 'dal with hing tadka']) expect(k.wish(w, base).blockers.some((b) => /gluten/i.test(b.detail)), w).toBe(true);
+    expect(k.wish('beer', base).later).toMatch(/not even a little/i);
   });
 });

@@ -1,0 +1,1192 @@
+[
+ {
+  "foodId": "idli-chutney-jain",
+  "set": {
+   "allergens": [
+    "gluten"
+   ]
+  },
+  "reason": "Hing (asafoetida) is commonly compounded with wheat flour; unless labelled gluten-free it is unsafe for coeliac/wheat allergy. Ingredient list contains hing.",
+  "source": "Coeliac UK / Celiac Disease Foundation guidance on asafoetida; FSSAI allergen labelling (cereals containing gluten)"
+ },
+ {
+  "foodId": "moong-chilla-jain",
+  "set": {
+   "allergens": [
+    "gluten"
+   ]
+  },
+  "reason": "Hing (asafoetida) is commonly compounded with wheat flour; unless labelled gluten-free it is unsafe for coeliac/wheat allergy. Ingredient list contains hing.",
+  "source": "Coeliac UK / Celiac Disease Foundation guidance on asafoetida; FSSAI allergen labelling (cereals containing gluten)"
+ },
+ {
+  "foodId": "dhokla",
+  "set": {
+   "allergens": [
+    "gluten"
+   ],
+   "tags": [
+    "quick",
+    "light",
+    "ferment"
+   ]
+  },
+  "reason": "Hing (asafoetida) is commonly compounded with wheat flour; unless labelled gluten-free it is unsafe for coeliac/wheat allergy. Ingredient list contains hing. | Salted rasam, chaas, dhokla and black-salt sattu are not low sodium; the tag gives hypertension/CKD users a false \"Easy on salt\".",
+  "source": "Coeliac UK / Celiac Disease Foundation guidance on asafoetida; FSSAI allergen labelling (cereals containing gluten) | FSSAI low-sodium claim is 120 mg or less per 100 g; ICMR-NIN 2024"
+ },
+ {
+  "foodId": "lauki-roti",
+  "set": {
+   "allergens": [
+    "gluten"
+   ]
+  },
+  "reason": "Hing (asafoetida) is commonly compounded with wheat flour; unless labelled gluten-free it is unsafe for coeliac/wheat allergy. Ingredient list contains hing.",
+  "source": "Coeliac UK / Celiac Disease Foundation guidance on asafoetida; FSSAI allergen labelling (cereals containing gluten)"
+ },
+ {
+  "foodId": "dal-rice-jain",
+  "set": {
+   "allergens": [
+    "dairy",
+    "gluten"
+   ]
+  },
+  "reason": "Hing (asafoetida) is commonly compounded with wheat flour; unless labelled gluten-free it is unsafe for coeliac/wheat allergy. Ingredient list contains hing.",
+  "source": "Coeliac UK / Celiac Disease Foundation guidance on asafoetida; FSSAI allergen labelling (cereals containing gluten)"
+ },
+ {
+  "foodId": "khichdi-kadhi",
+  "set": {
+   "allergens": [
+    "dairy",
+    "gluten"
+   ]
+  },
+  "reason": "Hing (asafoetida) is commonly compounded with wheat flour; unless labelled gluten-free it is unsafe for coeliac/wheat allergy. Ingredient list contains hing.",
+  "source": "Coeliac UK / Celiac Disease Foundation guidance on asafoetida; FSSAI allergen labelling (cereals containing gluten)"
+ },
+ {
+  "foodId": "rasam-rice-satvik",
+  "set": {
+   "allergens": [
+    "gluten"
+   ],
+   "tags": [
+    "warm",
+    "gentle",
+    "light"
+   ]
+  },
+  "reason": "Hing (asafoetida) is commonly compounded with wheat flour; unless labelled gluten-free it is unsafe for coeliac/wheat allergy. Ingredient list contains hing. | Salted rasam, chaas, dhokla and black-salt sattu are not low sodium; the tag gives hypertension/CKD users a false \"Easy on salt\".",
+  "source": "Coeliac UK / Celiac Disease Foundation guidance on asafoetida; FSSAI allergen labelling (cereals containing gluten) | FSSAI low-sodium claim is 120 mg or less per 100 g; ICMR-NIN 2024"
+ },
+ {
+  "foodId": "sambar-rice-satvik",
+  "set": {
+   "allergens": [
+    "gluten"
+   ]
+  },
+  "reason": "Hing (asafoetida) is commonly compounded with wheat flour; unless labelled gluten-free it is unsafe for coeliac/wheat allergy. Ingredient list contains hing.",
+  "source": "Coeliac UK / Celiac Disease Foundation guidance on asafoetida; FSSAI allergen labelling (cereals containing gluten)"
+ },
+ {
+  "foodId": "thepla",
+  "set": {
+   "allergens": [
+    "gluten",
+    "dairy",
+    "sesame"
+   ]
+  },
+  "reason": "Ingredients list sesame seeds but allergens omit sesame.",
+  "source": "Dish ingredient list"
+ },
+ {
+  "foodId": "thukpa",
+  "set": {
+   "tags": [
+    "warm",
+    "comfort",
+    "gentle",
+    "light",
+    "high-sodium"
+   ],
+   "allergens": [
+    "gluten",
+    "soy"
+   ]
+  },
+  "reason": "Soy sauce is in the ingredients (soy; sodium roughly 900 mg per tbsp).",
+  "source": "USDA FoodData Central soy sauce; FSSAI allergen list"
+ },
+ {
+  "foodId": "egg-fried-rice",
+  "set": {
+   "tags": [
+    "warm",
+    "quick",
+    "high-protein",
+    "high-sodium"
+   ],
+   "allergens": [
+    "egg",
+    "soy",
+    "gluten"
+   ]
+  },
+  "reason": "Soy sauce is usually brewed with wheat; unsafe for coeliac unless tamari/gluten-free.",
+  "source": "Coeliac UK soy sauce guidance"
+ },
+ {
+  "foodId": "veg-stir-fry",
+  "set": {
+   "tags": [
+    "warm",
+    "quick",
+    "high-protein",
+    "high-sodium"
+   ],
+   "allergens": [
+    "soy",
+    "gluten"
+   ]
+  },
+  "reason": "Soy sauce usually contains wheat; sodium high.",
+  "source": "Coeliac UK soy sauce guidance"
+ },
+ {
+  "foodId": "makhana-roasted",
+  "set": {
+   "tags": [
+    "quick",
+    "light",
+    "low-sodium",
+    "no-cook"
+   ],
+   "allergens": [
+    "dairy"
+   ],
+   "diet": "vegetarian"
+  },
+  "reason": "Ingredient is ghee: dairy allergen and not vegan.",
+  "source": "Ghee is milk fat; FSSAI milk allergen"
+ },
+ {
+  "foodId": "haleem",
+  "set": {
+   "tags": [
+    "warm",
+    "festive",
+    "comfort",
+    "high-protein",
+    "iftar",
+    "high-purine",
+    "iron"
+   ],
+   "allergens": [
+    "gluten",
+    "dairy"
+   ]
+  },
+  "reason": "Ghee in ingredients; mutton plus lentils is a heme and non-heme iron dish.",
+  "source": "FSSAI milk allergen; IFCT 2017 mutton/lentil iron"
+ },
+ {
+  "foodId": "nihari-roti",
+  "set": {
+   "tags": [
+    "warm",
+    "festive",
+    "comfort",
+    "high-protein",
+    "high-purine",
+    "high-sodium",
+    "iron"
+   ],
+   "allergens": [
+    "gluten",
+    "dairy"
+   ]
+  },
+  "reason": "Ghee in ingredients; red meat iron.",
+  "source": "FSSAI milk allergen; IFCT 2017"
+ },
+ {
+  "foodId": "jalebi",
+  "set": {
+   "allergens": [
+    "gluten",
+    "dairy"
+   ]
+  },
+  "reason": "Ghee listed in ingredients.",
+  "source": "FSSAI milk allergen"
+ },
+ {
+  "foodId": "gulab-jamun",
+  "set": {
+   "tags": [
+    "sweet",
+    "festive",
+    "comfort",
+    "high-gi",
+    "lactose",
+    "fried"
+   ]
+  },
+  "reason": "Deep fried in ghee or oil.",
+  "source": "Tradition / recipe"
+ },
+ {
+  "foodId": "coconut-water",
+  "set": {
+   "tags": [
+    "cold",
+    "cooling",
+    "light",
+    "iftar",
+    "no-cook",
+    "high-potassium"
+   ],
+   "nutrients": {
+    "kcal": 60,
+    "proteinG": 1,
+    "fibreG": 1,
+    "waterMl": 300
+   }
+  },
+  "reason": "About 250 mg potassium per 100 ml (about 750 mg per 300 ml); fibre is ~0-1 g, not 3.",
+  "source": "USDA FoodData Central coconut water; IFCT 2017"
+ },
+ {
+  "foodId": "banana",
+  "set": {
+   "tags": [
+    "quick",
+    "light",
+    "gentle",
+    "no-cook",
+    "high-potassium"
+   ]
+  },
+  "reason": "About 360-420 mg potassium per banana.",
+  "source": "USDA FoodData Central"
+ },
+ {
+  "foodId": "fruit-chaat",
+  "set": {
+   "tags": [
+    "quick",
+    "cold",
+    "cooling",
+    "light",
+    "iftar",
+    "no-cook",
+    "high-potassium"
+   ]
+  },
+  "reason": "Banana, papaya, pomegranate: potassium-rich fruit mix, a classic CKD trap.",
+  "source": "USDA FoodData Central; KDIGO 2024 CKD (individualise potassium)"
+ },
+ {
+  "foodId": "fruit-curd-bowl",
+  "set": {
+   "tags": [
+    "quick",
+    "cold",
+    "cooling",
+    "high-protein",
+    "lactose",
+    "no-cook",
+    "high-potassium",
+    "choking-hazard"
+   ]
+  },
+  "reason": "Banana plus curd. | Hard, small or boned food: choking risk for children under 5 (and bones in hilsa for any young child or elder).",
+  "source": "USDA FoodData Central | NHS/AAP choking guidance; ICMR-NIN 2024 complementary feeding"
+ },
+ {
+  "foodId": "banana-milkshake",
+  "set": {
+   "tags": [
+    "cold",
+    "quick",
+    "high-protein",
+    "lactose",
+    "no-cook",
+    "recovery",
+    "high-potassium"
+   ]
+  },
+  "reason": "Banana plus milk.",
+  "source": "USDA FoodData Central"
+ },
+ {
+  "foodId": "sweet-potato-chaat",
+  "set": {
+   "tags": [
+    "warm",
+    "quick",
+    "light",
+    "high-potassium"
+   ]
+  },
+  "reason": "Sweet potato about 340-440 mg per 100 g.",
+  "source": "USDA FoodData Central"
+ },
+ {
+  "foodId": "palak-paneer-roti",
+  "set": {
+   "tags": [
+    "warm",
+    "comfort",
+    "high-protein",
+    "iron",
+    "high-potassium"
+   ]
+  },
+  "reason": "Cooked spinach about 560 mg per 100 g; also high oxalate.",
+  "source": "USDA FoodData Central"
+ },
+ {
+  "foodId": "rajma-chawal",
+  "set": {
+   "tags": [
+    "warm",
+    "comfort",
+    "high-protein",
+    "fibre",
+    "iron",
+    "high-potassium"
+   ]
+  },
+  "reason": "Cooked kidney beans about 400 mg per 100 g.",
+  "source": "USDA FoodData Central"
+ },
+ {
+  "foodId": "dal-makhani-roti",
+  "set": {
+   "tags": [
+    "warm",
+    "comfort",
+    "high-protein",
+    "fibre",
+    "iron",
+    "lactose",
+    "high-potassium",
+    "high-sodium",
+    "high-satfat"
+   ]
+  },
+  "reason": "Urad plus rajma are potassium-rich; butter and cream give saturated fat; dish is salty.",
+  "source": "USDA FoodData Central; ICMR-NIN 2024 on fats"
+ },
+ {
+  "foodId": "khajoor-water",
+  "set": {
+   "tags": [
+    "quick",
+    "light",
+    "iftar",
+    "no-cook",
+    "high-potassium"
+   ]
+  },
+  "reason": "Dates about 650-700 mg potassium per 100 g.",
+  "source": "USDA FoodData Central"
+ },
+ {
+  "foodId": "seekh-kebab-salad",
+  "set": {
+   "tags": [
+    "quick",
+    "high-protein",
+    "low-gi",
+    "high-purine",
+    "iron"
+   ]
+  },
+  "reason": "Tagged high-purine on sibling meat dishes; this one was missing (inconsistent gout nudge). | Red meat is a heme-iron source; anaemia nudge missed it.",
+  "source": "ACR 2020 gout guideline (limit red meat/organ/shellfish) | ICMR-NIN 2024; IFCT 2017"
+ },
+ {
+  "foodId": "butter-chicken-naan",
+  "set": {
+   "tags": [
+    "warm",
+    "comfort",
+    "festive",
+    "high-protein",
+    "high-gi",
+    "high-sodium",
+    "lactose",
+    "high-purine",
+    "high-satfat"
+   ]
+  },
+  "reason": "Tagged high-purine on sibling meat dishes; this one was missing (inconsistent gout nudge). | Butter and cream.",
+  "source": "ACR 2020 gout guideline (limit red meat/organ/shellfish) | ICMR-NIN 2024 on fats"
+ },
+ {
+  "foodId": "tandoori-chicken-salad",
+  "set": {
+   "tags": [
+    "quick",
+    "high-protein",
+    "low-gi",
+    "light",
+    "high-purine"
+   ]
+  },
+  "reason": "Tagged high-purine on sibling meat dishes; this one was missing (inconsistent gout nudge).",
+  "source": "ACR 2020 gout guideline (limit red meat/organ/shellfish)"
+ },
+ {
+  "foodId": "chicken-curry",
+  "set": {
+   "tags": [
+    "warm",
+    "comfort",
+    "high-protein",
+    "spicy",
+    "high-purine"
+   ]
+  },
+  "reason": "Tagged high-purine on sibling meat dishes; this one was missing (inconsistent gout nudge).",
+  "source": "ACR 2020 gout guideline (limit red meat/organ/shellfish)"
+ },
+ {
+  "foodId": "chicken-mild-curry",
+  "set": {
+   "tags": [
+    "warm",
+    "comfort",
+    "high-protein",
+    "high-purine"
+   ]
+  },
+  "reason": "Tagged high-purine on sibling meat dishes; this one was missing (inconsistent gout nudge).",
+  "source": "ACR 2020 gout guideline (limit red meat/organ/shellfish)"
+ },
+ {
+  "foodId": "chingri-malai-curry",
+  "set": {
+   "tags": [
+    "warm",
+    "comfort",
+    "festive",
+    "high-protein",
+    "high-purine"
+   ]
+  },
+  "reason": "Shellfish is a purine-rich food in gout guidance.",
+  "source": "ACR 2020 gout guideline"
+ },
+ {
+  "foodId": "keema-pav",
+  "set": {
+   "tags": [
+    "warm",
+    "comfort",
+    "high-protein",
+    "high-purine",
+    "iron"
+   ]
+  },
+  "reason": "Red meat is a heme-iron source; anaemia nudge missed it.",
+  "source": "ICMR-NIN 2024; IFCT 2017"
+ },
+ {
+  "foodId": "kosha-mangsho-luchi",
+  "set": {
+   "tags": [
+    "warm",
+    "comfort",
+    "festive",
+    "fried",
+    "high-protein",
+    "high-purine",
+    "high-gi",
+    "iron"
+   ]
+  },
+  "reason": "Red meat is a heme-iron source; anaemia nudge missed it.",
+  "source": "ICMR-NIN 2024; IFCT 2017"
+ },
+ {
+  "foodId": "pav-bhaji",
+  "set": {
+   "tags": [
+    "warm",
+    "comfort",
+    "street",
+    "high-gi",
+    "fried",
+    "high-sodium",
+    "high-potassium",
+    "high-satfat"
+   ]
+  },
+  "reason": "Butter, bhaji masala and salt; potato and tomato potassium.",
+  "source": "USDA FoodData Central"
+ },
+ {
+  "foodId": "pav-bhaji-jain",
+  "set": {
+   "tags": [
+    "warm",
+    "comfort",
+    "high-gi",
+    "high-sodium",
+    "high-satfat"
+   ]
+  },
+  "reason": "As pav bhaji.",
+  "source": "USDA FoodData Central"
+ },
+ {
+  "foodId": "kachumber-curd",
+  "set": {
+   "tags": [
+    "cold",
+    "cooling",
+    "light",
+    "lactose",
+    "no-cook",
+    "high-sodium"
+   ]
+  },
+  "reason": "Roasted papad adds substantial sodium; dish is currently suggested as a low-salt swap for hypertension.",
+  "source": "ICMR-NIN 2024 (salt under 5 g/day)"
+ },
+ {
+  "foodId": "dahi-chivda",
+  "set": {
+   "tags": [
+    "cold",
+    "quick",
+    "lactose",
+    "no-cook",
+    "high-sodium",
+    "choking-hazard"
+   ]
+  },
+  "reason": "Chivda is salted; whole peanuts.",
+  "source": "ICMR-NIN 2024; NHS choking advice"
+ },
+ {
+  "foodId": "rasam-rice",
+  "set": {
+   "tags": [
+    "warm",
+    "gentle",
+    "light"
+   ]
+  },
+  "reason": "Salted rasam, chaas, dhokla and black-salt sattu are not low sodium; the tag gives hypertension/CKD users a false \"Easy on salt\".",
+  "source": "FSSAI low-sodium claim is 120 mg or less per 100 g; ICMR-NIN 2024"
+ },
+ {
+  "foodId": "masala-chaas",
+  "set": {
+   "tags": [
+    "cold",
+    "cooling",
+    "light",
+    "lactose",
+    "iftar",
+    "no-cook"
+   ]
+  },
+  "reason": "Salted rasam, chaas, dhokla and black-salt sattu are not low sodium; the tag gives hypertension/CKD users a false \"Easy on salt\".",
+  "source": "FSSAI low-sodium claim is 120 mg or less per 100 g; ICMR-NIN 2024"
+ },
+ {
+  "foodId": "sattu-drink",
+  "set": {
+   "tags": [
+    "cold",
+    "cooling",
+    "light",
+    "high-protein",
+    "fibre",
+    "low-gi",
+    "no-cook",
+    "recovery"
+   ]
+  },
+  "reason": "Salted rasam, chaas, dhokla and black-salt sattu are not low sodium; the tag gives hypertension/CKD users a false \"Easy on salt\".",
+  "source": "FSSAI low-sodium claim is 120 mg or less per 100 g; ICMR-NIN 2024"
+ },
+ {
+  "foodId": "ragi-malt",
+  "set": {
+   "tags": [
+    "warm",
+    "gentle",
+    "iron",
+    "lactose",
+    "sweet"
+   ]
+  },
+  "reason": "Jaggery-sweetened ragi flour porridge with milk is not low GI.",
+  "source": "International GI tables (Atkinson 2021)"
+ },
+ {
+  "foodId": "rice-congee",
+  "set": {
+   "tags": [
+    "warm",
+    "gentle",
+    "high-gi"
+   ]
+  },
+  "reason": "Rice congee GI is reported about 80-100.",
+  "source": "Atkinson 2021 International Tables of GI"
+ },
+ {
+  "foodId": "oats-banana",
+  "set": {
+   "tags": [
+    "warm",
+    "quick",
+    "fibre",
+    "lactose"
+   ]
+  },
+  "reason": "Contains milk or yoghurt but lacks the lactose tag used on Indian-dish siblings.",
+  "source": "NIDDK lactose intolerance"
+ },
+ {
+  "foodId": "overnight-oats",
+  "set": {
+   "tags": [
+    "quick",
+    "fibre",
+    "cold",
+    "no-cook",
+    "lactose"
+   ]
+  },
+  "reason": "Contains milk or yoghurt but lacks the lactose tag used on Indian-dish siblings.",
+  "source": "NIDDK lactose intolerance"
+ },
+ {
+  "foodId": "recovery-shake",
+  "set": {
+   "tags": [
+    "quick",
+    "cold",
+    "high-protein",
+    "recovery",
+    "no-cook",
+    "lactose"
+   ]
+  },
+  "reason": "Contains milk or yoghurt but lacks the lactose tag used on Indian-dish siblings.",
+  "source": "NIDDK lactose intolerance"
+ },
+ {
+  "foodId": "yogurt-bowl",
+  "set": {
+   "tags": [
+    "quick",
+    "cold",
+    "high-protein",
+    "no-cook",
+    "lactose"
+   ]
+  },
+  "reason": "Contains milk or yoghurt but lacks the lactose tag used on Indian-dish siblings.",
+  "source": "NIDDK lactose intolerance"
+ },
+ {
+  "foodId": "yogurt-seeds",
+  "set": {
+   "tags": [
+    "quick",
+    "cold",
+    "light",
+    "high-protein",
+    "no-cook",
+    "lactose"
+   ]
+  },
+  "reason": "Contains milk or yoghurt but lacks the lactose tag used on Indian-dish siblings.",
+  "source": "NIDDK lactose intolerance"
+ },
+ {
+  "foodId": "popcorn",
+  "set": {
+   "tags": [
+    "quick",
+    "light",
+    "comfort",
+    "choking-hazard"
+   ]
+  },
+  "reason": "Hard, small or boned food: choking risk for children under 5 (and bones in hilsa for any young child or elder).",
+  "source": "NHS/AAP choking guidance; ICMR-NIN 2024 complementary feeding"
+ },
+ {
+  "foodId": "chikki",
+  "set": {
+   "tags": [
+    "quick",
+    "sweet",
+    "high-gi",
+    "choking-hazard"
+   ]
+  },
+  "reason": "Hard, small or boned food: choking risk for children under 5 (and bones in hilsa for any young child or elder).",
+  "source": "NHS/AAP choking guidance; ICMR-NIN 2024 complementary feeding"
+ },
+ {
+  "foodId": "roasted-chana",
+  "set": {
+   "tags": [
+    "quick",
+    "light",
+    "high-protein",
+    "fibre",
+    "low-gi",
+    "low-sodium",
+    "no-cook",
+    "choking-hazard"
+   ]
+  },
+  "reason": "Hard, small or boned food: choking risk for children under 5 (and bones in hilsa for any young child or elder).",
+  "source": "NHS/AAP choking guidance; ICMR-NIN 2024 complementary feeding"
+ },
+ {
+  "foodId": "peanut-chaat",
+  "set": {
+   "tags": [
+    "quick",
+    "light",
+    "high-protein",
+    "fibre",
+    "low-gi",
+    "no-cook",
+    "choking-hazard"
+   ]
+  },
+  "reason": "Hard, small or boned food: choking risk for children under 5 (and bones in hilsa for any young child or elder).",
+  "source": "NHS/AAP choking guidance; ICMR-NIN 2024 complementary feeding"
+ },
+ {
+  "foodId": "apple-almonds",
+  "set": {
+   "tags": [
+    "quick",
+    "cold",
+    "light",
+    "no-cook",
+    "choking-hazard"
+   ]
+  },
+  "reason": "Hard, small or boned food: choking risk for children under 5 (and bones in hilsa for any young child or elder).",
+  "source": "NHS/AAP choking guidance; ICMR-NIN 2024 complementary feeding"
+ },
+ {
+  "foodId": "murmura-bhel",
+  "set": {
+   "tags": [
+    "quick",
+    "light",
+    "cooling",
+    "street",
+    "no-cook",
+    "choking-hazard"
+   ]
+  },
+  "reason": "Hard, small or boned food: choking risk for children under 5 (and bones in hilsa for any young child or elder).",
+  "source": "NHS/AAP choking guidance; ICMR-NIN 2024 complementary feeding"
+ },
+ {
+  "foodId": "shorshe-ilish",
+  "set": {
+   "tags": [
+    "warm",
+    "comfort",
+    "festive",
+    "high-protein",
+    "choking-hazard"
+   ]
+  },
+  "reason": "Hard, small or boned food: choking risk for children under 5 (and bones in hilsa for any young child or elder).",
+  "source": "NHS/AAP choking guidance; ICMR-NIN 2024 complementary feeding"
+ },
+ {
+  "foodId": "sprouts-salad",
+  "set": {
+   "tags": [
+    "cold",
+    "cooling",
+    "light",
+    "high-protein",
+    "fibre",
+    "low-gi",
+    "no-cook",
+    "raw-sprouts"
+   ]
+  },
+  "reason": "Raw sprouts: Salmonella/E. coli risk for pregnancy, under 5, over 65, immunocompromised.",
+  "source": "NHS; US FDA sprouts advisory"
+ },
+ {
+  "rule": "pregnancy-hazard-add",
+  "value": "liver",
+  "reason": "Preformed vitamin A; NHS advises avoiding liver and liver products",
+  "source": "NHS Foods to avoid in pregnancy",
+  "evidence": "guideline"
+ },
+ {
+  "rule": "pregnancy-hazard-add",
+  "value": "pate",
+  "reason": "Listeria and vitamin A",
+  "source": "NHS",
+  "evidence": "guideline"
+ },
+ {
+  "rule": "pregnancy-hazard-add",
+  "value": "king mackerel",
+  "reason": "Mercury",
+  "source": "NHS; US FDA/EPA fish advice",
+  "evidence": "guideline"
+ },
+ {
+  "rule": "pregnancy-hazard-add",
+  "value": "tilefish",
+  "reason": "Mercury",
+  "source": "US FDA/EPA",
+  "evidence": "guideline"
+ },
+ {
+  "rule": "pregnancy-hazard-add",
+  "value": "marlin",
+  "reason": "Mercury",
+  "source": "NHS",
+  "evidence": "guideline"
+ },
+ {
+  "rule": "pregnancy-hazard-add",
+  "value": "sushi",
+  "reason": "Raw fish",
+  "source": "NHS (raw shellfish and raw fish advice)",
+  "evidence": "guideline"
+ },
+ {
+  "rule": "pregnancy-hazard-add",
+  "value": "sashimi",
+  "reason": "Raw fish",
+  "source": "NHS",
+  "evidence": "guideline"
+ },
+ {
+  "rule": "pregnancy-hazard-add",
+  "value": "oyster",
+  "reason": "Raw/undercooked shellfish",
+  "source": "NHS",
+  "evidence": "guideline"
+ },
+ {
+  "rule": "pregnancy-hazard-add",
+  "value": "smoked salmon",
+  "reason": "Listeria; cold-smoked fish",
+  "source": "US CDC/ACOG listeria advice",
+  "evidence": "guideline"
+ },
+ {
+  "rule": "pregnancy-hazard-add",
+  "value": "raw meat",
+  "reason": "Toxoplasma, Salmonella",
+  "source": "NHS",
+  "evidence": "guideline"
+ },
+ {
+  "rule": "pregnancy-hazard-add",
+  "value": "undercooked",
+  "reason": "Same",
+  "source": "NHS",
+  "evidence": "guideline"
+ },
+ {
+  "rule": "pregnancy-hazard-add",
+  "value": "green papaya",
+  "reason": "Unripe papaya latex; also match kaccha papita and unripe papaya",
+  "source": "Traditional/clinical caution; NHS lists unripe papaya",
+  "evidence": "tradition"
+ },
+ {
+  "rule": "pregnancy-hazard-add",
+  "value": "kaccha papita",
+  "reason": "As above",
+  "source": "as above",
+  "evidence": "tradition"
+ },
+ {
+  "rule": "pregnancy-hazard-add",
+  "value": "unripe papaya",
+  "reason": "As above",
+  "source": "as above",
+  "evidence": "tradition"
+ },
+ {
+  "rule": "pregnancy-hazard-add",
+  "value": "brie",
+  "reason": "Mould-ripened soft cheese (Listeria)",
+  "source": "NHS",
+  "evidence": "guideline"
+ },
+ {
+  "rule": "pregnancy-hazard-add",
+  "value": "camembert",
+  "reason": "As above",
+  "source": "NHS",
+  "evidence": "guideline"
+ },
+ {
+  "rule": "pregnancy-hazard-add",
+  "value": "blue cheese",
+  "reason": "As above",
+  "source": "NHS",
+  "evidence": "guideline"
+ },
+ {
+  "rule": "pregnancy-hazard-add",
+  "value": "bhang",
+  "reason": "Cannabis",
+  "source": "ACOG",
+  "evidence": "guideline"
+ },
+ {
+  "rule": "pregnancy-hazard-add",
+  "value": "whisky",
+  "reason": "Alcohol (also vodka, rum, liquor, brandy)",
+  "source": "NHS/ACOG: no safe level",
+  "evidence": "guideline"
+ },
+ {
+  "rule": "pregnancy-hazard-add",
+  "value": "liquor",
+  "reason": "Alcohol",
+  "source": "NHS",
+  "evidence": "guideline"
+ },
+ {
+  "rule": "pregnancy-hazard-add",
+  "value": "vodka",
+  "reason": "Alcohol",
+  "source": "NHS",
+  "evidence": "guideline"
+ },
+ {
+  "rule": "pregnancy-hazard-add",
+  "value": "rum",
+  "reason": "Alcohol; whole-word match",
+  "source": "NHS",
+  "evidence": "guideline"
+ },
+ {
+  "rule": "pregnancy-hazard-refine",
+  "value": "sprouts",
+  "reason": "Currently also blocks cooked sprouts and Brussels sprouts. Replace with raw-sprouts tag/phrase match; cooked sprouts are acceptable.",
+  "source": "NHS: cook sprouts thoroughly",
+  "evidence": "guideline"
+ },
+ {
+  "rule": "healthfit-add",
+  "condition": "high-cholesterol",
+  "tag": "high-satfat",
+  "delta": -2,
+  "reason": "Saturated fat (butter, cream, ghee-heavy gravies) is the lever; rules only penalise \"fried\".",
+  "source": "ICMR-NIN 2024; AHA",
+  "evidence": "guideline"
+ },
+ {
+  "rule": "healthfit-add",
+  "condition": "hypertension",
+  "tag": "high-potassium",
+  "delta": 0,
+  "reason": "Do NOT penalise potassium for hypertension; only for kidney (needs sub-types).",
+  "source": "WHO potassium guideline 2012",
+  "evidence": "guideline"
+ },
+ {
+  "rule": "fasting-gate-add",
+  "value": "diabetes",
+  "reason": "fastingGate keys on \"insulin\" only; a person on sulfonylurea who ticks only diabetes gets no gate. Gate or at least askDoctor for any diabetes (and kidney, gout flare, lactation, underweight).",
+  "source": "IDF-DAR 2021 Ramadan practical guidelines; ADA Standards of Care",
+  "evidence": "guideline"
+ },
+ {
+  "rule": "condition-add",
+  "value": "child-under-5",
+  "effect": "hard-deny tags choking-hazard, raw-sprouts, high-sodium; deny honey; spice<=1",
+  "source": "NHS choking; ICMR-NIN 2024 complementary feeding; AAP honey (botulism under 12 months)",
+  "evidence": "guideline"
+ },
+ {
+  "rule": "condition-add",
+  "value": "infant-under-12m",
+  "effect": "hard-deny honey, whole nuts, cow milk as main drink, added salt/sugar, high-sodium",
+  "source": "ICMR-NIN 2024; NHS; AAP",
+  "evidence": "guideline"
+ },
+ {
+  "rule": "condition-add",
+  "value": "older-adult-soft",
+  "effect": "soft nudge to soft-texture tag; nudge protein and fluids",
+  "source": "ESPEN 2019 geriatric nutrition; PROT-AGE",
+  "evidence": "trial"
+ },
+ {
+  "rule": "condition-add",
+  "value": "lactation",
+  "effect": "ask-doctor flag; alcohol and mercury fish hazards; no fasting plan",
+  "source": "NHS; ICMR-NIN 2024 (extra energy and protein)",
+  "evidence": "guideline"
+ },
+ {
+  "rule": "condition-add",
+  "value": "post-bariatric",
+  "effect": "ask-doctor; soft nudge down sweet/fried/high-gi; no fast plan; do not apply RESTRICTIVE refusal blindly",
+  "source": "ASMBS/IFSO guidelines",
+  "evidence": "guideline"
+ },
+ {
+  "rule": "condition-add",
+  "value": "gerd",
+  "effect": "soft -1 for spicy and fried only; caution that trigger foods are individual",
+  "source": "ACG 2022 GERD guideline: no routine food elimination",
+  "evidence": "unverified"
+ },
+ {
+  "rule": "condition-split",
+  "value": "kidney",
+  "effect": "split into ckd-non-dialysis, dialysis, kidney-stones. Potassium penalty only if clinician says so; do not penalise protein for dialysis",
+  "source": "KDIGO 2024 CKD guideline",
+  "evidence": "guideline"
+ },
+ {
+  "rule": "restrictive-regex-add",
+  "value": "intermittent fasting|omad|water fast|dry fast|keto|laxative|diet pill|fat burner",
+  "reason": "Disordered-eating and unsafe fasting requests currently pass",
+  "source": "NICE NG69 eating disorders (clinical judgment)",
+  "evidence": "tradition"
+ },
+ {
+  "rule": "text-allergen-add",
+  "value": {
+   "gluten": [
+    "semolina",
+    "suji",
+    "sooji",
+    "rava",
+    "upma",
+    "wheat",
+    "atta",
+    "dalia",
+    "vermicelli",
+    "seviyan",
+    "kulcha",
+    "puri",
+    "samosa",
+    "jalebi",
+    "chapati",
+    "phulka",
+    "barley",
+    "malt",
+    "soy sauce",
+    "momo",
+    "khakhra",
+    "sattu"
+   ],
+   "dairy": [
+    "malai",
+    "khoya",
+    "mawa",
+    "rabri",
+    "shrikhand",
+    "kulfi",
+    "cream",
+    "custard"
+   ],
+   "nuts": [
+    "pista",
+    "kaju",
+    "badam",
+    "hazelnut",
+    "pecan",
+    "pine nut",
+    "macadamia"
+   ],
+   "peanuts": [
+    "groundnut",
+    "moongphali",
+    "singdana"
+   ],
+   "fish": [
+    "bombil",
+    "rohu",
+    "pomfret",
+    "tuna",
+    "sardine",
+    "mackerel",
+    "anchovy",
+    "bangda",
+    "rawas"
+   ],
+   "shellfish": [
+    "squid",
+    "oyster",
+    "mussel",
+    "clam",
+    "scallop",
+    "kolambi"
+   ],
+   "sesame": [
+    "gingelly",
+    "gajak"
+   ],
+   "egg": [
+    "anda",
+    "mayo"
+   ]
+  },
+  "reason": "Text lexicon misses very common Indian words",
+  "source": "FSSAI allergen groups; dish vocabulary",
+  "evidence": "guideline"
+ },
+ {
+  "rule": "build-test-add",
+  "value": "Fail the build if any ingredient word (ghee, butter, curd, cream, paneer, milk, hing, soy sauce, papad, sesame, peanut, cashew, almond, egg, fish, prawn) lacks the matching allergen on the dish, using the same lexicon",
+  "reason": "Five allergen omissions found by hand (thepla, thukpa, makhana-roasted, haleem, nihari, jalebi)",
+  "source": "FSSAI allergen groups",
+  "evidence": "guideline"
+ },
+ {
+  "rule": "tip-edit",
+  "match": "Cooked rice that cools",
+  "newText": "Rice that is cooked, cooled and reheated has more resistant starch, though the effect on blood sugar is small. Cool it fast, refrigerate within an hour, eat within a day and reheat once until steaming hot (Bacillus cereus risk, higher in pregnancy, children and older adults).",
+  "evidence": "trial",
+  "source": "Sonia 2015 small trial; NHS/FSA leftover rice advice"
+ },
+ {
+  "rule": "tip-edit",
+  "match": "Have mithai after a meal",
+  "newEvidence": "trial",
+  "reason": "Marked guideline; ADA does not give this advice specifically. Mixed-meal studies only. Also add: people on insulin/sulfonylurea should discuss sweets with their doctor.",
+  "source": "ADA Standards of Care 2025 (carbohydrate quality, no specific mithai advice)"
+ },
+ {
+  "rule": "tip-add",
+  "when": "anaemia",
+  "text": "Pair iron foods with lemon or amla and keep tea or coffee an hour away from meals.",
+  "evidence": "guideline",
+  "source": "ICMR-NIN 2024; WHO iron guidance"
+ }
+]

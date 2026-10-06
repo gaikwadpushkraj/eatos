@@ -6,7 +6,7 @@ import { pantryNames, useSoon } from './housekeeping';
 import { FASTING, fastingGate, hasWord, healthFit } from './rules';
 import { contextAt, contextFit } from './context';
 import { affinityScore, tasteAffinity } from './taste';
-import { dayStart } from './time';
+import { dayStart, hashString } from './time';
 
 export interface Query {
   slot?: MealSlot;
@@ -21,6 +21,10 @@ export interface Query {
   light?: boolean;
   /** Words that name a dish, ingredient or cuisine to favour. */
   include?: string[];
+  /** Favour dishes not tried before, with more shuffle. */
+  novel?: boolean;
+  /** Favour what was eaten at this slot yesterday. */
+  sameAsYesterday?: boolean;
   /** Wanted protein in grams; dishes below it rank lower. */
   minProteinG?: number;
   k?: number;
@@ -49,7 +53,7 @@ function eaters(state: State, q: Query): Member[] {
   return all.filter((m) => q.memberIds!.includes(m.id));
 }
 
-function matchesWord(food: Food, word: string): boolean {
+export function matchesWord(food: Food, word: string): boolean {
   const w = word.toLowerCase();
   return hasWord(food.name, w) || food.tags.includes(w) || food.ingredients.some((i) => hasWord(i, w)) || food.cuisine?.replace('-indian', '') === w;
 }
@@ -72,10 +76,17 @@ export function recommend(state: State, catalog: Food[], q: Query, now: number):
   // A fast day with no meal in this slot (for example lunch in Ramzan).
   if (rule && q.slot && rule.skipSlots.includes(q.slot)) return [];
   const kitchen = state.profile?.kitchen ?? 'full';
+  const yesterday = new Set(
+    q.sameAsYesterday
+      ? state.events.flatMap((e) => (e.type === 'intake.logged' && e.foodId && (!q.slot || e.slot === q.slot) && e.at >= dayStart(now, state.profile?.tzOffsetMin ?? 0) - 86_400_000 && e.at < dayStart(now, state.profile?.tzOffsetMin ?? 0) ? [e.foodId] : []))
+      : [],
+  );
 
   const results: Recommendation[] = [];
   for (const food of catalog) {
     if (q.slot && !food.slots.includes(q.slot)) continue;
+    // A drink or a single fruit is not a main meal.
+    if ((q.slot === 'lunch' || q.slot === 'dinner') && food.nutrients.kcal < 250 && !safe && !q.light) continue;
     if (q.maxPrepMin !== undefined && food.prepMin > q.maxPrepMin) continue;
     if (q.exclude?.some((w) => matchesWord(food, w))) continue;
     if (prefs[food.id]?.excluded) continue;
@@ -162,9 +173,22 @@ export function recommend(state: State, catalog: Food[], q: Query, now: number):
       reasons.push(`Uses ${uses.join(' and ')} before it expires`);
     }
 
+    if (food.tags.includes('iftar') && fast.kind !== 'ramzan') score -= 3;
+    if (q.novel) {
+      if (!prefs[food.id]) score += 2;
+      score += ((parseInt(hashString(`${food.id}:${Math.floor(now / 60_000)}`), 36) || 0) % 1000) / 1000 * 3;
+      if (food.cuisine && members.some((m) => m.cuisines?.includes(food.cuisine!))) score += 0.5;
+    }
+    if (q.sameAsYesterday && yesterday.has(food.id)) {
+      score += 8;
+      reasons.push('The same as yesterday');
+    }
+    // A little day-to-day variety: the same good dish should not win every single day.
+    score += ((parseInt(hashString(`${food.id}:${Math.floor((now + (state.profile?.tzOffsetMin ?? 0) * 60_000) / 86_400_000)}`), 36) || 0) % 1000) / 1000 * 1.2;
+
     const pref = prefs[food.id];
     if (pref) score += pref.score;
-    if (recent.has(food.id)) score -= 2;
+    if (recent.has(food.id) && !q.sameAsYesterday) score -= 2;
 
     if (q.maxPrepMin !== undefined || food.prepMin <= 15) reasons.push(`Ready in ${food.prepMin} min`);
     if (everyone) reasons.push('Works for everyone at home');
@@ -179,6 +203,7 @@ export function queryNotes(state: State, q: Query, now: number): string[] {
   const notes: string[] = [];
   const fast = activeFast(state, members, now);
   if (fast.gate) notes.push(fast.gate);
+  if (fast.kind && members.some((m) => m.conditions?.some((c) => c === 'diabetes' || c === 'prediabetes' || c === 'hypertension' || c === 'kidney'))) notes.push('If you take medicine for diabetes, blood pressure or kidneys, check with your doctor before a fast, and drink water when the fast allows.');
   const fl = fast.kind ? FASTING[fast.kind] : undefined;
   if (fl && q.slot && fl.skipSlots.includes(q.slot)) notes.push(`${fl.label}: no ${q.slot} today.`);
   return notes;
