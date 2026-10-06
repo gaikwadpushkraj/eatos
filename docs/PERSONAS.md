@@ -19,3 +19,22 @@ judgemental wording, alternatives that obey every rule.
 | Kabir, student, no kitchen | No-cook, minor | Only 1 no-cook dinner; a minor's weight-loss wish was waved through | 25+ no-cook dishes; kind refusal for restrictive wishes |
 
 Open items are logged in `docs/DECISIONS.md` (D22, D23).
+
+## Round 2 (roles and expectations in `docs/personas/round2.md`)
+
+| Persona | Hardest test | Main finding | Fixed |
+|---|---|---|---|
+| Kamla, 72 | Soft food, Hindi, large text | Hard snacks as best fit; no Hindi; small text | Soft-food setting, Hindi UI, larger text, caregiver editing of members |
+| Neha, working mother | Nut-free lunchbox, toddler | No choking logic; popcorn "works for everyone" | Child-under-5 condition with choking tags; mild children get no hot dishes |
+| Zoya, foodie | Variety | Same three cards; Ask ignored cuisines | Words steer ranking; daily variety; Surprise me; unknown-word note |
+| Sid, vegan | Truly vegan | Roasted makhana had ghee; wish words missed dahi, malai | Allergens derived from ingredients; diet-consistency test; vegan swaps |
+| Vikram, traveller | Time zones, flights | Fixed IST; no travel guidance | Time-zone card; order-in note |
+| Meera, runner | Fuelling | Recovery card stale; no carb idea | Recovery snacks need protein; run words understood |
+| Anil, Kerala in Delhi | Taste of home | 2 Kerala dishes | Kerala, Goan, Bihari and more dishes; unknown-wish ideas |
+| Riya, coeliac | Hidden gluten | Asafoetida, papad, masalas passed | Wider gluten lexicon; wish words; "not even a little" |
+| Imran, nut-allergic child | Allergen certainty | Delivery menus with empty allergens passed; nut words missed for the child | Unverified is not safe; names and notes scanned; household-wide wish checks; likely-nut dishes flagged |
+| Lakshmi, CKD | Humble limits | Still pushed water and protein | Hydration and protein paused; dietitian line; potassium tags derived |
+| Karan, GERD | Triggers | Tomato and tamarind not demoted | Acidic tag; avoid list per person |
+| Pooja, new mother | Tone | "Short sleep" reminder felt tone-deaf; no postpartum foods | Gentler wording; lactation dishes; one-hand and no-cook words |
+| Tanmay, cook-challenged | Pantry-driven cooking | Pantry "dal" did not cover toor dal; no hygiene on chicken | Generic names covered; hygiene and doneness on every raw-meat dish |
+| Gurpreet, joint family | One meal for six | Plan only dishes everyone eats, so never any meat | Base dish for meat eaters plus a separate dish for the rest |
