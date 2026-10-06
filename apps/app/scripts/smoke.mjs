@@ -513,7 +513,7 @@ await run('llm', { width: 390, height: 844 }, 'light', async (page) => {
   await page.getByLabel('Message EatOS').fill('something warm for lunch');
   await page.getByRole('button', { name: 'Send' }).click();
   await text(page, 'Read on this device');
-  await text(page, 'Ready in');
+  await text(page, 'options that fit');
 });
 
 // Sync: device A turns sync on, device B joins with the same code.
