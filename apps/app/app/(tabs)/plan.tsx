@@ -57,6 +57,9 @@ export default function Plan() {
                   <Txt v="bodyStrong" style={{ flex: 1 }}>{m.food.name}</Txt>
                   {m.batch ? <Chip label="Batch" tone="accent" /> : <Txt v="small">{m.food.prepMin ? `${m.food.prepMin} min` : "No prep"}</Txt>}
                 </Row>
+                {m.alsoFor?.map((a) => (
+                  <Txt key={a.name} v="small">{`${a.name} has: ${a.food.name}`}</Txt>
+                ))}
               </Card>
             </Pressable>
           ))}

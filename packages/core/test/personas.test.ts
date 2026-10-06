@@ -330,3 +330,19 @@ describe('avoid list', () => {
     expect(isValidEvent({ type: 'member.added', at: 1, member: { id: 'a', name: 'A', diet: 'vegan', allergens: [], dislikes: [], goals: [], avoid: ['x'.repeat(600)] } })).toBe(false);
   });
 });
+
+describe('family plan', () => {
+  it('a mixed table gets meat dinners with a separate dish for the vegetarians, never breaking anyone\'s rules', () => {
+    const k = new Kernel();
+    const me = makeMember({ id: 'me', name: 'Gurpreet', diet: 'omnivore' });
+    const dada = makeMember({ id: 'd', name: 'Dadaji', diet: 'vegetarian', conditions: ['hypertension'] });
+    const sim = makeMember({ id: 's', name: 'Simran', diet: 'vegetarian' });
+    k.submit({ type: 'profile.set', at: base - 86_400_000, profile: makeProfile({ members: [me, dada, sim], tzOffsetMin: IST }) });
+    const { plan } = k.week(base);
+    const dinners = plan.meals.filter((m) => m.slot === 'dinner');
+    expect(dinners.some((m) => m.food.diet === 'omnivore' || m.food.diet === 'pescatarian')).toBe(true);
+    for (const m of dinners.filter((x) => x.alsoFor)) {
+      expect(m.alsoFor!.some((a) => a.name === 'Dadaji' && hardProblem(a.food, dada) === undefined)).toBe(true);
+    }
+  });
+});
