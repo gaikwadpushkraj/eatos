@@ -61,6 +61,9 @@ export function hardProblem(food: Food, m: Member): string | undefined {
   const allergen = food.allergens.find((a) => allergensOf(m).includes(a));
   if (allergen) return m.conditions?.includes('celiac') && allergen === 'gluten' ? 'Contains gluten' : `Contains ${allergen}`;
   if (DIET_RANK[food.diet] > DIET_RANK[m.diet]) return `Not ${m.diet}`;
+  for (const word of m.avoid ?? []) {
+    if (has(food, [word]) || food.tags.includes(word.toLowerCase()) || hasWord(food.name, word)) return `You asked to avoid ${word}`;
+  }
   for (const rule of m.rules ?? []) {
     const hit = has(food, RULE_DENY[rule]);
     if (hit) return `Not ${RULE_LABEL[rule].toLowerCase()} (${hit})`;

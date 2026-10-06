@@ -5,6 +5,7 @@ import type { Member, Profile } from '../src/types';
 import { FASTING, hardProblem } from '../src/rules';
 import type { MealSlot } from '../src/types';
 import { CATALOG } from '../src/catalog';
+import { isValidEvent } from '../src/validate';
 
 const IST = 330;
 const BANNED = /\b(cure|treat(s|ment)?|diagnos|detox|burn fat|lose weight|cheat|bad food|junk|guilt|clean eating|sin\b)/i;
@@ -311,5 +312,21 @@ describe('nut-allergic child in the household', () => {
     const k = house();
     const hot = CATALOG.find((f) => (f.spice ?? 0) === 3 && f.allergens.length === 0)!;
     expect(k.household().matrix([hot])[0]!.fits.find((f) => f.memberId === 's')!.ok).toBe(false);
+  });
+});
+
+describe('avoid list', () => {
+  it('an avoided ingredient or tag never appears, for anyone at the table', () => {
+    const k = new Kernel();
+    const me = makeMember({ id: 'me', name: 'A', diet: 'omnivore' });
+    const dadaji = makeMember({ id: 'd', name: 'Dadaji', diet: 'vegetarian', avoid: ['tomatoes', 'fried'] });
+    k.submit({ type: 'profile.set', at: base - 86_400_000, profile: makeProfile({ members: [me, dadaji], tzOffsetMin: IST }) });
+    const foods = k.recommend({ k: 500 }, base + 5 * 3_600_000).map((r) => r.food);
+    expect(foods.length).toBeGreaterThan(20);
+    for (const f of foods) {
+      expect(f.ingredients, f.id).not.toContain('tomatoes');
+      expect(f.tags, f.id).not.toContain('fried');
+    }
+    expect(isValidEvent({ type: 'member.added', at: 1, member: { id: 'a', name: 'A', diet: 'vegan', allergens: [], dislikes: [], goals: [], avoid: ['x'.repeat(600)] } })).toBe(false);
   });
 });
