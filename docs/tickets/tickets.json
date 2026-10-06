@@ -708,6 +708,48 @@
             "Over 250 dishes across regional, special-needs and global cooking",
             "Real cooking steps for 170+ dishes"
           ]
+        },
+        {
+          "key": "8.7",
+          "sprint": 14,
+          "area": "app",
+          "status": "done",
+          "title": "Festival and fasting calendar",
+          "acceptance": [
+            "90 festivals and fasts for 2026-27 with what is eaten and avoided",
+            "Today shows the day's festival and one tap plans the matching fast"
+          ]
+        },
+        {
+          "key": "8.8",
+          "sprint": 14,
+          "area": "app",
+          "status": "done",
+          "title": "Cook for N people",
+          "acceptance": [
+            "Amounts in cooking steps scale with the number of people"
+          ]
+        },
+        {
+          "key": "8.9",
+          "sprint": 14,
+          "area": "app",
+          "status": "done",
+          "title": "Kettle or microwave kitchen",
+          "acceptance": [
+            "A third kitchen level between basic and no kitchen"
+          ]
+        },
+        {
+          "key": "8.10",
+          "sprint": 14,
+          "area": "app",
+          "status": "done",
+          "title": "Family plans and avoid lists",
+          "acceptance": [
+            "Meat dinners with a separate dish for those who do not eat meat",
+            "Per-person avoid list and editing a household member"
+          ]
         }
       ]
     }

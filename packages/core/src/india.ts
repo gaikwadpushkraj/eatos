@@ -76,7 +76,7 @@ const ROWS: Row[] = [
   ['pav-bhaji', 'Pav bhaji', 'mumbai', 'D', 'vegetarian', 'warm comfort street high-gi fried', ['gluten', 'dairy'], 40, 2, 650, 14, 8, 150, 'potatoes, cauliflower, peas, tomatoes, onion, garlic, butter, pav'],
   ['pav-bhaji-jain', 'Pav bhaji (Jain style)', 'mumbai', 'D', 'vegetarian', 'warm comfort high-gi', ['gluten', 'dairy'], 40, 1, 600, 13, 8, 150, 'raw banana, cauliflower, peas, tomatoes, butter, pav, bhaji masala', 'pav-bhaji'],
   ['kathi-roll-paneer', 'Paneer kathi roll', 'kolkata', 'L D', 'vegetarian', 'warm quick street high-protein lactose', ['dairy', 'gluten'], 15, 2, 520, 22, 4, 80, 'paneer, wheat flour, onion, capsicum, green chilli'],
-  ['maggi-veg', 'Veg instant noodles with an egg', 'pan-indian', 'S D', 'vegetarian', 'warm quick comfort high-sodium high-gi', ['gluten', 'egg'], 7, 2, 420, 16, 3, 150, 'instant noodles, eggs, peas, onion'],
+  ['maggi-veg', 'Veg instant noodles with an egg', 'pan-indian', 'S D', 'vegetarian', 'warm quick comfort high-sodium high-gi kettle', ['gluten', 'egg'], 7, 2, 420, 16, 3, 150, 'instant noodles, eggs, peas, onion'],
   ['luchi-alu-dum', 'Luchi with aloo dum', 'bengali', 'B D', 'vegan', 'warm comfort festive fried high-gi', ['gluten'], 35, 1, 620, 9, 5, 80, 'maida, potatoes, onion, ginger, cumin'],
   ['thukpa', 'Vegetable thukpa', 'northeast', 'D', 'vegan', 'warm comfort gentle light', ['gluten', 'soy'], 25, 1, 380, 12, 6, 450, 'noodles, cabbage, carrots, garlic, ginger, soy sauce'],
   // Fasting
@@ -92,7 +92,7 @@ const ROWS: Row[] = [
   ['murmura-bhel', 'Murmura bhel with lemon', 'mumbai', 'S', 'vegan', 'quick light cooling street no-cook', ['peanuts'], 5, 1, 190, 5, 3, 40, 'puffed rice, peanuts, cucumber, tomatoes, onion, lemon, coriander'],
   ['masala-chaas', 'Masala chaas', 'pan-indian', 'S', 'vegetarian', 'cold cooling light lactose low-sodium iftar no-cook', ['dairy'], 2, 0, 70, 3, 0, 250, 'curd, cumin, mint, coriander'],
   ['coconut-water', 'Coconut water', 'pan-indian', 'S', 'vegan', 'cold cooling light iftar no-cook', [], 0, 0, 60, 1, 3, 300, 'coconut water'],
-  ['boiled-eggs', 'Two boiled eggs with pepper', 'pan-indian', 'S B', 'vegetarian', 'quick light high-protein', ['egg'], 10, 0, 160, 13, 0, 20, 'eggs, black pepper'],
+  ['boiled-eggs', 'Two boiled eggs with pepper', 'pan-indian', 'S B', 'vegetarian', 'quick light high-protein kettle', ['egg'], 10, 0, 160, 13, 0, 20, 'eggs, black pepper'],
   ['chikki', 'Peanut jaggery chikki', 'maharashtrian', 'S', 'vegan', 'quick sweet high-gi', ['peanuts'], 1, 0, 190, 5, 2, 10, 'peanuts, jaggery'],
   ['samosa', 'Samosa with chutney', 'north-indian', 'S', 'vegan', 'warm fried street high-gi iftar', ['gluten'], 5, 2, 310, 5, 3, 40, 'maida, potatoes, peas, onion, ginger, garlic'],
   ['gulab-jamun', 'Gulab jamun', 'north-indian', 'S', 'vegetarian', 'sweet festive comfort high-gi lactose', ['dairy', 'gluten'], 5, 0, 300, 4, 0, 40, 'milk powder, maida, sugar, cardamom, ghee'],

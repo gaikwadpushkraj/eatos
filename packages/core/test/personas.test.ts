@@ -383,3 +383,13 @@ describe('scaling', () => {
     expect(scaleAmounts('Simmer 10 minutes at 75 C', 2)).toBe('Simmer 10 minutes at 75 C');
   });
 });
+
+describe('kettle kitchen', () => {
+  it('allows no-cook and kettle dishes only, and more than a hostel with nothing', () => {
+    const k = kernelFor({ name: 'h', member: { diet: 'vegetarian' }, profile: { kitchen: 'kettle' }, wishes: [] });
+    const foods = k.recommend({ k: 500 }, base + 5 * 3_600_000).map((r) => r.food);
+    expect(foods.length).toBeGreaterThan(10);
+    for (const f of foods) expect(f.tags.includes('no-cook') || f.tags.includes('kettle'), f.id).toBe(true);
+    expect(foods.some((f) => f.tags.includes('kettle'))).toBe(true);
+  });
+});

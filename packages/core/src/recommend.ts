@@ -3,7 +3,7 @@ import type { State } from './state';
 import { fitFor } from './household';
 import { preferences, recentlyEaten } from './memory';
 import { pantryNames, useSoon } from './housekeeping';
-import { FASTING, fastingGate, hasWord, healthFit } from './rules';
+import { FASTING, fastingGate, hasWord, healthFit, kitchenOk } from './rules';
 import { contextAt, contextFit } from './context';
 import { affinityScore, tasteAffinity } from './taste';
 import { dayStart, hashString } from './time';
@@ -95,8 +95,7 @@ export function recommend(state: State, catalog: Food[], q: Query, now: number):
     if (q.exclude?.some((w) => matchesWord(food, w))) continue;
     if (prefs[food.id]?.excluded) continue;
     if (rule?.deny(food)) continue;
-    if (kitchen === 'none' && !food.tags.includes('no-cook')) continue;
-    if (kitchen !== 'full' && food.tags.includes('oven')) continue;
+    if (!kitchenOk(food, kitchen)) continue;
     const fits = members.map((m) => ({ m, fit: fitFor(food, m) }));
     if (fits.some((f) => f.fit.hard)) continue;
 

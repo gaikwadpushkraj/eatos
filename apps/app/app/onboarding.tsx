@@ -235,7 +235,7 @@ export default function Onboarding() {
           </Section>
           <Section title="Where you cook">
             <Row wrap gap={8}>
-              {([['full', 'Full kitchen'], ['basic', 'Basic (no oven)'], ['none', 'No kitchen']] as const).map(([k, label]) => (
+              {([['full', 'Full kitchen'], ['basic', 'Basic (no oven)'], ['kettle', 'Kettle or microwave'], ['none', 'No kitchen']] as const).map(([k, label]) => (
                 <Chip key={k} label={label} selected={kitchen === k} onPress={() => setKitchen(k)} />
               ))}
             </Row>

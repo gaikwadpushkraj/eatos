@@ -274,3 +274,11 @@ export function ingredientAllergens(ingredients: string[]): Allergen[] {
   for (const [a, words] of INGREDIENT_ALLERGENS) if (words.some((w) => hasWord(text, w)) || (a === 'peanuts' && /peanut paste/.test(text))) out.push(a);
   return out;
 }
+
+/** Can this kitchen make this dish? A kettle or microwave makes no-cook dishes plus the few tagged kettle. */
+export function kitchenOk(food: Food, kitchen: 'full' | 'basic' | 'kettle' | 'none' = 'full'): boolean {
+  if (kitchen === 'none') return food.tags.includes('no-cook');
+  if (kitchen === 'kettle') return food.tags.includes('no-cook') || food.tags.includes('kettle');
+  if (kitchen === 'basic') return !food.tags.includes('oven');
+  return true;
+}

@@ -33,6 +33,7 @@ const CUISINES = [
 const KITCHENS: { key: Kitchen; label: string }[] = [
   { key: 'full', label: 'Full kitchen' },
   { key: 'basic', label: 'Basic (no oven)' },
+  { key: 'kettle', label: 'Kettle or microwave' },
   { key: 'none', label: 'No kitchen' },
 ];
 export const CONDITIONS: { key: Condition; label: string }[] = [
