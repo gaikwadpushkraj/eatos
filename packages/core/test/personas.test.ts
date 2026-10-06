@@ -346,3 +346,21 @@ describe('family plan', () => {
     }
   });
 });
+
+describe('cook-challenged fixes', () => {
+  it('raw chicken always carries hygiene and doneness cues', async () => {
+    const { stepsFor } = await import('../src/catalog');
+    for (const f of CATALOG.filter((x) => x.ingredients.some((i) => /chicken|mutton/.test(i)))) {
+      const t = stepsFor(f).join(' ').toLowerCase();
+      expect(t, f.id).toMatch(/wash your hands|wash hands/);
+      expect(t, f.id).toMatch(/no pink|juices run clear|cooked through|75/);
+    }
+  });
+  it('maggi finds noodles and a pantry dal covers toor dal', () => {
+    const k = kernelFor({ name: 't', member: { diet: 'omnivore' }, wishes: [] });
+    expect(k.ask('maggi', base).results.some((r) => /noodles/i.test(r.food.name))).toBe(true);
+    k.submit({ type: 'pantry.added', at: base, item: { id: 'p1', name: 'dal', qty: 1, unit: 'kg', location: 'cupboard', addedAt: base } });
+    const r = k.recommend({ include: ['dal'], k: 3 }, base + 12 * 3_600_000)[0]!;
+    expect(r.missing).not.toContain('toor dal');
+  });
+});

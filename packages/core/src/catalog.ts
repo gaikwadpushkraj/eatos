@@ -116,7 +116,19 @@ for (const food of CATALOG) {
 }
 
 /** Steps for a food, with a simple generic fallback. */
-export function stepsFor(food: Food): string[] {
+const RAW_ANIMAL = /\b(chicken|mutton|lamb|pork|beef|fish|prawns?|keema|minced)\b/;
+
+/** Raw meat and fish always come with a hygiene and doneness cue, whoever wrote the steps. */
+function withHygiene(food: Food, steps: string[]): string[] {
+  if (!food.ingredients.some((i) => RAW_ANIMAL.test(i))) return steps;
+  const text = steps.join(' ').toLowerCase();
+  const out = [...steps];
+  if (!/no pink|juices run clear|cooked through|75/.test(text)) out.push('Check it is cooked all the way through: no pink inside and the juices run clear (75 C in the thickest part).');
+  if (!/wash your hands|wash hands/.test(text)) out.unshift('Wash your hands, board and knife after touching raw meat or fish, and keep it away from salad and cooked food.');
+  return out;
+}
+
+function rawSteps(food: Food): string[] {
   if (food.steps?.length) return food.steps;
   const chef = INDIA_STEPS[food.id];
   if (chef?.length) return chef;
@@ -129,4 +141,8 @@ export function stepsFor(food: Food): string[] {
     `Cook or assemble, about ${Math.max(1, food.prepMin - 5)} minutes.`,
     'Taste, season and serve.',
   ];
+}
+
+export function stepsFor(food: Food): string[] {
+  return withHygiene(food, rawSteps(food));
 }

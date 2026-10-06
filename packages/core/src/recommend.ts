@@ -55,8 +55,10 @@ function eaters(state: State, q: Query): Member[] {
   return all.filter((m) => q.memberIds!.includes(m.id));
 }
 
+const ALIAS: Record<string, string> = { maggi: 'noodles', ramen: 'noodles', chai: 'tea', dahi: 'curd', roti: 'roti', chapati: 'roti', phulka: 'roti', pulav: 'pulao', biriyani: 'biryani' };
+
 export function matchesWord(food: Food, word: string): boolean {
-  const w = word.toLowerCase();
+  const w = (ALIAS[word.toLowerCase()] ?? word).toLowerCase();
   return hasWord(food.name, w) || food.tags.includes(w) || food.ingredients.some((i) => hasWord(i, w)) || food.cuisine?.replace('-indian', '') === w;
 }
 
@@ -165,9 +167,11 @@ export function recommend(state: State, catalog: Food[], q: Query, now: number):
       } else score -= 2;
     }
 
-    const missing = food.ingredients.filter((i) => !have.has(i));
+    // A pantry "dal" covers toor dal; "rice" covers basmati rice.
+    const covered = (i: string) => have.has(i) || [...have].some((p) => i.endsWith(` ${p}`) || p.endsWith(` ${i}`));
+    const missing = food.ingredients.filter((i) => !covered(i));
     const coverage = food.ingredients.length ? 1 - missing.length / food.ingredients.length : 0;
-    score += coverage * 3;
+    score += coverage * 4;
     if (missing.length === 0 && food.ingredients.length) reasons.push('Uses what you already have');
     const uses = expiring.filter((name) => food.ingredients.includes(name));
     if (uses.length) {

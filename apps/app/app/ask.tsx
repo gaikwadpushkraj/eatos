@@ -48,6 +48,7 @@ export default function Ask() {
   const notes = [
     ...(RESTRICTIVE.test(asked) ? [RESTRICTIVE_NOTE] : []),
     ...kernel.notes(result.query, now),
+    ...(/\b(swiggy|zomato|order in|ordering|delivery|takeaway|zepto|blinkit)\b/i.test(asked) ? ['To order in, paste the menu under Profile, Connect your world, Food delivery. EatOS checks each dish against your rules and hides what is not safe.'] : []),
     ...(unknownWords.length ? [`EatOS does not have “${unknownWords.join('”, “')}” yet, so these are the closest picks for you instead.`] : []),
   ];
 
