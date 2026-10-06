@@ -374,3 +374,12 @@ describe('festival calendar', () => {
     expect(festivalsOn(Date.UTC(2026, 9, 25, 6) - IST2 * 60_000, IST2).filter((f) => f.fasting === 'navratri')).toEqual([]);
   });
 });
+
+describe('scaling', () => {
+  it('scales amounts with units and leaves times and whistles alone', async () => {
+    const { scaleAmounts } = await import('../src/scaling');
+    expect(scaleAmounts('Pressure cook 1/2 cup dal and 400 g chicken for 4 whistles, 20 minutes.', 3)).toBe('Pressure cook 1 1/2 cup dal and 1200 g chicken for 4 whistles, 20 minutes.');
+    expect(scaleAmounts('Add 2 eggs and 1 tsp salt', 0.5)).toBe('Add 1 eggs and 1/2 tsp salt');
+    expect(scaleAmounts('Simmer 10 minutes at 75 C', 2)).toBe('Simmer 10 minutes at 75 C');
+  });
+});

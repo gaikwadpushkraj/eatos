@@ -33,3 +33,4 @@ export * from './india2';
 export * from './india3';
 export * from './india4';
 export * from './festivals';
+export * from './scaling';

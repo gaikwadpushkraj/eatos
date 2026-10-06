@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
-import { fitFor, foodById, stepsFor } from '@eatos/core';
+import { fitFor, foodById, scaleSteps, stepsFor } from '@eatos/core';
 import { useKernel } from '../../src/kernel';
 import { useTheme } from '../../src/theme';
 import { Btn, Card, Chip, Row, Screen, Section, Txt, TopBar } from '../../src/ui';
@@ -15,6 +15,7 @@ export default function Cook() {
   const food = foodById(kernel.catalog, String(id));
   const [step, setStep] = useState(0);
   const [timer, setTimer] = useState<number | null>(null);
+  const [servings, setServings] = useState(Math.max(2, kernel.state.profile?.members.length ?? 2));
 
   useEffect(() => {
     if (timer === null || timer <= 0) return;
@@ -30,7 +31,7 @@ export default function Cook() {
     );
   }
 
-  const steps = stepsFor(food);
+  const steps = scaleSteps(stepsFor(food), servings);
   const current = steps[step] ?? '';
   const minutes = Number(current.match(/(\d+)\s*minutes?/)?.[1] ?? 0);
   const pantry = kernel.pantry(now);
@@ -63,6 +64,11 @@ export default function Cook() {
         <Txt v="h2" color="muted">{food.name.split(' ')[0]}</Txt>
       </View>
       <Txt v="h1">{food.name}</Txt>
+      <Row gap={8}>
+        <Txt v="small">{`Amounts for ${servings} ${servings === 1 ? 'person' : 'people'}`}</Txt>
+        <Btn small kind="outline" label="Fewer" accessibilityLabel="Cook for fewer people" disabled={servings <= 1} onPress={() => setServings(servings - 1)} />
+        <Btn small kind="outline" label="More" accessibilityLabel="Cook for more people" disabled={servings >= 12} onPress={() => setServings(servings + 1)} />
+      </Row>
       <Row wrap gap={6}>
         <Chip label={`${food.prepMin} min`} />
         <Chip label={capitalise(food.diet)} />
