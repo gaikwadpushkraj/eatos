@@ -5,6 +5,7 @@ import type { Member, Profile } from '../src/types';
 import { FASTING, hardProblem } from '../src/rules';
 import type { MealSlot } from '../src/types';
 import { CATALOG } from '../src/catalog';
+import { isValidEvent } from '../src/validate';
 
 const IST = 330;
 const BANNED = /\b(cure|treat(s|ment)?|diagnos|detox|burn fat|lose weight|cheat|bad food|junk|guilt|clean eating|sin\b)/i;
@@ -286,5 +287,80 @@ describe('coeliac: hidden gluten', () => {
     for (const bad of ['kachumber-curd', 'sambar-rice', 'idli-sambar', 'bisi-bele-bath']) expect(ids, bad).not.toContain(bad);
     for (const w of ['beer', 'papad', 'sooji halwa', 'dal with hing tadka']) expect(k.wish(w, base).blockers.some((b) => /gluten/i.test(b.detail)), w).toBe(true);
     expect(k.wish('beer', base).later).toMatch(/not even a little/i);
+  });
+});
+
+describe('nut-allergic child in the household', () => {
+  const house = () => {
+    const k = new Kernel();
+    const me = makeMember({ id: 'me', name: 'Imran', diet: 'omnivore' });
+    const sana = makeMember({ id: 's', name: 'Sana', diet: 'omnivore', allergens: ['nuts', 'peanuts'], mild: true, conditions: ['minor', 'child-under-5'] });
+    k.submit({ type: 'profile.set', at: base - 86_400_000, profile: makeProfile({ members: [me, sana], tzOffsetMin: IST }) });
+    return k;
+  };
+  it('wishes with nut words are flagged for the child even when the adult can eat them', () => {
+    const k = house();
+    for (const w of ['almond halwa', 'kaju katli', 'groundnut chikki', 'Snickers', 'badam milk', 'pista kulfi', 'Nutella toast']) {
+      expect(k.wish(w, base).blockers.some((b) => b.kind === 'household' && /Sana/.test(b.detail)), w).toBe(true);
+    }
+  });
+  it('biryani, haleem and seviyan carry nuts, so they never reach the child', () => {
+    const ids = house().recommend({ k: 500 }, base + 5 * 3_600_000).map((r) => r.food.id);
+    for (const bad of ['veg-biryani', 'chicken-biryani', 'mutton-biryani', 'haleem', 'seviyan']) expect(ids, bad).not.toContain(bad);
+  });
+  it('a mild young child is not planned hot dishes as fits', () => {
+    const k = house();
+    const hot = CATALOG.find((f) => (f.spice ?? 0) === 3 && f.allergens.length === 0)!;
+    expect(k.household().matrix([hot])[0]!.fits.find((f) => f.memberId === 's')!.ok).toBe(false);
+  });
+});
+
+describe('avoid list', () => {
+  it('an avoided ingredient or tag never appears, for anyone at the table', () => {
+    const k = new Kernel();
+    const me = makeMember({ id: 'me', name: 'A', diet: 'omnivore' });
+    const dadaji = makeMember({ id: 'd', name: 'Dadaji', diet: 'vegetarian', avoid: ['tomatoes', 'fried'] });
+    k.submit({ type: 'profile.set', at: base - 86_400_000, profile: makeProfile({ members: [me, dadaji], tzOffsetMin: IST }) });
+    const foods = k.recommend({ k: 500 }, base + 5 * 3_600_000).map((r) => r.food);
+    expect(foods.length).toBeGreaterThan(20);
+    for (const f of foods) {
+      expect(f.ingredients, f.id).not.toContain('tomatoes');
+      expect(f.tags, f.id).not.toContain('fried');
+    }
+    expect(isValidEvent({ type: 'member.added', at: 1, member: { id: 'a', name: 'A', diet: 'vegan', allergens: [], dislikes: [], goals: [], avoid: ['x'.repeat(600)] } })).toBe(false);
+  });
+});
+
+describe('family plan', () => {
+  it('a mixed table gets meat dinners with a separate dish for the vegetarians, never breaking anyone\'s rules', () => {
+    const k = new Kernel();
+    const me = makeMember({ id: 'me', name: 'Gurpreet', diet: 'omnivore' });
+    const dada = makeMember({ id: 'd', name: 'Dadaji', diet: 'vegetarian', conditions: ['hypertension'] });
+    const sim = makeMember({ id: 's', name: 'Simran', diet: 'vegetarian' });
+    k.submit({ type: 'profile.set', at: base - 86_400_000, profile: makeProfile({ members: [me, dada, sim], tzOffsetMin: IST }) });
+    const { plan } = k.week(base);
+    const dinners = plan.meals.filter((m) => m.slot === 'dinner');
+    expect(dinners.some((m) => m.food.diet === 'omnivore' || m.food.diet === 'pescatarian')).toBe(true);
+    for (const m of dinners.filter((x) => x.alsoFor)) {
+      expect(m.alsoFor!.some((a) => a.name === 'Dadaji' && hardProblem(a.food, dada) === undefined)).toBe(true);
+    }
+  });
+});
+
+describe('cook-challenged fixes', () => {
+  it('raw chicken always carries hygiene and doneness cues', async () => {
+    const { stepsFor } = await import('../src/catalog');
+    for (const f of CATALOG.filter((x) => x.ingredients.some((i) => /chicken|mutton/.test(i)))) {
+      const t = stepsFor(f).join(' ').toLowerCase();
+      expect(t, f.id).toMatch(/wash your hands|wash hands/);
+      expect(t, f.id).toMatch(/no pink|juices run clear|cooked through|75/);
+    }
+  });
+  it('maggi finds noodles and a pantry dal covers toor dal', () => {
+    const k = kernelFor({ name: 't', member: { diet: 'omnivore' }, wishes: [] });
+    expect(k.ask('maggi', base).results.some((r) => /noodles/i.test(r.food.name))).toBe(true);
+    k.submit({ type: 'pantry.added', at: base, item: { id: 'p1', name: 'dal', qty: 1, unit: 'kg', location: 'cupboard', addedAt: base } });
+    const r = k.recommend({ include: ['dal'], k: 3 }, base + 12 * 3_600_000)[0]!;
+    expect(r.missing).not.toContain('toor dal');
   });
 });

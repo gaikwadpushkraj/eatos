@@ -70,10 +70,13 @@ export const CATALOG: Food[] = RAW.map((f) => {
   if (CHOKING.includes(f.id)) tags.add('choking-hazard');
   if (CRUNCHY.includes(f.id)) tags.add('crunchy');
   if (SOFT.includes(f.id)) tags.add('soft');
+  // Acidic ingredients, for reflux-friendly ranking.
+  if (f.ingredients.some((i) => /\b(tomatoes|tamarind|lemon|lime|oranges|vinegar|amchur|kokum)\b/.test(i))) tags.add('acidic');
   // Potassium-rich ingredients, for the kidney nudge.
   if (f.ingredients.some((i) => /\b(banana|spinach|potatoes|sweet potatoes|tomatoes|dates|rajma|mushrooms|avocado|coconut water|oranges|pomegranate|drumstick)\b/.test(i))) tags.add('high-potassium');
+  const NUTS_LIKELY = ['veg-biryani', 'chicken-biryani', 'mutton-biryani', 'haleem', 'seviyan', 'butter-chicken-naan', 'chingri-malai-curry', 'veg-pulao', 'kerala-stew-appam', 'sheer-khurma', 'phirni'];
   const merged = { ...f, ...(patch ?? {}), ingredients: (patch?.ingredients ?? f.ingredients).map((i) => INGREDIENT_NAME[i] ?? i) };
-  return { ...merged, tags: [...tags], allergens: [...new Set([...merged.allergens, ...ingredientAllergens(merged.ingredients)])] };
+  return { ...merged, tags: [...tags], allergens: [...new Set([...merged.allergens, ...ingredientAllergens(merged.ingredients), ...(NUTS_LIKELY.includes(f.id) ? (['nuts'] as const) : [])])] };
 });
 
 export function foodById(catalog: Food[], id: string): Food | undefined {
@@ -113,7 +116,19 @@ for (const food of CATALOG) {
 }
 
 /** Steps for a food, with a simple generic fallback. */
-export function stepsFor(food: Food): string[] {
+const RAW_ANIMAL = /\b(chicken|mutton|lamb|pork|beef|fish|prawns?|keema|minced)\b/;
+
+/** Raw meat and fish always come with a hygiene and doneness cue, whoever wrote the steps. */
+function withHygiene(food: Food, steps: string[]): string[] {
+  if (!food.ingredients.some((i) => RAW_ANIMAL.test(i))) return steps;
+  const text = steps.join(' ').toLowerCase();
+  const out = [...steps];
+  if (!/no pink|juices run clear|cooked through|75/.test(text)) out.push('Check it is cooked all the way through: no pink inside and the juices run clear (75 C in the thickest part).');
+  if (!/wash your hands|wash hands/.test(text)) out.unshift('Wash your hands, board and knife after touching raw meat or fish, and keep it away from salad and cooked food.');
+  return out;
+}
+
+function rawSteps(food: Food): string[] {
   if (food.steps?.length) return food.steps;
   const chef = INDIA_STEPS[food.id];
   if (chef?.length) return chef;
@@ -126,4 +141,8 @@ export function stepsFor(food: Food): string[] {
     `Cook or assemble, about ${Math.max(1, food.prepMin - 5)} minutes.`,
     'Taste, season and serve.',
   ];
+}
+
+export function stepsFor(food: Food): string[] {
+  return withHygiene(food, rawSteps(food));
 }

@@ -135,6 +135,8 @@ export interface Member {
   spice?: 0 | 1 | 2 | 3;
   /** Cuisines they grew up with or love, e.g. gujarati, south-indian. */
   cuisines?: string[];
+  /** Ingredients or tags this person never wants (trigger foods, a household veto). A hard filter. */
+  avoid?: string[];
 }
 
 export interface Medication {

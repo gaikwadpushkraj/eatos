@@ -3,7 +3,7 @@ import type { Condition, Diet, DietRule, Kitchen, Member } from '@eatos/core';
 import { CITIES, DEFAULT_ROUTINE, RULE_LABEL, askDoctorFlags, hm } from '@eatos/core';
 import type { Routine } from '@eatos/core';
 import { useKernel } from './kernel';
-import { Btn, Card, Chip, Row, Section, Txt } from './ui';
+import { Btn, Card, Chip, Field, Row, Section, Txt } from './ui';
 
 const DIETS: { key: Diet; label: string }[] = [
   { key: 'vegan', label: 'Vegan' },
@@ -107,6 +107,7 @@ export function FoodProfile() {
               <Chip key={k} label={label} selected={!!me.cuisines?.includes(k)} onPress={() => setMember({ cuisines: toggle(me.cuisines, k) })} />
             ))}
           </Row>
+          <AvoidList member={me} onChange={(avoid) => setMember({ avoid })} />
           <Txt v="label">Your day</Txt>
           <Txt v="small">Meals and water follow your waking hours. Medication times you set at setup stay as they are.</Txt>
           <Row wrap gap={8}>
@@ -151,6 +152,30 @@ export function FoodProfile() {
           ))}
         </Card>
       </Section>
+    </>
+  );
+}
+
+/** Foods a person never wants: trigger foods, a household veto. A hard filter, one word at a time. */
+export function AvoidList({ member, onChange }: { member: Member; onChange: (avoid: string[]) => void }) {
+  const [text, setText] = useState('');
+  const add = () => {
+    const w = text.trim().toLowerCase();
+    if (!w || w.length > 40) return;
+    onChange([...new Set([...(member.avoid ?? []), w])]);
+    setText('');
+  };
+  return (
+    <>
+      <Txt v="label">Foods to leave out for good</Txt>
+      <Txt v="small">Type an ingredient or kind of food (tomato, fried, tea). EatOS will never suggest it.</Txt>
+      <Row wrap gap={8}>
+        {(member.avoid ?? []).map((w) => (
+          <Chip key={w} label={`Remove ${w}`} tone="warn" onPress={() => onChange((member.avoid ?? []).filter((x) => x !== w))} />
+        ))}
+      </Row>
+      <Field label="Leave out" value={text} onChangeText={setText} onSubmitEditing={add} placeholder="e.g. tomato" autoCapitalize="none" returnKeyType="done" />
+      <Btn small kind="outline" label="Leave it out" onPress={add} disabled={!text.trim()} />
     </>
   );
 }

@@ -10,6 +10,8 @@ export interface PlannedMeal {
   food: Food;
   /** Same dish as an earlier meal this week: cook once, eat twice. */
   batch: boolean;
+  /** For a household: who this dinner is not for, and what they have instead. */
+  alsoFor?: { name: string; food: Food }[];
 }
 
 export interface WeekPlan {
@@ -36,12 +38,25 @@ export function planWeek(state: State, catalog: Food[], from: number, days = 7):
         meals.push({ day, slot, food: prevDinner.food, batch: true });
         continue;
       }
-      const recs = recommend(state, catalog, { slot, k: 12 }, day + 12 * 3_600_000);
+      // A family does not all eat the same thing: on alternate dinners the dish is chosen for those who eat meat or fish,
+      // and everyone else gets a dish of their own beside it.
+      const members = state.profile?.members ?? [];
+      const meatEaters = members.filter((m) => m.diet === 'omnivore' || m.diet === 'pescatarian');
+      const split = slot === 'dinner' && members.length >= 3 && meatEaters.length >= 1 && meatEaters.length < members.length && d % 2 === 1;
+      const recs = recommend(state, catalog, { slot, k: 12, ...(split ? { memberIds: meatEaters.map((m) => m.id), preferMeat: true } : {}) }, day + 12 * 3_600_000);
       const pick =
         recs.find((r) => (used.get(r.food.id) ?? -10) < d - 2) ?? recs.find((r) => used.get(r.food.id) !== d) ?? recs[0];
       if (!pick) continue;
       used.set(pick.food.id, d);
-      meals.push({ day, slot, food: pick.food, batch: false });
+      const alsoFor = split
+        ? members
+            .filter((m) => !meatEaters.includes(m))
+            .flatMap((m) => {
+              const own = recommend(state, catalog, { slot, k: 3, memberIds: [m.id] }, day + 12 * 3_600_000).find((r) => r.food.id !== pick.food.id);
+              return own ? [{ name: m.name, food: own.food }] : [];
+            })
+        : undefined;
+      meals.push({ day, slot, food: pick.food, batch: false, ...(alsoFor?.length ? { alsoFor } : {}) });
     }
   }
   return { start, meals };

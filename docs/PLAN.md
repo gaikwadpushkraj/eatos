@@ -119,6 +119,14 @@ Sprint 6
 - 7.8 App: Your food, fasting, wish list, taste cards, household rules
 - 7.9 Persona agents and fixes (persona_reports)
 
+### Phase 8: Experts and round 2 personas (Sprints 13 and 14, done)
+- 8.1 More personas and experts
+- 8.2 Security hardening
+- 8.3 Safety: allergens from ingredients, hidden gluten, new conditions
+- 8.4 Sunrise and sunset, time zones
+- 8.5 Hindi UI and onboarding
+- 8.6 Catalogue growth and chef steps
+
 ## Definition of done
 - Code is typed, tested with Vitest and passes `pnpm -r typecheck` and `pnpm -r test`.
 - Behaviour matches the rules in this file.

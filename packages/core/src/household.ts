@@ -15,7 +15,7 @@ export function fitFor(food: Food, member: Member): Fit {
   if (problem) return { memberId: member.id, ok: false, hard: true, reason: problem };
   const disliked = member.dislikes.find((d) => food.ingredients.some((i) => i.includes(d)) || food.tags.includes(d));
   if (disliked) return { memberId: member.id, ok: false, hard: false, reason: `Dislikes ${disliked}` };
-  if ((member.mild && food.tags.includes('spicy')) || (member.spice !== undefined && (food.spice ?? 0) > member.spice + 1)) return { memberId: member.id, ok: false, hard: false, reason: 'Too spicy' };
+  if (((member.mild || member.conditions?.includes('child-under-5')) && ((food.spice ?? 0) >= 2 || food.tags.includes('spicy'))) || (member.spice !== undefined && (food.spice ?? 0) > member.spice + 1)) return { memberId: member.id, ok: false, hard: false, reason: 'Too spicy' };
   return { memberId: member.id, ok: true, hard: false, reason: 'Fits' };
 }
 

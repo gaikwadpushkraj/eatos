@@ -636,6 +636,80 @@
           ]
         }
       ]
+    },
+    {
+      "key": "P8",
+      "title": "Phase 8: Experts and round 2 personas",
+      "summary": "More roles, expert review and the fixes that followed.",
+      "tasks": [
+        {
+          "key": "8.1",
+          "sprint": 13,
+          "area": "qa",
+          "status": "done",
+          "title": "More personas and experts",
+          "acceptance": [
+            "14 more roles with expectations in docs/personas/round2.md",
+            "Six expert reviews: dietitian, chef, UX writer and Hindi, security, regional scholar, behavioural scientist"
+          ]
+        },
+        {
+          "key": "8.2",
+          "sprint": 13,
+          "area": "security",
+          "status": "done",
+          "title": "Security hardening",
+          "acceptance": [
+            "ReDoS cap, calendar loop guard, prototype-key and diet-check fixes, scrypt cap",
+            "No open CORS, user cap, localhost Docker binding"
+          ]
+        },
+        {
+          "key": "8.3",
+          "sprint": 13,
+          "area": "core",
+          "status": "done",
+          "title": "Safety: allergens from ingredients, hidden gluten, new conditions",
+          "acceptance": [
+            "Allergens derived from ingredient lists; hing, papad and commercial masalas count as gluten",
+            "Child under 5, soft food, GERD, lactation; kidney users are not pushed on fluids or protein",
+            "Fad-diet refusal; fasting note for diabetes"
+          ]
+        },
+        {
+          "key": "8.4",
+          "sprint": 14,
+          "area": "core",
+          "status": "done",
+          "title": "Sunrise and sunset, time zones",
+          "acceptance": [
+            "Ramzan suhoor and iftar; eat-before-sunset rule; city setting",
+            "Time-zone card when the phone moves"
+          ]
+        },
+        {
+          "key": "8.5",
+          "sprint": 14,
+          "area": "app",
+          "status": "done",
+          "title": "Hindi UI and onboarding",
+          "acceptance": [
+            "Hindi toggle, 569 strings, 145 dish names",
+            "Rules, spice, kitchen and city in onboarding; numberless day one"
+          ]
+        },
+        {
+          "key": "8.6",
+          "sprint": 14,
+          "area": "content",
+          "status": "done",
+          "title": "Catalogue growth and chef steps",
+          "acceptance": [
+            "Over 250 dishes across regional, special-needs and global cooking",
+            "Real cooking steps for 170+ dishes"
+          ]
+        }
+      ]
     }
   ]
 }

@@ -47,6 +47,7 @@ function member(m: unknown): string | undefined {
   if (m.conditions !== undefined && !list(m.conditions, oneOf(CONDITIONS))) return 'member conditions are not valid';
   if (m.spice !== undefined && ![0, 1, 2, 3].includes(m.spice as number)) return 'member spice is not valid';
   if (m.cuisines !== undefined && !list(m.cuisines, str)) return 'member cuisines are not valid';
+  if (m.avoid !== undefined && !list(m.avoid, str)) return 'member avoid list is not valid';
   return undefined;
 }
 

@@ -2,7 +2,7 @@ import type { Blocker, Condition, DietRule, Food, Member } from './types';
 import type { State } from './state';
 import { selfMember } from './state';
 import { FASTING, RESTRICTIVE, RESTRICTIVE_NOTE, hardProblem, hasWord, healthFit, textProblem } from './rules';
-import { activeFast } from './recommend';
+import { activeFast, recommend } from './recommend';
 import { pantryNames } from './housekeeping';
 
 /**
@@ -138,6 +138,10 @@ export function alternatives(state: State, catalog: Food[], wish: string, now: n
   if (!food && me) {
     const t = textProblem(wish, me);
     if (t) blockers.push({ kind: kindOf(t, me), detail: t });
+    for (const o of (state.profile?.members ?? []).filter((m) => m.id !== me.id)) {
+      const ot = textProblem(wish, o);
+      if (ot) blockers.push({ kind: 'household', detail: `${o.name}: ${ot}` });
+    }
   }
   const swaps = SWAPS.filter((s) => s.match.test(text) && !s.skipFor?.some((c) => mine.has(c)) && (s.when.length === 0 || s.when.some((w) => mine.has(w))));
   if (!blockers.length && swaps.some((x) => x.when.length)) blockers.push({ kind: swaps.find((x) => x.when.length)!.when.some((w) => ['jain', 'satvik', 'no-onion-garlic', 'no-beef', 'halal'].includes(w) && mine.has(w)) ? 'religion' : 'health', detail: 'EatOS ranks this lower with the health settings you chose. It is not ruled out.' });
@@ -195,7 +199,11 @@ export function alternatives(state: State, catalog: Food[], wish: string, now: n
   else if (kinds.has('household')) later = 'Cook it on a day when the others eat out, or make the shared base and add it on the side.';
   else if (!blockers.length && food) later = 'Nothing is in the way. It can go on your plan.';
   const unknown = !food && !blockers.length;
-  if (unknown) later = 'EatOS does not know this dish yet, so it cannot check it against your rules or health settings. Ask how it is made, or pick something from the list below.';
+  if (unknown) {
+    later = 'EatOS does not know this dish yet, so it cannot check it against your rules or health settings. Ask how it is made. Meanwhile, here are ideas that do work for you.';
+    const ideas = recommend(state, catalog, { k: 3, include: words(wish).slice(0, 3) }, now).map((r) => r.food);
+    if (ideas.length) ladder.push({ kind: 'neighbour', title: 'Ideas that work for you', why: 'Checked against your rules and health settings.', foods: ideas });
+  }
 
   // The pantry tells whether a "can't" is really "don't have the ingredients".
   if (food && !blockers.length) {
