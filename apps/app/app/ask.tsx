@@ -9,7 +9,7 @@ import { useTheme, fonts } from '../src/theme';
 import { Btn, Card, Chip, IconBtn, Row, Screen, Txt, TopBar } from '../src/ui';
 import { loadLlmConfig, makeCompleter } from '../src/llm';
 
-const PROMPTS = ['Something warm, 15 minutes', 'A light snack', 'High protein dinner', 'Comfort food for everyone', 'Gentle, I feel unwell'];
+const PROMPTS = ['Something warm, 15 minutes', 'A light snack', 'High protein dinner', 'Comfort food for everyone', 'Gentle, I feel unwell', 'Surprise me', 'Same as yesterday'];
 
 export default function Ask() {
   const { kernel, now, submit, version } = useKernel();

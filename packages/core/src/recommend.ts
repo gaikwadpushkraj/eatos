@@ -21,6 +21,10 @@ export interface Query {
   light?: boolean;
   /** Words that name a dish, ingredient or cuisine to favour. */
   include?: string[];
+  /** Favour dishes not tried before, with more shuffle. */
+  novel?: boolean;
+  /** Favour what was eaten at this slot yesterday. */
+  sameAsYesterday?: boolean;
   /** Wanted protein in grams; dishes below it rank lower. */
   minProteinG?: number;
   k?: number;
@@ -72,6 +76,11 @@ export function recommend(state: State, catalog: Food[], q: Query, now: number):
   // A fast day with no meal in this slot (for example lunch in Ramzan).
   if (rule && q.slot && rule.skipSlots.includes(q.slot)) return [];
   const kitchen = state.profile?.kitchen ?? 'full';
+  const yesterday = new Set(
+    q.sameAsYesterday
+      ? state.events.flatMap((e) => (e.type === 'intake.logged' && e.foodId && (!q.slot || e.slot === q.slot) && e.at >= dayStart(now, state.profile?.tzOffsetMin ?? 0) - 86_400_000 && e.at < dayStart(now, state.profile?.tzOffsetMin ?? 0) ? [e.foodId] : []))
+      : [],
+  );
 
   const results: Recommendation[] = [];
   for (const food of catalog) {
@@ -164,12 +173,21 @@ export function recommend(state: State, catalog: Food[], q: Query, now: number):
       reasons.push(`Uses ${uses.join(' and ')} before it expires`);
     }
 
+    if (q.novel) {
+      if (!prefs[food.id]) score += 2;
+      score += ((parseInt(hashString(`${food.id}:${Math.floor(now / 60_000)}`), 36) || 0) % 1000) / 1000 * 3;
+      if (food.cuisine && members.some((m) => m.cuisines?.includes(food.cuisine!))) score += 0.5;
+    }
+    if (q.sameAsYesterday && yesterday.has(food.id)) {
+      score += 8;
+      reasons.push('The same as yesterday');
+    }
     // A little day-to-day variety: the same good dish should not win every single day.
     score += ((parseInt(hashString(`${food.id}:${Math.floor((now + (state.profile?.tzOffsetMin ?? 0) * 60_000) / 86_400_000)}`), 36) || 0) % 1000) / 1000 * 1.2;
 
     const pref = prefs[food.id];
     if (pref) score += pref.score;
-    if (recent.has(food.id)) score -= 2;
+    if (recent.has(food.id) && !q.sameAsYesterday) score -= 2;
 
     if (q.maxPrepMin !== undefined || food.prepMin <= 15) reasons.push(`Ready in ${food.prepMin} min`);
     if (everyone) reasons.push('Works for everyone at home');

@@ -24,7 +24,7 @@ const TAG_WORDS: Record<string, string> = {
   easy: 'gentle',
 };
 
-const STOP = new Set(['something', 'anything', 'for', 'the', 'and', 'with', 'what', 'can', 'make', 'have', 'want', 'need', 'some', 'tonight', 'today', 'tomorrow', 'now', 'please', 'give', 'show', 'ideas', 'idea', 'meal', 'food', 'eat', 'eating', 'minutes', 'minute', 'mins', 'min', 'quick', 'fast', 'hurry', 'time', 'too', 'light', 'small', 'heavy', 'protein', 'fibre', 'fiber', 'workout', 'gym', 'just', 'only', 'myself', 'everyone', 'family', 'all', 'household', 'kids', 'that', 'this', 'are', 'you', 'got', 'good', 'nice', 'tasty', 'hungry', 'feel', 'feeling', 'like', 'least', 'grams', 'over', 'more', 'than']);
+const STOP = new Set(['surprise', 'new', 'never', 'tried', 'different', 'same', 'yesterday', 'again', 'before', 'something', 'anything', 'for', 'the', 'and', 'with', 'what', 'can', 'make', 'have', 'want', 'need', 'some', 'tonight', 'today', 'tomorrow', 'now', 'please', 'give', 'show', 'ideas', 'idea', 'meal', 'food', 'eat', 'eating', 'minutes', 'minute', 'mins', 'min', 'quick', 'fast', 'hurry', 'time', 'too', 'light', 'small', 'heavy', 'protein', 'fibre', 'fiber', 'workout', 'gym', 'just', 'only', 'myself', 'everyone', 'family', 'all', 'household', 'kids', 'that', 'this', 'are', 'you', 'got', 'good', 'nice', 'tasty', 'hungry', 'feel', 'feeling', 'like', 'least', 'grams', 'over', 'more', 'than']);
 
 const SLOT_WORDS: Record<string, MealSlot> = {
   breakfast: 'breakfast',
@@ -84,6 +84,14 @@ export function parseAsk(text: string, selfId = 'me'): ParsedAsk {
     query.minProteinG = Math.min(120, Number(minProtein[1]));
     query.need = 'protein';
     understood.push(`At least ${query.minProteinG} g protein`);
+  }
+  if (/\b(surprise|something new|never tried|new to me|something different)\b/.test(s)) {
+    query.novel = true;
+    understood.push('Something new for you');
+  }
+  if (/\b(same as yesterday|same again|same as before)\b/.test(s)) {
+    query.sameAsYesterday = true;
+    understood.push('The same as yesterday');
   }
   if (/\b(light|small|not too heavy)\b/.test(s)) {
     query.light = true;

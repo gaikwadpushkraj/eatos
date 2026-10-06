@@ -87,7 +87,8 @@ function routineTasks(state: State, now: number): Task[] {
   const target = targets(state, now).waterMl;
   const every = safe ? 2 * 60 : 3 * 60;
   const points: number[] = [];
-  for (let m = r.wake + 60; m <= sleepAt - 60; m += every) points.push(m);
+  const noWaterPush = state.profile!.members.find((x) => x.id === state.profile!.selfId)?.conditions?.includes('kidney');
+  if (!noWaterPush) for (let m = r.wake + 60; m <= sleepAt - 60; m += every) points.push(m);
   points.forEach((m, i) => {
     const at = atMinute(now, m, off);
     tasks.push(

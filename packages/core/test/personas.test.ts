@@ -257,3 +257,24 @@ describe('round 2 safety', () => {
     expect(k.wish('omad keto diet pills', base).later).toMatch(/regular meals/i);
   });
 });
+
+describe('kidney: no pushing of fluids or protein', () => {
+  it('pauses the hydration and protein checks and sends no water reminders', () => {
+    const k = kernelFor({ name: 'lakshmi', member: { diet: 'vegetarian', conditions: ['kidney'] }, wishes: [] });
+    const checks = k.health(base + 12 * 3_600_000);
+    for (const c of checks.filter((x) => x.key === 'hydration' || x.key === 'protein')) expect(c.status).toBe('paused');
+    expect(k.schedule(base + 12 * 3_600_000).some((t) => t.kind === 'hydration')).toBe(false);
+  });
+});
+
+describe('surprise me and same as yesterday', () => {
+  it('parse and steer the ranking', () => {
+    const k = kernelFor(PERSONAS[1]!);
+    expect(k.ask('surprise me', base).query.novel).toBe(true);
+    const lunchAt = base - 86_400_000 + 13 * 3_600_000;
+    k.submit({ type: 'intake.logged', at: lunchAt, foodId: 'rajma-chawal', slot: 'lunch' });
+    const r = k.ask('same as yesterday for lunch', base + 12 * 3_600_000);
+    expect(r.query.sameAsYesterday).toBe(true);
+    expect(r.results[0]!.food.id).toBe('rajma-chawal');
+  });
+});
