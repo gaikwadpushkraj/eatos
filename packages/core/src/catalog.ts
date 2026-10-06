@@ -1,6 +1,7 @@
 import type { Food } from './types';
 import { INDIA_CATALOG } from './india';
 import { INDIA_MORE } from './india2';
+import { INDIA_REGIONAL } from './india3';
 import { INDIA_STEPS } from './steps-india';
 import { DIETITIAN_PATCHES } from './patches';
 import { ingredientAllergens } from './rules';
@@ -12,6 +13,7 @@ import { ingredientAllergens } from './rules';
 const RAW: Food[] = [
   ...INDIA_CATALOG,
   ...INDIA_MORE,
+  ...INDIA_REGIONAL,
   // Breakfast
   { id: 'oats-banana', name: 'Oats with banana and yogurt', slots: ['breakfast'], tags: ['warm', 'quick', 'fibre'], diet: 'vegetarian', allergens: ['dairy', 'gluten'], prepMin: 8, nutrients: { kcal: 420, proteinG: 18, fibreG: 8, waterMl: 150 }, ingredients: ['oats', 'banana', 'greek yogurt', 'milk'] },
   { id: 'overnight-oats', name: 'Overnight oats with berries', slots: ['breakfast'], tags: ['quick', 'fibre', 'cold', 'no-cook'], diet: 'vegetarian', allergens: ['dairy', 'gluten'], prepMin: 5, nutrients: { kcal: 380, proteinG: 15, fibreG: 9, waterMl: 150 }, ingredients: ['oats', 'berries', 'milk', 'chia seeds'] },

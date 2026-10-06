@@ -233,7 +233,7 @@ export const RESTRICTIVE = /\b(skip(ping)? (a )?(meal|dinner|lunch|breakfast)|lo
 export const RESTRICTIVE_NOTE = 'EatOS does not help with skipping meals or losing weight fast. Regular meals are the plan. If food, weight or eating is on your mind a lot, talking to someone you trust or a doctor can help.';
 
 const INGREDIENT_ALLERGENS: [Allergen, string[]][] = [
-  ['gluten', ['wheat', 'wheat flour', 'maida', 'semolina', 'sooji', 'pasta', 'bread', 'pav', 'naan', 'noodles', 'vermicelli', 'tortilla', 'pizza dough', 'oats', 'broken wheat', 'muesli', 'soy sauce', 'hing', 'barley', 'kulcha', 'malt']],
+  ['gluten', ['wheat', 'wheat flour', 'maida', 'semolina', 'sooji', 'pasta', 'bread', 'pav', 'naan', 'noodles', 'vermicelli', 'tortilla', 'pizza dough', 'oats', 'broken wheat', 'muesli', 'soy sauce', 'hing', 'barley', 'kulcha', 'malt', 'bhajani', 'rava', 'dalia', 'suji']],
   ['dairy', ['milk', 'curd', 'yogurt', 'greek yogurt', 'paneer', 'ghee', 'butter', 'cream', 'cheese', 'parmesan', 'mozzarella', 'milk powder', 'khoya', 'dahi', 'malai']],
   ['egg', ['egg', 'eggs', 'mayonnaise']],
   ['peanuts', ['peanut', 'peanuts', 'peanut butter', 'roasted peanuts', 'groundnut']],
