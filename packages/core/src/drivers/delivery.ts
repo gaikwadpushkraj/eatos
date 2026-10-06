@@ -4,6 +4,7 @@ import type { State } from '../state';
 import { fitFor } from '../household';
 import { preferences } from '../memory';
 import { hashString } from '../time';
+import { textAllergenHit } from '../rules';
 
 /**
  * Delivery driver: ranks dishes from a restaurant or delivery menu for
@@ -20,6 +21,9 @@ export interface MenuItem {
   allergens?: Allergen[];
   /** Most restrictive diet the dish fits. Undefined when unknown. */
   diet?: Diet;
+  /** True only when the restaurant confirmed the allergen list. Without it, an empty list is not trusted. */
+  allergensConfirmed?: boolean;
+  description?: string;
   tags?: string[];
   kcal?: number;
   proteinG?: number;
@@ -49,6 +53,11 @@ export function menuBlocker(item: MenuItem, member: Member): string | undefined 
     if (item.allergens === undefined) return `No allergen information for ${member.name}`;
     const hit = item.allergens.find((a) => member.allergens.includes(a));
     if (hit) return `Contains ${hit}`;
+    // The name or description can give away what the allergen list leaves out ("Kaju chicken korma", "may contain nuts").
+    const word = textAllergenHit(`${item.name} ${item.description ?? ''} ${(item.tags ?? []).join(' ')}`, member.allergens);
+    if (word) return `Mentions ${word.word} (${word.allergen})`;
+    // Unverified is not safe: an empty list only counts when the restaurant confirmed it.
+    if (!item.allergens.length && !item.allergensConfirmed) return `Allergens not confirmed for ${member.name}`;
   }
   if (member.diet !== 'omnivore') {
     if (item.diet === undefined) return `Diet not stated for ${member.name}`;

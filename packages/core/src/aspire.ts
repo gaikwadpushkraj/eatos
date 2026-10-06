@@ -138,6 +138,10 @@ export function alternatives(state: State, catalog: Food[], wish: string, now: n
   if (!food && me) {
     const t = textProblem(wish, me);
     if (t) blockers.push({ kind: kindOf(t, me), detail: t });
+    for (const o of (state.profile?.members ?? []).filter((m) => m.id !== me.id)) {
+      const ot = textProblem(wish, o);
+      if (ot) blockers.push({ kind: 'household', detail: `${o.name}: ${ot}` });
+    }
   }
   const swaps = SWAPS.filter((s) => s.match.test(text) && !s.skipFor?.some((c) => mine.has(c)) && (s.when.length === 0 || s.when.some((w) => mine.has(w))));
   if (!blockers.length && swaps.some((x) => x.when.length)) blockers.push({ kind: swaps.find((x) => x.when.length)!.when.some((w) => ['jain', 'satvik', 'no-onion-garlic', 'no-beef', 'halal'].includes(w) && mine.has(w)) ? 'religion' : 'health', detail: 'EatOS ranks this lower with the health settings you chose. It is not ruled out.' });

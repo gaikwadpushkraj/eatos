@@ -72,8 +72,9 @@ export const CATALOG: Food[] = RAW.map((f) => {
   if (SOFT.includes(f.id)) tags.add('soft');
   // Potassium-rich ingredients, for the kidney nudge.
   if (f.ingredients.some((i) => /\b(banana|spinach|potatoes|sweet potatoes|tomatoes|dates|rajma|mushrooms|avocado|coconut water|oranges|pomegranate|drumstick)\b/.test(i))) tags.add('high-potassium');
+  const NUTS_LIKELY = ['veg-biryani', 'chicken-biryani', 'mutton-biryani', 'haleem', 'seviyan', 'butter-chicken-naan', 'chingri-malai-curry', 'veg-pulao', 'kerala-stew-appam', 'sheer-khurma', 'phirni'];
   const merged = { ...f, ...(patch ?? {}), ingredients: (patch?.ingredients ?? f.ingredients).map((i) => INGREDIENT_NAME[i] ?? i) };
-  return { ...merged, tags: [...tags], allergens: [...new Set([...merged.allergens, ...ingredientAllergens(merged.ingredients)])] };
+  return { ...merged, tags: [...tags], allergens: [...new Set([...merged.allergens, ...ingredientAllergens(merged.ingredients), ...(NUTS_LIKELY.includes(f.id) ? (['nuts'] as const) : [])])] };
 });
 
 export function foodById(catalog: Food[], id: string): Food | undefined {

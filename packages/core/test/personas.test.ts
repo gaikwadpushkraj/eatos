@@ -288,3 +288,28 @@ describe('coeliac: hidden gluten', () => {
     expect(k.wish('beer', base).later).toMatch(/not even a little/i);
   });
 });
+
+describe('nut-allergic child in the household', () => {
+  const house = () => {
+    const k = new Kernel();
+    const me = makeMember({ id: 'me', name: 'Imran', diet: 'omnivore' });
+    const sana = makeMember({ id: 's', name: 'Sana', diet: 'omnivore', allergens: ['nuts', 'peanuts'], mild: true, conditions: ['minor', 'child-under-5'] });
+    k.submit({ type: 'profile.set', at: base - 86_400_000, profile: makeProfile({ members: [me, sana], tzOffsetMin: IST }) });
+    return k;
+  };
+  it('wishes with nut words are flagged for the child even when the adult can eat them', () => {
+    const k = house();
+    for (const w of ['almond halwa', 'kaju katli', 'groundnut chikki', 'Snickers', 'badam milk', 'pista kulfi', 'Nutella toast']) {
+      expect(k.wish(w, base).blockers.some((b) => b.kind === 'household' && /Sana/.test(b.detail)), w).toBe(true);
+    }
+  });
+  it('biryani, haleem and seviyan carry nuts, so they never reach the child', () => {
+    const ids = house().recommend({ k: 500 }, base + 5 * 3_600_000).map((r) => r.food.id);
+    for (const bad of ['veg-biryani', 'chicken-biryani', 'mutton-biryani', 'haleem', 'seviyan']) expect(ids, bad).not.toContain(bad);
+  });
+  it('a mild young child is not planned hot dishes as fits', () => {
+    const k = house();
+    const hot = CATALOG.find((f) => (f.spice ?? 0) === 3 && f.allergens.length === 0)!;
+    expect(k.household().matrix([hot])[0]!.fits.find((f) => f.memberId === 's')!.ok).toBe(false);
+  });
+});

@@ -121,7 +121,7 @@ function ReceiptCard() {
 
 const SAMPLE_MENU = JSON.stringify(
   [
-    { id: 'm1', restaurant: 'Spice Co', name: 'Paneer tikka bowl', allergens: ['dairy'], diet: 'vegetarian', tags: ['warm', 'high-protein'], proteinG: 32, etaMin: 25, priceCents: 1200 },
+    { id: 'm1', restaurant: 'Spice Co', name: 'Paneer tikka bowl', allergens: ['dairy'], allergensConfirmed: true, diet: 'vegetarian', tags: ['warm', 'high-protein'], proteinG: 32, etaMin: 25, priceCents: 1200 },
     { id: 'm2', restaurant: 'Corner Cafe', name: 'Daily special', tags: ['warm'], etaMin: 10, priceCents: 800 },
   ],
   null,
@@ -151,7 +151,7 @@ function DeliveryCard() {
   return (
     <Card>
       <Txt v="h3">Food delivery</Txt>
-      <Txt v="small">Paste a menu as JSON. Dishes with no allergen information are hidden if anyone eating has an allergy, because unknown is not the same as safe.</Txt>
+      <Txt v="small">Paste a menu as JSON. Dishes whose allergens are missing, unconfirmed, or hinted at in the name or notes (for example “may contain nuts”) are hidden if anyone eating has an allergy, because unknown is not the same as safe. Restaurants can change recipes and kitchens share equipment, so always tell them about the allergy too.</Txt>
       <Field label="Menu JSON" value={text} onChangeText={setText} multiline numberOfLines={4} placeholder={SAMPLE_MENU} autoCapitalize="none" autoCorrect={false} />
       <Row wrap>
         <Btn small label="Check menu" disabled={!text.trim()} onPress={() => load(text)} />
@@ -163,7 +163,7 @@ function DeliveryCard() {
           {shown.map((o) => (
             <Card key={o.item.id} tone="soft" padding={12}>
               <Txt v="bodyStrong">{`${o.item.name} · ${o.item.restaurant}`}</Txt>
-              <Txt v="small">{[o.item.priceCents ? `£${(o.item.priceCents / 100).toFixed(2)}` : '', ...o.reasons].filter(Boolean).join(' · ')}</Txt>
+              <Txt v="small">{[o.item.priceCents ? `₹${Math.round(o.item.priceCents / 100).toLocaleString('en-IN')}` : '', ...o.reasons].filter(Boolean).join(' · ')}</Txt>
               <Btn small kind="outline" label="I ordered this" onPress={() => submitMany(orderEvents(kernel.state, o.item, kernel.now(now).nextMeal?.slot ?? 'dinner', now) as never)} />
             </Card>
           ))}

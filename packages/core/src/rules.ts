@@ -193,8 +193,8 @@ export function fastingGate(members: Member[]): string | undefined {
 
 const TEXT_MEAT = ['chicken', 'mutton', 'lamb', 'beef', 'pork', 'bacon', 'ham', 'fish', 'prawn', 'shrimp', 'crab', 'salmon', 'keema', 'kebab', 'nihari', 'haleem', 'tikka', 'ilish', 'hilsa', 'egg', 'omelette', 'omelet', 'bhurji', 'meat'];
 const TEXT_ALLERGEN: Record<string, string[]> = {
-  nuts: ['almond', 'cashew', 'walnut', 'pistachio', 'pesto'],
-  peanuts: ['peanut', 'chikki'],
+  nuts: ['almond', 'cashew', 'walnut', 'pistachio', 'pesto', 'kaju', 'badam', 'pista', 'hazelnut', 'nutella', 'pecan', 'pine nut', 'macadamia', 'marzipan', 'praline', 'gajak', 'snickers', 'kaju katli', 'badam halwa', 'almond halwa', 'korma', 'mawa'],
+  peanuts: ['peanut', 'chikki', 'groundnut', 'moongphali', 'singdana', 'snickers', 'satay', 'peanut butter'],
   dairy: ['milk', 'cheese', 'paneer', 'curd', 'yogurt', 'yoghurt', 'ghee', 'butter', 'lassi', 'kheer', 'ice cream', 'raita', 'rasmalai', 'rasgulla', 'rosogolla', 'mishti doi'],
   gluten: ['roti', 'naan', 'bread', 'pav', 'pasta', 'pizza', 'noodles', 'maida', 'paratha', 'cake', 'biscuit', 'beer', 'ale', 'lager', 'malt', 'papad', 'papdi', 'papadam', 'sooji', 'semolina', 'rava', 'seviyan', 'vermicelli', 'upma', 'halwa', 'momos', 'hing', 'asafoetida', 'dalia', 'kulcha', 'puri', 'samosa', 'kachori', 'barley', 'wheat'],
   egg: ['egg', 'omelette', 'omelet', 'bhurji', 'mayonnaise'],
@@ -203,6 +203,17 @@ const TEXT_ALLERGEN: Record<string, string[]> = {
   shellfish: ['prawn', 'shrimp', 'crab', 'lobster'],
   sesame: ['sesame', 'til', 'tahini', 'hummus'],
 };
+
+/** The first allergen word found in free text (a menu line, a wish), or undefined. Also reads "may contain" style notes. */
+export function textAllergenHit(text: string, allergens: Allergen[]): { allergen: Allergen; word: string } | undefined {
+  const t = text.toLowerCase();
+  for (const a of allergens) {
+    const w = (TEXT_ALLERGEN[a] ?? []).find((x) => hasWord(t, x));
+    if (w) return { allergen: a, word: w };
+    if (/(may contain|traces of|handles|processed in|made in a facility)/.test(t) && hasWord(t, a === 'nuts' ? 'nuts' : a)) return { allergen: a, word: `may contain ${a}` };
+  }
+  return undefined;
+}
 
 /**
  * A rule broken by something EatOS does not have in its catalogue, judged only from the words

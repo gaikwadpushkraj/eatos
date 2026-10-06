@@ -70,7 +70,7 @@ const menu: MenuItem[] = [
   { id: 'm1', restaurant: 'Spice Co', name: 'Paneer tikka bowl', allergens: ['dairy'], diet: 'vegetarian', tags: ['warm', 'high-protein'], proteinG: 32, etaMin: 25, priceCents: 1200 },
   { id: 'm2', restaurant: 'Spice Co', name: 'Satay noodles', allergens: ['peanuts', 'soy'], diet: 'vegan', tags: ['warm'], etaMin: 20, priceCents: 1000 },
   { id: 'm3', restaurant: 'Corner Cafe', name: 'Daily special', tags: ['warm'], etaMin: 10, priceCents: 800 },
-  { id: 'm4', restaurant: 'Green Bowl', name: 'Quinoa salad', allergens: [], diet: 'vegan', tags: ['cold'], etaMin: 15, priceCents: 900 },
+  { id: 'm4', restaurant: 'Green Bowl', name: 'Quinoa salad', allergens: [], allergensConfirmed: true, diet: 'vegan', tags: ['cold'], etaMin: 15, priceCents: 900 },
   { id: 'm5', restaurant: 'Spice Co', name: 'Chicken tikka', allergens: ['dairy'], diet: 'omnivore', tags: ['warm', 'high-protein'], proteinG: 40, etaMin: 30, priceCents: 1300 },
 ];
 
@@ -133,5 +133,16 @@ describe('menu parsing', () => {
     expect(problems).toHaveLength(5);
     expect(parseMenu('nope').problems[0]).toMatch(/valid JSON/);
     expect(parseMenu('{}').problems[0]).toMatch(/list/);
+  });
+});
+
+describe('delivery: unverified is not safe', () => {
+  const nutAllergic = makeMember({ id: 's', name: 'Sana', allergens: ['nuts', 'peanuts'] });
+  it('an empty allergen list is not trusted, and names and notes give dishes away', () => {
+    expect(menuBlocker({ id: 'a', restaurant: 'r', name: 'Plain dosa', allergens: [] }, nutAllergic)).toMatch(/not confirmed/i);
+    expect(menuBlocker({ id: 'b', restaurant: 'r', name: 'Plain dosa', allergens: [], allergensConfirmed: true }, nutAllergic)).toBeUndefined();
+    expect(menuBlocker({ id: 'c', restaurant: 'r', name: 'Kaju chicken korma', allergens: [], allergensConfirmed: true }, nutAllergic)).toMatch(/Mentions/);
+    expect(menuBlocker({ id: 'd', restaurant: 'r', name: 'Peanut chutney dosa', allergens: [], allergensConfirmed: true }, nutAllergic)).toMatch(/Mentions/);
+    expect(menuBlocker({ id: 'e', restaurant: 'r', name: 'Brownie', description: 'Made in a facility that handles peanuts', allergens: [], allergensConfirmed: true }, nutAllergic)).toMatch(/Mentions/);
   });
 });
