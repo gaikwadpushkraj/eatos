@@ -46,7 +46,7 @@ export default function ProfileScreen() {
 
       <Section title="Goals">
         <Row wrap gap={8}>
-          {GOALS.map((g) => (
+          {GOALS.filter((g) => !(me.conditions?.includes('kidney') && (g.key === 'more-protein' || g.key === 'hydration'))).map((g) => (
             <Chip key={g.key} label={g.label} selected={me.goals.includes(g.key)} onPress={() => toggleGoal(g.key)} />
           ))}
         </Row>

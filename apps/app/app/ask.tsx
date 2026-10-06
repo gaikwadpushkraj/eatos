@@ -82,7 +82,7 @@ export default function Ask() {
         </View>
       ) : (
         <Row wrap gap={8}>
-          {PROMPTS.map((p) => (
+          {PROMPTS.filter((p) => !(kernel.me()?.conditions?.includes('kidney') && /protein/i.test(p))).map((p) => (
             <Chip key={p} label={p} onPress={() => send(p)} />
           ))}
         </Row>
@@ -109,7 +109,7 @@ export default function Ask() {
           </Row>
           <Row wrap gap={6}>
             <Chip label={`${r.food.prepMin} min`} />
-            <Chip label={`${r.food.nutrients.proteinG} g protein`} />
+            {kernel.me()?.conditions?.includes('kidney') ? null : <Chip label={`${r.food.nutrients.proteinG} g protein`} />}
             {r.food.tags.slice(0, 2).map((t) => (
               <Chip key={t} label={t} />
             ))}

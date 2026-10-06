@@ -24,7 +24,7 @@ const TAG_WORDS: Record<string, string> = {
   easy: 'gentle',
 };
 
-const STOP = new Set(['surprise', 'new', 'never', 'tried', 'different', 'same', 'yesterday', 'again', 'before', 'something', 'anything', 'for', 'the', 'and', 'with', 'what', 'can', 'make', 'have', 'want', 'need', 'some', 'tonight', 'today', 'tomorrow', 'now', 'please', 'give', 'show', 'ideas', 'idea', 'meal', 'food', 'eat', 'eating', 'minutes', 'minute', 'mins', 'min', 'quick', 'fast', 'hurry', 'time', 'too', 'light', 'small', 'heavy', 'protein', 'fibre', 'fiber', 'workout', 'gym', 'just', 'only', 'myself', 'everyone', 'family', 'all', 'household', 'kids', 'that', 'this', 'are', 'you', 'got', 'good', 'nice', 'tasty', 'hungry', 'feel', 'feeling', 'like', 'least', 'grams', 'over', 'more', 'than']);
+const STOP = new Set(['one', 'hand', 'handed', 'feeding', 'while', 'eat', 'breastfeeding', 'nursing', 'cook', 'surprise', 'new', 'never', 'tried', 'different', 'same', 'yesterday', 'again', 'before', 'something', 'anything', 'for', 'the', 'and', 'with', 'what', 'can', 'make', 'have', 'want', 'need', 'some', 'tonight', 'today', 'tomorrow', 'now', 'please', 'give', 'show', 'ideas', 'idea', 'meal', 'food', 'eat', 'eating', 'minutes', 'minute', 'mins', 'min', 'quick', 'fast', 'hurry', 'time', 'too', 'light', 'small', 'heavy', 'protein', 'fibre', 'fiber', 'workout', 'gym', 'just', 'only', 'myself', 'everyone', 'family', 'all', 'household', 'kids', 'that', 'this', 'are', 'you', 'got', 'good', 'nice', 'tasty', 'hungry', 'feel', 'feeling', 'like', 'least', 'grams', 'over', 'more', 'than']);
 
 const SLOT_WORDS: Record<string, MealSlot> = {
   breakfast: 'breakfast',
@@ -84,6 +84,15 @@ export function parseAsk(text: string, selfId = 'me'): ParsedAsk {
     query.minProteinG = Math.min(120, Number(minProtein[1]));
     query.need = 'protein';
     understood.push(`At least ${query.minProteinG} g protein`);
+  }
+  if (/\b(one[- ]hand(?:ed)?|while feeding|eat while|breastfeeding|nursing)\b/.test(s)) {
+    query.maxPrepMin = Math.min(query.maxPrepMin ?? 5, 5);
+    query.tags = [...new Set([...(query.tags ?? []), 'no-cook'])];
+    understood.push('Easy to eat with one hand, no cooking');
+  }
+  if (/\bno[- ]?cook\b/.test(s)) {
+    query.tags = [...new Set([...(query.tags ?? []), 'no-cook'])];
+    understood.push('No cooking');
   }
   if (/\b(surprise|something new|never tried|new to me|something different)\b/.test(s)) {
     query.novel = true;

@@ -206,7 +206,7 @@ function applyInterrupts(state: State, tasks: Task[], now: number): Task[] {
       const wind = tasks.find((t) => t.id === 'routine:wind-down');
       if (wind) {
         wind.priority = 2;
-        wind.reasons.push(`Only ${e.hours} h sleep last night, so an earlier wind down helps`);
+        wind.reasons.push(`A short night (${e.hours} h). Rest when you can; an earlier wind down helps if it is possible`);
       }
     }
   }

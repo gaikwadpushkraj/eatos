@@ -31,3 +31,4 @@ export * from './taste';
 export * from './sun';
 export * from './india2';
 export * from './india3';
+export * from './india4';

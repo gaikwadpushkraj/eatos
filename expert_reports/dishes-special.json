@@ -1,0 +1,2087 @@
+[
+ {
+  "id": "coconut-jaggery-ladoo",
+  "name": "Coconut jaggery ladoo (vegan)",
+  "cuisine": "south-indian",
+  "spice": 0,
+  "diet": "vegan",
+  "slots": [
+   "snack"
+  ],
+  "tags": [
+   "sweet",
+   "festive",
+   "quick",
+   "carb-rich"
+  ],
+  "allergens": [],
+  "prepMin": 20,
+  "nutrients": {
+   "kcal": 180,
+   "proteinG": 2,
+   "fibreG": 3,
+   "waterMl": 0
+  },
+  "ingredients": [
+   "desiccated coconut",
+   "jaggery",
+   "cardamom",
+   "coconut oil"
+  ],
+  "steps": [
+   "Dry-roast 1 cup (80 g) desiccated coconut on low heat for 3 minutes until just fragrant.",
+   "Melt 60 g grated jaggery with 3 tbsp water and 1 tsp coconut oil for 3 minutes to a sticky syrup.",
+   "Stir in the coconut and 1/4 tsp cardamom powder; cook 2 minutes until it holds together.",
+   "Cool 5 minutes, then shape into 6 small balls with oiled palms.",
+   "Store airtight up to 4 days."
+  ]
+ },
+ {
+  "id": "date-oat-energy-balls",
+  "name": "Date and oat energy balls",
+  "cuisine": "pan-indian",
+  "spice": 0,
+  "diet": "vegan",
+  "slots": [
+   "snack"
+  ],
+  "tags": [
+   "sweet",
+   "quick",
+   "fibre",
+   "carb-rich",
+   "no-cook"
+  ],
+  "allergens": [
+   "gluten"
+  ],
+  "prepMin": 15,
+  "nutrients": {
+   "kcal": 190,
+   "proteinG": 4,
+   "fibreG": 5,
+   "waterMl": 0
+  },
+  "ingredients": [
+   "dates",
+   "rolled oats",
+   "cocoa powder",
+   "chia seeds",
+   "coconut oil"
+  ],
+  "steps": [
+   "Soak 8 pitted dates (100 g) in warm water for 10 minutes, drain.",
+   "Blitz dates with 1/2 cup (45 g) rolled oats, 1 tbsp cocoa and 1 tbsp chia seeds into a sticky crumb.",
+   "Add 1 tsp coconut oil and pulse once.",
+   "Roll into 8 balls; chill 15 minutes before eating.",
+   "Oats may carry gluten; use certified oats if coeliac."
+  ]
+ },
+ {
+  "id": "vegan-rice-coconut-kheer",
+  "name": "Vegan coconut milk rice kheer",
+  "cuisine": "south-indian",
+  "spice": 0,
+  "diet": "vegan",
+  "slots": [
+   "snack",
+   "dinner"
+  ],
+  "tags": [
+   "sweet",
+   "festive",
+   "comfort",
+   "warm"
+  ],
+  "allergens": [],
+  "prepMin": 35,
+  "nutrients": {
+   "kcal": 310,
+   "proteinG": 5,
+   "fibreG": 2,
+   "waterMl": 150
+  },
+  "ingredients": [
+   "rice",
+   "coconut milk",
+   "jaggery",
+   "cardamom",
+   "water"
+  ],
+  "steps": [
+   "Wash 1/4 cup (50 g) rice and simmer in 1 cup water for 15 minutes until very soft.",
+   "Add 1 cup (240 ml) coconut milk and cook on low for 10 minutes, stirring.",
+   "Turn off heat; stir in 40 g jaggery and 1/4 tsp cardamom so the milk does not split.",
+   "Rest 5 minutes; serve warm or chilled."
+  ]
+ },
+ {
+  "id": "ragi-banana-halwa-vegan",
+  "name": "Ragi banana halwa (vegan)",
+  "cuisine": "karnataka",
+  "spice": 0,
+  "diet": "vegan",
+  "slots": [
+   "snack",
+   "breakfast"
+  ],
+  "tags": [
+   "sweet",
+   "iron",
+   "warm",
+   "comfort"
+  ],
+  "allergens": [],
+  "prepMin": 20,
+  "nutrients": {
+   "kcal": 260,
+   "proteinG": 4,
+   "fibreG": 5,
+   "waterMl": 100
+  },
+  "ingredients": [
+   "ragi flour",
+   "banana",
+   "jaggery",
+   "coconut oil",
+   "cardamom",
+   "water"
+  ],
+  "steps": [
+   "Roast 1/2 cup (60 g) ragi flour in 2 tbsp coconut oil for 4 minutes on low.",
+   "Mash 1 ripe banana with 40 g jaggery and 1 cup (240 ml) hot water; pour in while whisking.",
+   "Cook 6 to 8 minutes, stirring, until thick and glossy.",
+   "Add 1/4 tsp cardamom, set in a plate, cut into squares."
+  ]
+ },
+ {
+  "id": "tofu-bhurji-toast",
+  "name": "Tofu bhurji with toast",
+  "cuisine": "pan-indian",
+  "spice": 1,
+  "diet": "vegan",
+  "slots": [
+   "breakfast",
+   "dinner"
+  ],
+  "tags": [
+   "high-protein",
+   "quick",
+   "warm",
+   "iron"
+  ],
+  "allergens": [
+   "gluten",
+   "soy"
+  ],
+  "prepMin": 15,
+  "nutrients": {
+   "kcal": 360,
+   "proteinG": 22,
+   "fibreG": 6,
+   "waterMl": 60
+  },
+  "ingredients": [
+   "firm tofu",
+   "whole wheat bread",
+   "onion",
+   "tomatoes",
+   "green chilli",
+   "turmeric",
+   "cumin",
+   "garlic",
+   "ginger",
+   "coriander",
+   "oil"
+  ],
+  "steps": [
+   "Crumble 200 g firm tofu with your hands.",
+   "Heat 1 tbsp oil; crackle 1/2 tsp cumin, then fry 1 chopped onion, 1 tsp each minced garlic and ginger and 1 green chilli for 4 minutes.",
+   "Add 1 chopped tomato, 1/4 tsp turmeric, 1/2 tsp salt; cook 3 minutes.",
+   "Add tofu, toss 4 minutes, finish with coriander.",
+   "Serve with 2 toasted slices bread."
+  ]
+ },
+ {
+  "id": "soya-chunk-curry-roti",
+  "name": "Soya chunk curry with roti",
+  "cuisine": "north-indian",
+  "spice": 2,
+  "diet": "vegan",
+  "slots": [
+   "lunch",
+   "dinner"
+  ],
+  "tags": [
+   "high-protein",
+   "warm",
+   "fibre"
+  ],
+  "allergens": [
+   "gluten",
+   "soy"
+  ],
+  "prepMin": 30,
+  "nutrients": {
+   "kcal": 480,
+   "proteinG": 32,
+   "fibreG": 10,
+   "waterMl": 150
+  },
+  "ingredients": [
+   "soya chunks",
+   "wheat flour",
+   "onion",
+   "tomatoes",
+   "garlic",
+   "ginger",
+   "coriander powder",
+   "garam masala",
+   "turmeric",
+   "oil"
+  ],
+  "steps": [
+   "Soak 50 g soya chunks in hot water 10 minutes; squeeze dry.",
+   "Fry 1 sliced onion, 1 tsp garlic and 1 tsp ginger in 1 tbsp oil for 5 minutes.",
+   "Add 2 chopped tomatoes, 1 tsp coriander powder, 1/2 tsp turmeric, 1/2 tsp garam masala; cook 6 minutes.",
+   "Add chunks and 3/4 cup water; simmer 8 minutes.",
+   "Serve with 2 rotis (60 g wheat flour)."
+  ]
+ },
+ {
+  "id": "chana-quinoa-bowl",
+  "name": "Chana masala quinoa bowl",
+  "cuisine": "pan-indian",
+  "spice": 1,
+  "diet": "vegan",
+  "slots": [
+   "lunch",
+   "dinner"
+  ],
+  "tags": [
+   "high-protein",
+   "fibre",
+   "low-gi",
+   "warm"
+  ],
+  "allergens": [],
+  "prepMin": 30,
+  "nutrients": {
+   "kcal": 470,
+   "proteinG": 20,
+   "fibreG": 13,
+   "waterMl": 120
+  },
+  "ingredients": [
+   "quinoa",
+   "boiled chickpeas",
+   "onion",
+   "tomatoes",
+   "garlic",
+   "ginger",
+   "cumin",
+   "chana masala powder",
+   "lemon",
+   "cucumber",
+   "oil"
+  ],
+  "steps": [
+   "Rinse 1/2 cup (90 g) quinoa; simmer in 1 cup water 12 minutes, rest 5.",
+   "Fry 1 chopped onion with 1 tsp garlic-ginger in 1 tbsp oil 5 minutes.",
+   "Add 1 tomato, 1 tsp chana masala, 3/4 cup (130 g) boiled chickpeas and 1/4 cup water; cook 8 minutes.",
+   "Bowl the quinoa, top with chana, chopped cucumber and lemon."
+  ]
+ },
+ {
+  "id": "bajra-khichdi-gf",
+  "name": "Bajra moong khichdi",
+  "cuisine": "gujarati",
+  "spice": 1,
+  "diet": "vegetarian",
+  "slots": [
+   "lunch",
+   "dinner"
+  ],
+  "tags": [
+   "warm",
+   "comfort",
+   "fibre",
+   "iron"
+  ],
+  "allergens": [
+   "dairy"
+  ],
+  "prepMin": 35,
+  "nutrients": {
+   "kcal": 420,
+   "proteinG": 15,
+   "fibreG": 10,
+   "waterMl": 250
+  },
+  "ingredients": [
+   "bajra",
+   "moong dal",
+   "ghee",
+   "cumin",
+   "ginger",
+   "turmeric",
+   "curd"
+  ],
+  "steps": [
+   "Soak 1/2 cup (90 g) cracked bajra and 1/4 cup (50 g) moong dal 30 minutes.",
+   "Heat 1 tbsp ghee, crackle 1 tsp cumin, 1 tsp grated ginger, 1/4 tsp turmeric.",
+   "Add drained grains and 3 cups water; pressure cook 4 whistles.",
+   "Mash lightly, salt, serve with 1/2 cup curd. Naturally gluten-free."
+  ]
+ },
+ {
+  "id": "jowar-roti-bharta",
+  "name": "Jowar roti with baingan bharta",
+  "cuisine": "maharashtrian",
+  "spice": 2,
+  "diet": "vegan",
+  "slots": [
+   "lunch",
+   "dinner"
+  ],
+  "tags": [
+   "warm",
+   "fibre",
+   "low-gi"
+  ],
+  "allergens": [],
+  "prepMin": 40,
+  "nutrients": {
+   "kcal": 360,
+   "proteinG": 9,
+   "fibreG": 11,
+   "waterMl": 100
+  },
+  "ingredients": [
+   "jowar flour",
+   "brinjal",
+   "onion",
+   "tomatoes",
+   "garlic",
+   "green chilli",
+   "coriander",
+   "oil",
+   "water"
+  ],
+  "steps": [
+   "Roast 1 large brinjal (300 g) over flame 10 minutes until collapsed; peel and mash.",
+   "Fry 1 chopped onion and 1 tsp garlic in 1 tbsp oil 4 minutes; add 1 tomato and chilli, cook 4 minutes.",
+   "Fold in brinjal and 1/2 tsp salt; cook 5 minutes.",
+   "Knead 1 cup (120 g) jowar flour with hot water to a soft dough; pat 2 rotis on a damp cloth and cook on tawa 2 minutes per side."
+  ]
+ },
+ {
+  "id": "akki-roti-gf",
+  "name": "Akki roti with coconut chutney",
+  "cuisine": "karnataka",
+  "spice": 1,
+  "diet": "vegan",
+  "slots": [
+   "breakfast",
+   "lunch"
+  ],
+  "tags": [
+   "warm",
+   "comfort",
+   "high-gi"
+  ],
+  "allergens": [],
+  "prepMin": 25,
+  "nutrients": {
+   "kcal": 340,
+   "proteinG": 6,
+   "fibreG": 4,
+   "waterMl": 100
+  },
+  "ingredients": [
+   "rice flour",
+   "onion",
+   "coconut",
+   "green chilli",
+   "carrot",
+   "coriander",
+   "cumin",
+   "oil"
+  ],
+  "steps": [
+   "Mix 1 cup (130 g) rice flour, 1/4 cup grated carrot, 2 tbsp chopped onion, coriander, 1 green chilli, 1/2 tsp cumin, salt and about 1/3 cup warm water.",
+   "Pat dough into 2 thin discs on oiled tawa with wet fingers.",
+   "Cook with 1 tsp oil per side, 3 minutes each, until golden.",
+   "Blend 1/4 cup coconut, 1 chilli, salt for chutney."
+  ]
+ },
+ {
+  "id": "quinoa-veg-pulao-gf",
+  "name": "Quinoa vegetable pulao",
+  "cuisine": "pan-indian",
+  "spice": 1,
+  "diet": "vegan",
+  "slots": [
+   "lunch",
+   "dinner"
+  ],
+  "tags": [
+   "warm",
+   "fibre",
+   "high-protein",
+   "quick"
+  ],
+  "allergens": [],
+  "prepMin": 25,
+  "nutrients": {
+   "kcal": 380,
+   "proteinG": 13,
+   "fibreG": 8,
+   "waterMl": 150
+  },
+  "ingredients": [
+   "quinoa",
+   "peas",
+   "carrots",
+   "beans",
+   "onion",
+   "garlic",
+   "ginger",
+   "cumin",
+   "oil"
+  ],
+  "steps": [
+   "Rinse 1/2 cup quinoa (90 g).",
+   "Heat 1 tbsp oil, add 1/2 tsp cumin, 1 chopped onion, 1 tsp garlic-ginger; fry 4 minutes.",
+   "Add 1/2 cup chopped carrot, beans and peas; stir 2 minutes.",
+   "Add quinoa, 1 cup water, salt; cover and cook 12 minutes. Rest 5 minutes and fluff."
+  ]
+ },
+ {
+  "id": "toddler-moong-khichdi",
+  "name": "Soft moong khichdi for toddlers",
+  "cuisine": "pan-indian",
+  "spice": 0,
+  "diet": "vegetarian",
+  "slots": [
+   "lunch",
+   "dinner"
+  ],
+  "tags": [
+   "soft",
+   "gentle",
+   "warm",
+   "comfort"
+  ],
+  "allergens": [
+   "dairy"
+  ],
+  "prepMin": 25,
+  "nutrients": {
+   "kcal": 230,
+   "proteinG": 8,
+   "fibreG": 3,
+   "waterMl": 300
+  },
+  "ingredients": [
+   "rice",
+   "moong dal",
+   "ghee",
+   "turmeric",
+   "carrots",
+   "cumin"
+  ],
+  "steps": [
+   "Wash 1/4 cup rice and 1/4 cup yellow moong dal together.",
+   "Pressure cook with 1 small grated carrot, a pinch of turmeric, no salt and 2 cups water for 4 whistles.",
+   "Mash well to a porridge texture; add 1 tsp ghee and 1/4 tsp cumin powder.",
+   "Cool before serving; add a tiny pinch of salt only for children over 1 year."
+  ]
+ },
+ {
+  "id": "banana-ragi-pancakes-toddler",
+  "name": "Banana ragi pancakes (soft, nut-free)",
+  "cuisine": "pan-indian",
+  "spice": 0,
+  "diet": "vegan",
+  "slots": [
+   "breakfast",
+   "snack"
+  ],
+  "tags": [
+   "soft",
+   "gentle",
+   "iron",
+   "sweet"
+  ],
+  "allergens": [
+   "gluten"
+  ],
+  "prepMin": 15,
+  "nutrients": {
+   "kcal": 210,
+   "proteinG": 4,
+   "fibreG": 4,
+   "waterMl": 60
+  },
+  "ingredients": [
+   "ragi flour",
+   "banana",
+   "wheat flour",
+   "coconut oil",
+   "water"
+  ],
+  "steps": [
+   "Mash 1 ripe banana smooth.",
+   "Mix with 1/4 cup (30 g) ragi flour, 2 tbsp wheat flour and 1/3 cup water to a pourable batter.",
+   "Cook small 7 cm pancakes on a lightly oiled pan 2 minutes per side.",
+   "Cut into strips; supervise eating. No nuts, no honey."
+  ]
+ },
+ {
+  "id": "mini-veg-uttapam-lunchbox",
+  "name": "Soft mini veg uttapam (lunchbox)",
+  "cuisine": "south-indian",
+  "spice": 0,
+  "diet": "vegan",
+  "slots": [
+   "breakfast",
+   "snack",
+   "lunch"
+  ],
+  "tags": [
+   "soft",
+   "gentle",
+   "warm"
+  ],
+  "allergens": [],
+  "prepMin": 20,
+  "nutrients": {
+   "kcal": 240,
+   "proteinG": 7,
+   "fibreG": 3,
+   "waterMl": 80
+  },
+  "ingredients": [
+   "rice",
+   "urad dal",
+   "carrots",
+   "tomatoes",
+   "onion",
+   "coriander",
+   "oil"
+  ],
+  "steps": [
+   "Use 1 cup (200 ml) ready idli batter.",
+   "Fold in 2 tbsp each grated carrot, finely chopped tomato and onion.",
+   "Spoon 6 small 6 cm uttapams on an oiled tawa; cover and cook 3 minutes per side until soft.",
+   "Cool and pack; no chutney needed. Nut-free."
+  ]
+ },
+ {
+  "id": "curd-rice-lunchbox",
+  "name": "Mild curd rice lunchbox",
+  "cuisine": "south-indian",
+  "spice": 0,
+  "diet": "vegetarian",
+  "slots": [
+   "lunch"
+  ],
+  "tags": [
+   "soft",
+   "cooling",
+   "gentle",
+   "lactose"
+  ],
+  "allergens": [
+   "dairy"
+  ],
+  "prepMin": 15,
+  "nutrients": {
+   "kcal": 290,
+   "proteinG": 9,
+   "fibreG": 2,
+   "waterMl": 150
+  },
+  "ingredients": [
+   "cooked rice",
+   "curd",
+   "milk",
+   "ginger",
+   "curry leaves",
+   "mustard seeds",
+   "oil"
+  ],
+  "steps": [
+   "Mash 1 cup (160 g) warm cooked rice with 1 tbsp milk.",
+   "Stir in 3/4 cup curd and 1/4 tsp salt once rice is cool.",
+   "Temper 1/2 tsp mustard seeds, 4 curry leaves and a few ginger shreds in 1 tsp oil for 30 seconds; pour over.",
+   "Pack with an ice pack; eat within 4 hours."
+  ]
+ },
+ {
+  "id": "paneer-pea-roll-lunchbox",
+  "name": "Soft paneer pea roti roll",
+  "cuisine": "north-indian",
+  "spice": 0,
+  "diet": "vegetarian",
+  "slots": [
+   "lunch",
+   "snack"
+  ],
+  "tags": [
+   "soft",
+   "gentle",
+   "high-protein"
+  ],
+  "allergens": [
+   "gluten",
+   "dairy"
+  ],
+  "prepMin": 20,
+  "nutrients": {
+   "kcal": 380,
+   "proteinG": 15,
+   "fibreG": 5,
+   "waterMl": 60
+  },
+  "ingredients": [
+   "wheat flour",
+   "paneer",
+   "peas",
+   "ghee",
+   "turmeric",
+   "cumin"
+  ],
+  "steps": [
+   "Make 2 soft rotis from 60 g wheat flour; brush with 1 tsp ghee.",
+   "Mash 80 g paneer with 1/2 cup boiled, mashed peas, a pinch of turmeric and cumin and 1/4 tsp salt.",
+   "Warm filling 2 minutes in a pan.",
+   "Spread on rotis, roll tight, slice into rounds."
+  ]
+ },
+ {
+  "id": "elder-soft-dal-rice",
+  "name": "Soft low-salt dal rice",
+  "cuisine": "pan-indian",
+  "spice": 0,
+  "diet": "vegetarian",
+  "slots": [
+   "lunch",
+   "dinner"
+  ],
+  "tags": [
+   "soft",
+   "low-sodium",
+   "gentle",
+   "warm"
+  ],
+  "allergens": [
+   "dairy"
+  ],
+  "prepMin": 30,
+  "nutrients": {
+   "kcal": 360,
+   "proteinG": 13,
+   "fibreG": 5,
+   "waterMl": 350
+  },
+  "ingredients": [
+   "rice",
+   "toor dal",
+   "ghee",
+   "turmeric",
+   "cumin",
+   "lemon"
+  ],
+  "steps": [
+   "Cook 1/3 cup rice and 1/3 cup toor dal in 3 cups water with turmeric until very soft, 4 whistles.",
+   "Mash to a loose texture.",
+   "Season with 1/4 tsp salt only; temper 1 tsp ghee with 1/2 tsp cumin.",
+   "Finish with a squeeze of lemon for flavour in place of salt."
+  ]
+ },
+ {
+  "id": "lauki-moong-soup-elder",
+  "name": "Lauki moong dal soup",
+  "cuisine": "pan-indian",
+  "spice": 0,
+  "diet": "vegan",
+  "slots": [
+   "dinner"
+  ],
+  "tags": [
+   "soft",
+   "low-sodium",
+   "gentle",
+   "warm",
+   "light"
+  ],
+  "allergens": [],
+  "prepMin": 25,
+  "nutrients": {
+   "kcal": 150,
+   "proteinG": 8,
+   "fibreG": 5,
+   "waterMl": 400
+  },
+  "ingredients": [
+   "bottle gourd",
+   "moong dal",
+   "ginger",
+   "cumin",
+   "turmeric",
+   "oil",
+   "water"
+  ],
+  "steps": [
+   "Cook 1/4 cup moong dal with 1 cup chopped lauki, 1/2 tsp ginger and a pinch turmeric in 2.5 cups water for 3 whistles.",
+   "Blend roughly.",
+   "Temper 1/2 tsp cumin in 1 tsp oil; add.",
+   "Salt lightly (1/4 tsp) and serve warm."
+  ]
+ },
+ {
+  "id": "gond-laddoo",
+  "name": "Gond laddoo (postpartum tradition)",
+  "cuisine": "punjabi",
+  "spice": 0,
+  "diet": "vegetarian",
+  "slots": [
+   "snack"
+  ],
+  "tags": [
+   "sweet",
+   "festive",
+   "lactation-tradition",
+   "warm",
+   "iron"
+  ],
+  "allergens": [
+   "gluten",
+   "dairy",
+   "nuts"
+  ],
+  "prepMin": 40,
+  "nutrients": {
+   "kcal": 230,
+   "proteinG": 4,
+   "fibreG": 3,
+   "waterMl": 0
+  },
+  "ingredients": [
+   "edible gum (gond)",
+   "wheat flour",
+   "ghee",
+   "jaggery",
+   "almonds",
+   "dry coconut",
+   "cardamom"
+  ],
+  "steps": [
+   "Fry 2 tbsp (20 g) gond in 1 tbsp ghee in small batches until it puffs; crush.",
+   "Roast 1/2 cup (60 g) wheat flour in 3 tbsp ghee 8 minutes until golden.",
+   "Mix in crushed gond, 2 tbsp chopped almonds, 2 tbsp dry coconut, 1/4 tsp cardamom; cool slightly.",
+   "Stir in 60 g powdered jaggery; shape 6 laddoos.",
+   "Traditionally eaten after childbirth; evidence for milk supply is limited. High in calories and sugar."
+  ]
+ },
+ {
+  "id": "panjiri-postpartum",
+  "name": "Panjiri (postpartum tradition)",
+  "cuisine": "punjabi",
+  "spice": 0,
+  "diet": "vegetarian",
+  "slots": [
+   "snack",
+   "breakfast"
+  ],
+  "tags": [
+   "sweet",
+   "lactation-tradition",
+   "warm"
+  ],
+  "allergens": [
+   "gluten",
+   "dairy",
+   "nuts"
+  ],
+  "prepMin": 30,
+  "nutrients": {
+   "kcal": 260,
+   "proteinG": 5,
+   "fibreG": 3,
+   "waterMl": 0
+  },
+  "ingredients": [
+   "wheat flour",
+   "ghee",
+   "makhana",
+   "almonds",
+   "edible gum (gond)",
+   "powdered sugar",
+   "dry ginger powder"
+  ],
+  "steps": [
+   "Roast 1/2 cup (60 g) wheat flour in 3 tbsp ghee 8 minutes.",
+   "Separately roast 1/2 cup makhana and 2 tbsp chopped almonds; crush coarsely.",
+   "Fry 1 tbsp gond in ghee until puffed; crush.",
+   "Mix all with 2 tbsp powdered sugar and 1/2 tsp dry ginger. Eat 2 tbsp per serving.",
+   "Traditional postnatal food; not proven to raise milk supply."
+  ]
+ },
+ {
+  "id": "methi-laddoo-lactation",
+  "name": "Methi laddoo (lactation tradition)",
+  "cuisine": "north-indian",
+  "spice": 1,
+  "diet": "vegetarian",
+  "slots": [
+   "snack"
+  ],
+  "tags": [
+   "sweet",
+   "lactation-tradition",
+   "iron",
+   "warm"
+  ],
+  "allergens": [
+   "gluten",
+   "dairy",
+   "nuts"
+  ],
+  "prepMin": 40,
+  "nutrients": {
+   "kcal": 220,
+   "proteinG": 4,
+   "fibreG": 4,
+   "waterMl": 0
+  },
+  "ingredients": [
+   "fenugreek seeds",
+   "wheat flour",
+   "ghee",
+   "jaggery",
+   "almonds",
+   "dry ginger powder"
+  ],
+  "steps": [
+   "Soak 1 tbsp fenugreek seeds 6 hours, drain and grind coarse.",
+   "Roast 1/2 cup (60 g) wheat flour in 3 tbsp ghee 8 minutes; add methi paste, cook 4 minutes.",
+   "Add 2 tbsp chopped almonds and 1/2 tsp dry ginger.",
+   "Mix in 60 g jaggery powder, shape 6 laddoos.",
+   "Used traditionally for lactation; fenugreek can lower blood sugar and upset digestion, so check with a doctor."
+  ]
+ },
+ {
+  "id": "jeera-ajwain-water",
+  "name": "Jeera ajwain saunf water",
+  "cuisine": "pan-indian",
+  "spice": 0,
+  "diet": "vegan",
+  "slots": [
+   "breakfast",
+   "snack"
+  ],
+  "tags": [
+   "warm",
+   "gentle",
+   "lactation-tradition",
+   "quick",
+   "light"
+  ],
+  "allergens": [],
+  "prepMin": 10,
+  "nutrients": {
+   "kcal": 5,
+   "proteinG": 0,
+   "fibreG": 0,
+   "waterMl": 400
+  },
+  "ingredients": [
+   "cumin seeds",
+   "carom seeds (ajwain)",
+   "fennel seeds",
+   "water"
+  ],
+  "steps": [
+   "Boil 2 cups (400 ml) water with 1/2 tsp cumin, 1/4 tsp ajwain and 1/2 tsp fennel for 5 minutes.",
+   "Simmer 3 more minutes, strain.",
+   "Sip warm in two portions.",
+   "Traditional digestive drink for new mothers; a comfort, not a milk booster."
+  ]
+ },
+ {
+  "id": "dalia-milk-porridge",
+  "name": "Dalia milk porridge (new mother)",
+  "cuisine": "north-indian",
+  "spice": 0,
+  "diet": "vegetarian",
+  "slots": [
+   "breakfast"
+  ],
+  "tags": [
+   "warm",
+   "comfort",
+   "soft",
+   "lactation-tradition",
+   "fibre"
+  ],
+  "allergens": [
+   "gluten",
+   "dairy"
+  ],
+  "prepMin": 20,
+  "nutrients": {
+   "kcal": 330,
+   "proteinG": 12,
+   "fibreG": 6,
+   "waterMl": 250
+  },
+  "ingredients": [
+   "broken wheat (dalia)",
+   "milk",
+   "jaggery",
+   "ghee",
+   "cardamom"
+  ],
+  "steps": [
+   "Roast 1/2 cup (80 g) dalia in 1 tsp ghee 3 minutes.",
+   "Add 1 cup water; cook covered 10 minutes.",
+   "Add 1 cup (240 ml) milk, cook 5 minutes until creamy.",
+   "Sweeten with 1 tbsp jaggery and cardamom. A classic postnatal food."
+  ]
+ },
+ {
+  "id": "garlic-ajwain-roti-lactation",
+  "name": "Ajwain garlic dal soup (postnatal)",
+  "cuisine": "pan-indian",
+  "spice": 1,
+  "diet": "vegetarian",
+  "slots": [
+   "dinner"
+  ],
+  "tags": [
+   "warm",
+   "lactation-tradition",
+   "soft",
+   "iron"
+  ],
+  "allergens": [
+   "dairy"
+  ],
+  "prepMin": 25,
+  "nutrients": {
+   "kcal": 260,
+   "proteinG": 12,
+   "fibreG": 6,
+   "waterMl": 300
+  },
+  "ingredients": [
+   "moong dal",
+   "garlic",
+   "ajwain",
+   "ghee",
+   "turmeric",
+   "rice"
+  ],
+  "steps": [
+   "Cook 1/3 cup moong dal and 1/4 cup rice with turmeric in 2.5 cups water, 3 whistles.",
+   "Fry 4 crushed garlic cloves and 1/2 tsp ajwain in 1 tsp ghee 1 minute.",
+   "Pour over dal, add salt.",
+   "Garlic is a traditional postnatal food; some babies fuss after garlic-heavy maternal meals."
+  ]
+ },
+ {
+  "id": "banana-pb-toast-prerun",
+  "name": "Banana peanut butter toast (pre-run)",
+  "cuisine": "cafe",
+  "spice": 0,
+  "diet": "vegan",
+  "slots": [
+   "breakfast",
+   "snack"
+  ],
+  "tags": [
+   "carb-rich",
+   "quick",
+   "high-gi",
+   "warm"
+  ],
+  "allergens": [
+   "gluten",
+   "peanuts"
+  ],
+  "prepMin": 5,
+  "nutrients": {
+   "kcal": 370,
+   "proteinG": 11,
+   "fibreG": 5,
+   "waterMl": 60
+  },
+  "ingredients": [
+   "whole wheat bread",
+   "banana",
+   "peanut butter",
+   "salt"
+  ],
+  "steps": [
+   "Toast 2 slices bread 2 minutes.",
+   "Spread 1 tbsp peanut butter thinly on each.",
+   "Top with 1 sliced banana and a pinch of salt.",
+   "Eat 60 to 90 minutes before running."
+  ]
+ },
+ {
+  "id": "jaggery-banana-poha-prerun",
+  "name": "Sweet banana jaggery poha (pre-run)",
+  "cuisine": "maharashtrian",
+  "spice": 0,
+  "diet": "vegan",
+  "slots": [
+   "breakfast",
+   "snack"
+  ],
+  "tags": [
+   "carb-rich",
+   "high-gi",
+   "quick",
+   "light"
+  ],
+  "allergens": [],
+  "prepMin": 10,
+  "nutrients": {
+   "kcal": 340,
+   "proteinG": 5,
+   "fibreG": 3,
+   "waterMl": 100
+  },
+  "ingredients": [
+   "flattened rice",
+   "banana",
+   "jaggery",
+   "coconut",
+   "cardamom"
+  ],
+  "steps": [
+   "Rinse 1 cup (60 g) thick poha, drain 2 minutes.",
+   "Mix with 1 sliced banana, 1 tbsp grated jaggery, 2 tbsp coconut.",
+   "Add 1/4 tsp cardamom and a pinch of salt.",
+   "Eat 60 to 90 minutes before a run."
+  ]
+ },
+ {
+  "id": "white-rice-dal-prerun",
+  "name": "White rice with moong dal and ghee (pre-run)",
+  "cuisine": "pan-indian",
+  "spice": 0,
+  "diet": "vegetarian",
+  "slots": [
+   "lunch"
+  ],
+  "tags": [
+   "carb-rich",
+   "gentle",
+   "low-sodium",
+   "soft"
+  ],
+  "allergens": [
+   "dairy"
+  ],
+  "prepMin": 25,
+  "nutrients": {
+   "kcal": 430,
+   "proteinG": 13,
+   "fibreG": 4,
+   "waterMl": 250
+  },
+  "ingredients": [
+   "rice",
+   "moong dal",
+   "ghee",
+   "turmeric",
+   "salt"
+  ],
+  "steps": [
+   "Cook 3/4 cup (150 g) rice.",
+   "Pressure cook 1/3 cup moong dal with turmeric and 2 cups water, 3 whistles.",
+   "Mash dal, temper with 1 tsp ghee, salt.",
+   "Eat 2.5 to 3 hours before a long run; low fibre keeps the gut settled."
+  ]
+ },
+ {
+  "id": "cauliflower-roti-kidney",
+  "name": "Cauliflower sabzi with roti (low potassium)",
+  "cuisine": "north-indian",
+  "spice": 0,
+  "diet": "vegan",
+  "slots": [
+   "lunch",
+   "dinner"
+  ],
+  "tags": [
+   "low-sodium",
+   "warm",
+   "gentle"
+  ],
+  "allergens": [
+   "gluten"
+  ],
+  "prepMin": 30,
+  "nutrients": {
+   "kcal": 330,
+   "proteinG": 8,
+   "fibreG": 5,
+   "waterMl": 100
+  },
+  "ingredients": [
+   "cauliflower",
+   "wheat flour",
+   "onion",
+   "garlic",
+   "ginger",
+   "turmeric",
+   "coriander powder",
+   "oil"
+  ],
+  "steps": [
+   "Cut 200 g cauliflower into florets; boil in plenty of water 3 minutes and drain (leaches some potassium).",
+   "Fry 1/2 onion, 1 tsp garlic and ginger in 1 tbsp oil for 4 minutes.",
+   "Add cauliflower, turmeric, coriander powder and 1/8 tsp salt; cook 6 minutes.",
+   "Serve with 2 rotis. Dietitian-guided; not a medical plan."
+  ]
+ },
+ {
+  "id": "egg-white-bhurji-rice-kidney",
+  "name": "Egg white bhurji with rice (low sodium)",
+  "cuisine": "pan-indian",
+  "spice": 0,
+  "diet": "vegetarian",
+  "slots": [
+   "dinner"
+  ],
+  "tags": [
+   "low-sodium",
+   "warm",
+   "gentle",
+   "high-protein"
+  ],
+  "allergens": [
+   "egg"
+  ],
+  "prepMin": 20,
+  "nutrients": {
+   "kcal": 380,
+   "proteinG": 19,
+   "fibreG": 2,
+   "waterMl": 100
+  },
+  "ingredients": [
+   "egg whites",
+   "rice",
+   "onion",
+   "garlic",
+   "black pepper",
+   "oil",
+   "cabbage"
+  ],
+  "steps": [
+   "Cook 3/4 cup rice.",
+   "Fry 1/4 cup chopped onion, 1 tsp garlic and 1/4 cup shredded cabbage in 1 tsp oil for 3 minutes.",
+   "Pour in whites of 4 eggs; scramble 3 minutes with pepper and no added salt.",
+   "Serve over rice. Check protein and phosphorus limits with your renal dietitian."
+  ]
+ },
+ {
+  "id": "cabbage-capsicum-poha-kidney",
+  "name": "Cabbage capsicum poha (low potassium)",
+  "cuisine": "maharashtrian",
+  "spice": 1,
+  "diet": "vegan",
+  "slots": [
+   "breakfast"
+  ],
+  "tags": [
+   "low-sodium",
+   "quick",
+   "warm",
+   "light"
+  ],
+  "allergens": [],
+  "prepMin": 15,
+  "nutrients": {
+   "kcal": 270,
+   "proteinG": 5,
+   "fibreG": 3,
+   "waterMl": 90
+  },
+  "ingredients": [
+   "flattened rice",
+   "cabbage",
+   "capsicum",
+   "onion",
+   "mustard seeds",
+   "curry leaves",
+   "lemon",
+   "oil"
+  ],
+  "steps": [
+   "Rinse 1 cup poha (60 g) and drain.",
+   "Heat 2 tsp oil, pop 1/2 tsp mustard seeds and 6 curry leaves.",
+   "Cook 1/4 cup each onion, cabbage and capsicum 4 minutes.",
+   "Fold in poha and a pinch of salt; steam 2 minutes, add lemon."
+  ]
+ },
+ {
+  "id": "lauki-dal-roti-gerd",
+  "name": "Lauki dal with phulka (GERD-gentle)",
+  "cuisine": "pan-indian",
+  "spice": 0,
+  "diet": "vegetarian",
+  "slots": [
+   "lunch",
+   "dinner"
+  ],
+  "tags": [
+   "gentle",
+   "low-sodium",
+   "warm",
+   "soft"
+  ],
+  "allergens": [
+   "gluten",
+   "dairy"
+  ],
+  "prepMin": 30,
+  "nutrients": {
+   "kcal": 360,
+   "proteinG": 14,
+   "fibreG": 8,
+   "waterMl": 250
+  },
+  "ingredients": [
+   "bottle gourd",
+   "moong dal",
+   "wheat flour",
+   "ghee",
+   "cumin",
+   "ginger",
+   "turmeric"
+  ],
+  "steps": [
+   "Cook 1/3 cup moong dal with 1 cup lauki cubes and turmeric in 2.5 cups water, 3 whistles.",
+   "Temper 1 tsp ghee with 1/2 tsp cumin and 1/2 tsp ginger.",
+   "Salt lightly.",
+   "Serve with 2 phulkas (60 g flour). No onion, garlic, tomato or chilli, which often trigger reflux."
+  ]
+ },
+ {
+  "id": "oat-banana-porridge-gerd",
+  "name": "Oat and banana porridge (GERD-gentle)",
+  "cuisine": "pan-indian",
+  "spice": 0,
+  "diet": "vegetarian",
+  "slots": [
+   "breakfast"
+  ],
+  "tags": [
+   "gentle",
+   "soft",
+   "warm",
+   "fibre"
+  ],
+  "allergens": [
+   "gluten",
+   "dairy"
+  ],
+  "prepMin": 10,
+  "nutrients": {
+   "kcal": 300,
+   "proteinG": 9,
+   "fibreG": 6,
+   "waterMl": 200
+  },
+  "ingredients": [
+   "rolled oats",
+   "milk",
+   "banana",
+   "water",
+   "cardamom"
+  ],
+  "steps": [
+   "Simmer 1/2 cup (45 g) oats in 1/2 cup water and 1/2 cup (120 ml) milk 5 minutes.",
+   "Stir in 1 sliced banana; cook 2 minutes.",
+   "Dust cardamom and serve warm.",
+   "Eat at least 2 to 3 hours before lying down."
+  ]
+ },
+ {
+  "id": "steamed-idli-mild-chutney",
+  "name": "Idli with mild coconut chutney (GERD-gentle)",
+  "cuisine": "south-indian",
+  "spice": 0,
+  "diet": "vegan",
+  "slots": [
+   "breakfast",
+   "dinner"
+  ],
+  "tags": [
+   "gentle",
+   "soft",
+   "low-sodium",
+   "ferment"
+  ],
+  "allergens": [],
+  "prepMin": 20,
+  "nutrients": {
+   "kcal": 260,
+   "proteinG": 8,
+   "fibreG": 4,
+   "waterMl": 150
+  },
+  "ingredients": [
+   "rice",
+   "urad dal",
+   "coconut",
+   "roasted chana dal",
+   "ginger",
+   "curry leaves",
+   "water"
+  ],
+  "steps": [
+   "Steam 4 idlis (200 ml batter) 10 minutes.",
+   "Grind 1/4 cup coconut, 1 tbsp roasted chana dal, small piece ginger, salt with water.",
+   "Skip green chilli and tamarind to keep it mild.",
+   "Serve idlis warm with chutney."
+  ]
+ },
+ {
+  "id": "masoor-dal-one-pot-15",
+  "name": "15-minute one-pot masoor dal",
+  "cuisine": "north-indian",
+  "spice": 1,
+  "diet": "vegan",
+  "slots": [
+   "dinner",
+   "lunch"
+  ],
+  "tags": [
+   "quick",
+   "warm",
+   "high-protein",
+   "iron"
+  ],
+  "allergens": [],
+  "prepMin": 15,
+  "nutrients": {
+   "kcal": 330,
+   "proteinG": 16,
+   "fibreG": 9,
+   "waterMl": 300
+  },
+  "ingredients": [
+   "red lentils (masoor)",
+   "onion",
+   "tomatoes",
+   "garlic",
+   "cumin",
+   "turmeric",
+   "chilli powder",
+   "oil",
+   "water"
+  ],
+  "steps": [
+   "Rinse 3/4 cup (150 g) masoor.",
+   "Heat 1 tbsp oil in a pot; fry 1/2 tsp cumin, 1 chopped onion and 2 garlic cloves for 3 minutes.",
+   "Add 1 tomato, 1/2 tsp turmeric, 1/2 tsp chilli powder, lentils and 2.5 cups water.",
+   "Simmer 10 minutes until soft; salt and serve."
+  ]
+ },
+ {
+  "id": "one-pot-masala-pasta",
+  "name": "One-pot masala pasta",
+  "cuisine": "pan-indian",
+  "spice": 2,
+  "diet": "vegetarian",
+  "slots": [
+   "dinner"
+  ],
+  "tags": [
+   "quick",
+   "warm",
+   "comfort"
+  ],
+  "allergens": [
+   "gluten",
+   "dairy"
+  ],
+  "prepMin": 15,
+  "nutrients": {
+   "kcal": 520,
+   "proteinG": 15,
+   "fibreG": 6,
+   "waterMl": 200
+  },
+  "ingredients": [
+   "penne pasta (wheat)",
+   "onion",
+   "tomatoes",
+   "capsicum",
+   "garlic",
+   "chilli flakes",
+   "cheese",
+   "oil"
+  ],
+  "steps": [
+   "In one pan heat 1 tbsp oil; fry 1 onion, 3 garlic cloves, 1/2 capsicum 2 minutes.",
+   "Add 2 chopped tomatoes, 1/2 tsp chilli flakes, salt; mash 2 minutes.",
+   "Add 100 g penne and 1.5 cups water; cover and boil 9 minutes, stirring.",
+   "Finish with 2 tbsp grated cheese."
+  ]
+ },
+ {
+  "id": "one-pot-lemon-pulao-15",
+  "name": "15-minute one-pot lemon pea pulao",
+  "cuisine": "pan-indian",
+  "spice": 1,
+  "diet": "vegan",
+  "slots": [
+   "lunch",
+   "dinner"
+  ],
+  "tags": [
+   "quick",
+   "warm",
+   "light"
+  ],
+  "allergens": [],
+  "prepMin": 15,
+  "nutrients": {
+   "kcal": 380,
+   "proteinG": 8,
+   "fibreG": 5,
+   "waterMl": 200
+  },
+  "ingredients": [
+   "basmati rice",
+   "peas",
+   "onion",
+   "cumin",
+   "green chilli",
+   "ginger",
+   "lemon",
+   "oil"
+  ],
+  "steps": [
+   "Rinse 3/4 cup (150 g) basmati.",
+   "Heat 1 tbsp oil; fry 1/2 tsp cumin, 1 sliced onion, 1 chilli and 1 tsp ginger 2 minutes.",
+   "Add 1/2 cup frozen peas, rice and 1.5 cups water; cover.",
+   "Cook 10 minutes, rest 2, squeeze in lemon."
+  ]
+ },
+ {
+  "id": "curd-poha-no-cook",
+  "name": "Curd poha (no-cook)",
+  "cuisine": "pan-indian",
+  "spice": 0,
+  "diet": "vegetarian",
+  "slots": [
+   "breakfast",
+   "lunch"
+  ],
+  "tags": [
+   "no-cook",
+   "cooling",
+   "quick",
+   "lactose"
+  ],
+  "allergens": [
+   "dairy"
+  ],
+  "prepMin": 5,
+  "nutrients": {
+   "kcal": 310,
+   "proteinG": 10,
+   "fibreG": 3,
+   "waterMl": 150
+  },
+  "ingredients": [
+   "flattened rice",
+   "curd",
+   "cucumber",
+   "carrots",
+   "coriander",
+   "salt"
+  ],
+  "steps": [
+   "Rinse 1 cup (60 g) poha and drain.",
+   "Mix with 3/4 cup curd and 1/4 cup water.",
+   "Fold in 1/4 cup each grated cucumber, carrot, coriander and 1/4 tsp salt.",
+   "Rest 5 minutes and eat."
+  ]
+ },
+ {
+  "id": "pb-banana-wrap-no-cook",
+  "name": "Peanut butter banana wrap (no-cook)",
+  "cuisine": "cafe",
+  "spice": 0,
+  "diet": "vegan",
+  "slots": [
+   "breakfast",
+   "snack"
+  ],
+  "tags": [
+   "no-cook",
+   "quick",
+   "carb-rich"
+  ],
+  "allergens": [
+   "gluten",
+   "peanuts"
+  ],
+  "prepMin": 5,
+  "nutrients": {
+   "kcal": 420,
+   "proteinG": 12,
+   "fibreG": 6,
+   "waterMl": 40
+  },
+  "ingredients": [
+   "wheat tortilla",
+   "peanut butter",
+   "banana",
+   "seeds"
+  ],
+  "steps": [
+   "Spread 2 tbsp peanut butter on 1 wheat tortilla.",
+   "Place 1 banana at the edge.",
+   "Sprinkle 1 tsp mixed seeds (pumpkin or sunflower).",
+   "Roll tight and slice."
+  ]
+ },
+ {
+  "id": "chana-cucumber-chaat-no-cook",
+  "name": "Roasted chana cucumber chaat",
+  "cuisine": "north-indian",
+  "spice": 1,
+  "diet": "vegan",
+  "slots": [
+   "snack"
+  ],
+  "tags": [
+   "no-cook",
+   "high-protein",
+   "fibre",
+   "quick",
+   "crunchy"
+  ],
+  "allergens": [],
+  "prepMin": 5,
+  "nutrients": {
+   "kcal": 210,
+   "proteinG": 10,
+   "fibreG": 8,
+   "waterMl": 80
+  },
+  "ingredients": [
+   "roasted chana",
+   "cucumber",
+   "onion",
+   "tomatoes",
+   "chaat masala",
+   "lemon",
+   "coriander"
+  ],
+  "steps": [
+   "Mix 1/2 cup roasted chana with 1 chopped cucumber, 1/4 cup onion, 1 tomato.",
+   "Add 1 tsp chaat masala and the juice of half a lemon.",
+   "Add 2 tbsp chopped coriander.",
+   "Toss and eat right away so the chana stays crisp.",
+   "Pack chana separately if carrying it, adding the veg just before eating."
+  ]
+ },
+ {
+  "id": "veg-manchurian-dry",
+  "name": "Veg manchurian dry",
+  "cuisine": "chinese",
+  "spice": 2,
+  "diet": "vegan",
+  "slots": [
+   "snack",
+   "dinner"
+  ],
+  "tags": [
+   "fried",
+   "street",
+   "high-sodium",
+   "crunchy"
+  ],
+  "allergens": [
+   "gluten",
+   "soy"
+  ],
+  "prepMin": 35,
+  "nutrients": {
+   "kcal": 380,
+   "proteinG": 7,
+   "fibreG": 5,
+   "waterMl": 40
+  },
+  "ingredients": [
+   "cabbage",
+   "carrots",
+   "onion",
+   "spring onion",
+   "garlic",
+   "ginger",
+   "green chilli",
+   "maida",
+   "cornflour",
+   "soy sauce",
+   "oil",
+   "chilli sauce",
+   "vinegar"
+  ],
+  "steps": [
+   "Squeeze moisture from 1 cup grated cabbage and 1/2 cup carrot; mix with 3 tbsp maida, 2 tbsp cornflour, salt, shape 12 balls.",
+   "Shallow fry balls in 1/3 cup oil at medium heat 6 minutes until golden; drain.",
+   "Stir-fry 1 tbsp each minced garlic, ginger, 1/4 cup onion and 1 chilli on high heat 1 minute.",
+   "Add 1 tbsp soy sauce, 1 tbsp chilli sauce, 1 tsp vinegar, 2 tbsp water; toss in balls and spring onion 1 minute."
+  ]
+ },
+ {
+  "id": "veg-hakka-noodles",
+  "name": "Veg hakka noodles",
+  "cuisine": "chinese",
+  "spice": 1,
+  "diet": "vegan",
+  "slots": [
+   "dinner",
+   "lunch"
+  ],
+  "tags": [
+   "quick",
+   "street",
+   "high-sodium"
+  ],
+  "allergens": [
+   "gluten",
+   "soy"
+  ],
+  "prepMin": 20,
+  "nutrients": {
+   "kcal": 450,
+   "proteinG": 11,
+   "fibreG": 5,
+   "waterMl": 60
+  },
+  "ingredients": [
+   "hakka noodles (wheat)",
+   "cabbage",
+   "carrots",
+   "capsicum",
+   "onion",
+   "garlic",
+   "spring onion",
+   "soy sauce",
+   "vinegar",
+   "black pepper",
+   "oil"
+  ],
+  "steps": [
+   "Boil 120 g noodles 4 minutes, drain, toss with 1 tsp oil.",
+   "Heat 1 tbsp oil on high; stir-fry 1 tsp garlic, 1/2 onion 30 seconds.",
+   "Add 1 cup shredded cabbage, carrot and capsicum; toss 2 minutes.",
+   "Add noodles, 1 tbsp soy sauce, 1 tsp vinegar, pepper; toss 1 minute and garnish spring onion."
+  ]
+ },
+ {
+  "id": "veg-fried-rice-egg",
+  "name": "Veg egg fried rice",
+  "cuisine": "chinese",
+  "spice": 1,
+  "diet": "vegetarian",
+  "slots": [
+   "dinner",
+   "lunch"
+  ],
+  "tags": [
+   "quick",
+   "warm",
+   "street",
+   "high-sodium"
+  ],
+  "allergens": [
+   "gluten",
+   "egg",
+   "soy"
+  ],
+  "prepMin": 20,
+  "nutrients": {
+   "kcal": 480,
+   "proteinG": 14,
+   "fibreG": 4,
+   "waterMl": 60
+  },
+  "ingredients": [
+   "cooked rice",
+   "egg",
+   "carrots",
+   "beans",
+   "cabbage",
+   "onion",
+   "garlic",
+   "spring onion",
+   "soy sauce",
+   "black pepper",
+   "oil"
+  ],
+  "steps": [
+   "Use 1.5 cups (250 g) cold cooked rice.",
+   "Scramble 2 eggs in 1 tsp oil; set aside.",
+   "Heat 1 tbsp oil high; fry 1 tsp garlic, 1/2 cup mixed carrot, beans, cabbage 2 minutes.",
+   "Add rice, 1 tbsp soy sauce, pepper; toss 3 minutes; stir in egg and spring onion."
+  ]
+ },
+ {
+  "id": "arrabbiata-pasta",
+  "name": "Penne arrabbiata",
+  "cuisine": "italian",
+  "spice": 2,
+  "diet": "vegan",
+  "slots": [
+   "dinner",
+   "lunch"
+  ],
+  "tags": [
+   "quick",
+   "warm",
+   "comfort"
+  ],
+  "allergens": [
+   "gluten"
+  ],
+  "prepMin": 25,
+  "nutrients": {
+   "kcal": 480,
+   "proteinG": 13,
+   "fibreG": 6,
+   "waterMl": 100
+  },
+  "ingredients": [
+   "penne pasta (wheat)",
+   "tomatoes",
+   "garlic",
+   "red chilli flakes",
+   "olive oil",
+   "basil"
+  ],
+  "steps": [
+   "Boil 120 g penne in salted water 9 minutes; reserve 1/4 cup water.",
+   "Warm 2 tbsp olive oil with 4 sliced garlic cloves and 1 tsp chilli flakes 1 minute.",
+   "Add 3 chopped ripe tomatoes (300 g); simmer 10 minutes.",
+   "Toss in pasta and splash of pasta water; finish with basil. Contains gluten, no dairy."
+  ]
+ },
+ {
+  "id": "margherita-pizza-home",
+  "name": "Home margherita pizza (tawa/oven)",
+  "cuisine": "italian",
+  "spice": 0,
+  "diet": "vegetarian",
+  "slots": [
+   "dinner"
+  ],
+  "tags": [
+   "comfort",
+   "warm",
+   "oven"
+  ],
+  "allergens": [
+   "gluten",
+   "dairy"
+  ],
+  "prepMin": 45,
+  "nutrients": {
+   "kcal": 560,
+   "proteinG": 22,
+   "fibreG": 5,
+   "waterMl": 40
+  },
+  "ingredients": [
+   "maida",
+   "yeast",
+   "tomatoes",
+   "mozzarella cheese",
+   "basil",
+   "olive oil",
+   "garlic"
+  ],
+  "steps": [
+   "Knead 150 g maida, 1/2 tsp yeast, 1/2 tsp salt, 90 ml water and 1 tsp oil; prove 1 hour.",
+   "Simmer 2 chopped tomatoes with 1 minced garlic clove and salt 8 minutes for sauce.",
+   "Roll to 22 cm; spread sauce and top with 80 g mozzarella.",
+   "Bake 230 C 10 minutes (or covered tawa 8 minutes); add basil."
+  ]
+ },
+ {
+  "id": "kimchi-fried-rice",
+  "name": "Vegan kimchi fried rice with egg",
+  "cuisine": "korean",
+  "spice": 2,
+  "diet": "vegetarian",
+  "slots": [
+   "dinner",
+   "lunch"
+  ],
+  "tags": [
+   "quick",
+   "warm",
+   "street"
+  ],
+  "allergens": [
+   "gluten",
+   "egg",
+   "sesame",
+   "soy"
+  ],
+  "prepMin": 15,
+  "nutrients": {
+   "kcal": 500,
+   "proteinG": 15,
+   "fibreG": 5,
+   "waterMl": 60
+  },
+  "ingredients": [
+   "cooked rice",
+   "vegan kimchi",
+   "egg",
+   "onion",
+   "garlic",
+   "spring onion",
+   "soy sauce",
+   "sesame oil",
+   "sesame seeds"
+  ],
+  "steps": [
+   "Chop 1/2 cup vegan kimchi (no fish sauce).",
+   "Heat 1 tbsp oil; fry 1/4 onion, 1 tsp garlic and kimchi 3 minutes.",
+   "Add 1.5 cups cold rice, 1 tsp soy sauce; stir-fry 3 minutes.",
+   "Fry 2 eggs sunny side up; top with sesame oil, seeds and spring onion."
+  ]
+ },
+ {
+  "id": "burrito-bowl",
+  "name": "Rajma burrito bowl",
+  "cuisine": "mexican",
+  "spice": 1,
+  "diet": "vegan",
+  "slots": [
+   "lunch",
+   "dinner"
+  ],
+  "tags": [
+   "high-protein",
+   "fibre",
+   "warm"
+  ],
+  "allergens": [],
+  "prepMin": 30,
+  "nutrients": {
+   "kcal": 560,
+   "proteinG": 20,
+   "fibreG": 14,
+   "waterMl": 120
+  },
+  "ingredients": [
+   "rice",
+   "rajma",
+   "corn",
+   "onion",
+   "tomatoes",
+   "garlic",
+   "capsicum",
+   "lettuce",
+   "lime",
+   "cumin",
+   "paprika",
+   "oil"
+  ],
+  "steps": [
+   "Cook 3/4 cup rice with lime and salt.",
+   "Fry 1/2 onion, 2 garlic cloves, 1 tsp cumin, 1/2 tsp paprika 3 minutes; add 3/4 cup boiled rajma and 1/4 cup water, mash lightly 6 minutes.",
+   "Mix salsa: 1 tomato, 1 tbsp onion, lime.",
+   "Bowl rice, rajma, corn, lettuce, salsa."
+  ]
+ },
+ {
+  "id": "hummus-platter",
+  "name": "Hummus platter with veg and pita",
+  "cuisine": "lebanese",
+  "spice": 0,
+  "diet": "vegan",
+  "slots": [
+   "snack",
+   "lunch"
+  ],
+  "tags": [
+   "cold",
+   "fibre",
+   "high-protein"
+  ],
+  "allergens": [
+   "gluten",
+   "sesame"
+  ],
+  "prepMin": 20,
+  "nutrients": {
+   "kcal": 420,
+   "proteinG": 14,
+   "fibreG": 10,
+   "waterMl": 60
+  },
+  "ingredients": [
+   "chickpeas",
+   "tahini (sesame)",
+   "lemon",
+   "garlic",
+   "olive oil",
+   "pita (wheat)",
+   "cucumber",
+   "carrots"
+  ],
+  "steps": [
+   "Blend 1 cup boiled chickpeas, 2 tbsp tahini, juice of 1 lemon, 1 garlic clove, 2 tbsp olive oil, 3 tbsp cold water until smooth.",
+   "Plate in a bowl and drizzle olive oil.",
+   "Cut 1 cucumber and 1 carrot into sticks.",
+   "Serve with 2 warm pita; contains sesame and gluten."
+  ]
+ },
+ {
+  "id": "avocado-toast-cafe",
+  "name": "Avocado toast",
+  "cuisine": "cafe",
+  "spice": 0,
+  "diet": "vegan",
+  "slots": [
+   "breakfast"
+  ],
+  "tags": [
+   "quick",
+   "cold",
+   "fibre"
+  ],
+  "allergens": [
+   "gluten"
+  ],
+  "prepMin": 10,
+  "nutrients": {
+   "kcal": 320,
+   "proteinG": 8,
+   "fibreG": 9,
+   "waterMl": 40
+  },
+  "ingredients": [
+   "sourdough bread (wheat)",
+   "avocado",
+   "lemon",
+   "chilli flakes",
+   "olive oil",
+   "salt"
+  ],
+  "steps": [
+   "Toast 2 slices sourdough.",
+   "Mash 1 ripe avocado with lemon and salt.",
+   "Spread on toast; drizzle 1 tsp olive oil.",
+   "Finish with chilli flakes."
+  ]
+ },
+ {
+  "id": "grilled-cheese-veg-sandwich",
+  "name": "Grilled cheese veg sandwich",
+  "cuisine": "cafe",
+  "spice": 0,
+  "diet": "vegetarian",
+  "slots": [
+   "snack",
+   "dinner"
+  ],
+  "tags": [
+   "street",
+   "warm",
+   "comfort"
+  ],
+  "allergens": [
+   "gluten",
+   "dairy"
+  ],
+  "prepMin": 15,
+  "nutrients": {
+   "kcal": 440,
+   "proteinG": 17,
+   "fibreG": 5,
+   "waterMl": 60
+  },
+  "ingredients": [
+   "white bread (wheat)",
+   "cheese",
+   "butter",
+   "onion",
+   "tomatoes",
+   "capsicum",
+   "green chutney"
+  ],
+  "steps": [
+   "Slice 1 onion, 1 tomato, 1/2 capsicum.",
+   "Spread green chutney on 4 slices; layer veg and 60 g grated cheese.",
+   "Butter outer sides (1 tbsp); grill 3 minutes per side until crisp.",
+   "Cut diagonally."
+  ]
+ },
+ {
+  "id": "falafel-wrap-cafe",
+  "name": "Baked falafel wrap",
+  "cuisine": "lebanese",
+  "spice": 1,
+  "diet": "vegan",
+  "slots": [
+   "lunch",
+   "dinner"
+  ],
+  "tags": [
+   "oven",
+   "high-protein",
+   "fibre"
+  ],
+  "allergens": [
+   "gluten",
+   "sesame"
+  ],
+  "prepMin": 45,
+  "nutrients": {
+   "kcal": 500,
+   "proteinG": 18,
+   "fibreG": 12,
+   "waterMl": 80
+  },
+  "ingredients": [
+   "chickpeas",
+   "onion",
+   "garlic",
+   "coriander",
+   "cumin",
+   "wheat tortilla",
+   "tahini (sesame)",
+   "lettuce",
+   "cucumber",
+   "lemon",
+   "oil"
+  ],
+  "steps": [
+   "Soak 3/4 cup dried chickpeas overnight; blend with 1/2 onion, 3 garlic cloves, coriander, 1 tsp cumin, salt coarsely.",
+   "Shape 8 patties, brush with oil, bake 200 C 25 minutes flipping once.",
+   "Mix 1 tbsp tahini, lemon and water for sauce.",
+   "Wrap 4 falafel in 2 tortillas with lettuce, cucumber and sauce."
+  ]
+ }
+]

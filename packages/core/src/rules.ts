@@ -10,8 +10,14 @@ import { DIET_RANK } from './types';
  */
 
 /** Whole-word match, plural-tolerant, so "rum" does not match "drumstick" or "ice" match "rice". */
+const WORD_RE = new Map<string, RegExp>();
 export function hasWord(text: string, word: string): boolean {
-  return new RegExp(`\\b${word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?:s|es)?\\b`, 'i').test(text);
+  let re = WORD_RE.get(word);
+  if (!re) {
+    re = new RegExp(`\\b${word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?:s|es)?\\b`, 'i');
+    WORD_RE.set(word, re);
+  }
+  return re.test(text);
 }
 const has = (food: Food, words: string[]) => food.ingredients.find((i) => words.some((w) => hasWord(i, w)));
 
@@ -143,6 +149,7 @@ export function askDoctorFlags(m: Member): string[] {
   if (c.includes('kidney')) out.push('Kidney conditions need limits set for you. Please follow your dietitian’s plan.');
   if (c.includes('insulin')) out.push('Food timing matters with insulin or sulfonylureas. Please plan meals and any fasting with your doctor.');
   if (c.includes('pregnancy')) out.push('Supplements and any change in diet in pregnancy are for your clinician to guide.');
+  if (c.includes('lactation')) out.push('Ask your doctor or lactation consultant about iron or other supplements while feeding.');
   if (c.includes('thyroid')) out.push('Some medicines work best at a set time apart from food. Ask your doctor or pharmacist.');
   return out;
 }
@@ -228,7 +235,7 @@ export function textProblem(text: string, m: Member): string | undefined {
 }
 
 /** Wishes or requests about skipping meals, crash dieting or fast weight loss. EatOS never helps with these. */
-export const RESTRICTIVE = /\b(skip(ping)? (a )?(meal|dinner|lunch|breakfast)|lose weight|weight loss|slim|starv\w*|crash diet|detox|cleanse|low[- ]calorie|cut calories|burn fat|fat burn\w*|purge|binge|intermittent fasting|omad|water fast|dry fast|keto|laxative|diet pill|fat burner)\b/i;
+export const RESTRICTIVE = /\b(skip(ping)? (a )?(meal|dinner|lunch|breakfast)|lose (?:\\w+ )?weight|weight loss|slim|starv\w*|crash diet|detox|cleanse|low[- ]calorie|cut calories|burn fat|fat burn\w*|purge|binge|intermittent fasting|omad|water fast|dry fast|keto|laxative|diet pill|fat burner)\b/i;
 
 export const RESTRICTIVE_NOTE = 'EatOS does not help with skipping meals or losing weight fast. Regular meals are the plan. If food, weight or eating is on your mind a lot, talking to someone you trust or a doctor can help.';
 

@@ -2,6 +2,7 @@ import type { Food } from './types';
 import { INDIA_CATALOG } from './india';
 import { INDIA_MORE } from './india2';
 import { INDIA_REGIONAL } from './india3';
+import { INDIA_SPECIAL } from './india4';
 import { INDIA_STEPS } from './steps-india';
 import { DIETITIAN_PATCHES } from './patches';
 import { ingredientAllergens } from './rules';
@@ -14,6 +15,7 @@ const RAW: Food[] = [
   ...INDIA_CATALOG,
   ...INDIA_MORE,
   ...INDIA_REGIONAL,
+  ...INDIA_SPECIAL,
   // Breakfast
   { id: 'oats-banana', name: 'Oats with banana and yogurt', slots: ['breakfast'], tags: ['warm', 'quick', 'fibre'], diet: 'vegetarian', allergens: ['dairy', 'gluten'], prepMin: 8, nutrients: { kcal: 420, proteinG: 18, fibreG: 8, waterMl: 150 }, ingredients: ['oats', 'banana', 'greek yogurt', 'milk'] },
   { id: 'overnight-oats', name: 'Overnight oats with berries', slots: ['breakfast'], tags: ['quick', 'fibre', 'cold', 'no-cook'], diet: 'vegetarian', allergens: ['dairy', 'gluten'], prepMin: 5, nutrients: { kcal: 380, proteinG: 15, fibreG: 9, waterMl: 150 }, ingredients: ['oats', 'berries', 'milk', 'chia seeds'] },
@@ -58,6 +60,9 @@ const CHOKING = ["popcorn", "roasted-chana", "chikki", "peanut-chaat", "apple-al
 const CRUNCHY = ["popcorn", "roasted-chana", "chikki", "peanut-chaat", "apple-almonds", "apple-seeds", "hummus-carrots", "chana-chaat", "dahi-chivda", "makhana-roasted", "murmura-bhel", "fruit-curd-bowl", "muesli-milk", "samosa", "kachumber-curd", "sprouts-salad", "chickpea-salad"];
 const SOFT = ["khichdi", "dalia-khichdi", "rice-congee", "curd-rice", "idli-sambar", "idli-chutney-jain", "pongal", "kootu-rice", "moong-khichdi", "khichdi-kadhi", "bajra-khichdi", "banana", "lentil-soup", "rasam-rice", "rasam-rice-satvik", "ragi-malt", "curd-poha", "mishti-doi", "sheer-khurma", "phirni", "payasam", "seviyan", "kerala-stew-appam", "lauki-roti"];
 
+/** One spelling per ingredient, so the pantry, receipts and recipes agree. */
+const INGREDIENT_NAME: Record<string, string> = { egg: 'eggs', tomato: 'tomatoes', potato: 'potatoes', carrot: 'carrots', onions: 'onion', chickpea: 'chickpeas', 'sweet potato': 'sweet potatoes', prawn: 'prawns', cashew: 'cashews', almond: 'almonds', walnut: 'walnuts', peanut: 'peanuts', lentil: 'lentils', pea: 'peas', bean: 'beans', date: 'dates', mushroom: 'mushrooms' };
+
 /** The catalogue with the dietitian's corrections and the safety tags for little children and soft diets. */
 export const CATALOG: Food[] = RAW.map((f) => {
   const patch = DIETITIAN_PATCHES[f.id];
@@ -65,7 +70,9 @@ export const CATALOG: Food[] = RAW.map((f) => {
   if (CHOKING.includes(f.id)) tags.add('choking-hazard');
   if (CRUNCHY.includes(f.id)) tags.add('crunchy');
   if (SOFT.includes(f.id)) tags.add('soft');
-  const merged = { ...f, ...(patch ?? {}) };
+  // Potassium-rich ingredients, for the kidney nudge.
+  if (f.ingredients.some((i) => /\b(banana|spinach|potatoes|sweet potatoes|tomatoes|dates|rajma|mushrooms|avocado|coconut water|oranges|pomegranate|drumstick)\b/.test(i))) tags.add('high-potassium');
+  const merged = { ...f, ...(patch ?? {}), ingredients: (patch?.ingredients ?? f.ingredients).map((i) => INGREDIENT_NAME[i] ?? i) };
   return { ...merged, tags: [...tags], allergens: [...new Set([...merged.allergens, ...ingredientAllergens(merged.ingredients)])] };
 });
 

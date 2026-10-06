@@ -173,6 +173,7 @@ export function recommend(state: State, catalog: Food[], q: Query, now: number):
       reasons.push(`Uses ${uses.join(' and ')} before it expires`);
     }
 
+    if (food.tags.includes('iftar') && fast.kind !== 'ramzan') score -= 3;
     if (q.novel) {
       if (!prefs[food.id]) score += 2;
       score += ((parseInt(hashString(`${food.id}:${Math.floor(now / 60_000)}`), 36) || 0) % 1000) / 1000 * 3;
