@@ -133,6 +133,8 @@ export function healthFit(food: Food, m: Member): HealthFit {
   if (c.includes('gerd')) {
     if (t('spicy') || (food.spice ?? 0) >= 3) delta -= 2;
     if (t('fried')) delta -= 2;
+    if (t('acidic')) delta -= 1.5;
+    if (food.ingredients.some((i) => hasWord(i, 'onion') || hasWord(i, 'garlic'))) delta -= 0.5;
     if (t('gentle')) delta += 1;
   }
   if (c.includes('lactation')) {

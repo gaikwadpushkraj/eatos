@@ -76,7 +76,7 @@ function NextUp() {
         </View>
       </Row>
       <Txt v="h1" color="inkText">{rec.food.name}</Txt>
-      <Txt v="body" color="inkMuted">{reasons.join('. ')}.</Txt>
+      {reasons.length ? <Txt v="body" color="inkMuted">{reasons.join('. ')}.</Txt> : null}
       <Row wrap>
         <Btn label={rec.food.tags.includes('no-cook') ? 'Show me how' : 'Start cooking'} kind="lime" onPress={() => router.push(`/cook/${rec.food.id}`)} style={{ flexGrow: 1 }} />
         <Btn label="Other options" kind="onInk" onPress={() => router.push(`/ask?slot=${meal.slot ?? ''}`)} style={{ flexGrow: 1 }} />
