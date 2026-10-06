@@ -278,3 +278,13 @@ describe('surprise me and same as yesterday', () => {
     expect(r.results[0]!.food.id).toBe('rajma-chawal');
   });
 });
+
+describe('coeliac: hidden gluten', () => {
+  it('asafoetida, papad and commercial masalas count as gluten, and wishes are caught by words', () => {
+    const k = kernelFor({ name: 'riya', member: { diet: 'vegetarian', conditions: ['celiac'] }, wishes: [] });
+    const ids = k.recommend({ k: 500 }, base + 5 * 3_600_000).map((r) => r.food.id);
+    for (const bad of ['kachumber-curd', 'sambar-rice', 'idli-sambar', 'bisi-bele-bath']) expect(ids, bad).not.toContain(bad);
+    for (const w of ['beer', 'papad', 'sooji halwa', 'dal with hing tadka']) expect(k.wish(w, base).blockers.some((b) => /gluten/i.test(b.detail)), w).toBe(true);
+    expect(k.wish('beer', base).later).toMatch(/not even a little/i);
+  });
+});

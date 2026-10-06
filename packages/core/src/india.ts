@@ -57,8 +57,8 @@ const ROWS: Row[] = [
   ['bajra-khichdi', 'Bajra khichdi with curd', 'rajasthani', 'L D', 'vegetarian', 'warm comfort fibre low-gi iron lactose', ['dairy'], 35, 1, 420, 14, 9, 250, 'bajra, moong dal, ghee, cumin, curd'],
   ['khichdi-kadhi', 'Moong khichdi with kadhi', 'gujarati', 'L D', 'vegetarian', 'warm gentle comfort lactose', ['dairy', 'gluten'], 30, 0, 480, 17, 6, 350, 'moong dal, rice, curd, besan, ghee, cumin, hing, ginger'],
   ['curd-rice', 'Curd rice with pickle', 'south-indian', 'L D', 'vegetarian', 'cool gentle cooling lactose high-sodium', ['dairy'], 15, 0, 380, 10, 2, 250, 'rice, curd, mustard seeds, curry leaves, ginger, green chilli'],
-  ['sambar-rice', 'Sambar rice with poriyal', 'south-indian', 'L D', 'vegan', 'warm comfort fibre', [], 30, 2, 500, 15, 10, 300, 'rice, toor dal, drumstick, tomatoes, onion, beans, tamarind'],
-  ['rasam-rice', 'Rasam rice with beans poriyal', 'south-indian', 'L D', 'vegan', 'warm gentle light low-sodium', [], 25, 1, 380, 9, 6, 400, 'rice, tomatoes, toor dal, tamarind, pepper, cumin, garlic'],
+  ['sambar-rice', 'Sambar rice with poriyal', 'south-indian', 'L D', 'vegan', 'warm comfort fibre', [], 30, 2, 500, 15, 10, 300, 'rice, toor dal, drumstick, tomatoes, onion, beans, tamarind, sambar powder'],
+  ['rasam-rice', 'Rasam rice with beans poriyal', 'south-indian', 'L D', 'vegan', 'warm gentle light low-sodium', [], 25, 1, 380, 9, 6, 400, 'rice, tomatoes, toor dal, tamarind, pepper, cumin, garlic, rasam powder'],
   ['lemon-rice', 'Lemon rice with peanuts', 'south-indian', 'L', 'vegan', 'warm quick high-gi', ['peanuts'], 20, 1, 380, 8, 4, 80, 'rice, lemon, peanuts, curry leaves, mustard seeds, turmeric'],
   ['veg-pulao', 'Vegetable pulao with raita', 'north-indian', 'L D', 'vegetarian', 'warm comfort high-gi lactose', ['dairy'], 30, 1, 480, 11, 6, 200, 'basmati rice, peas, carrots, beans, onion, curd, cumin'],
   ['millet-pulao', 'Foxtail millet pulao with raita', 'south-indian', 'L D', 'vegetarian', 'warm fibre low-gi lactose', ['dairy'], 30, 1, 420, 12, 9, 200, 'foxtail millet, peas, carrots, beans, onion, curd, cumin', 'veg-pulao'],
@@ -143,7 +143,7 @@ const ROWS: Row[] = [
   ['peanut-chaat', 'Peanut chaat', 'pan-indian', 'S', 'vegan', 'quick light high-protein fibre low-gi no-cook', ['peanuts'], 5, 1, 260, 12, 5, 40, 'roasted peanuts, onion, tomatoes, lemon, coriander'],
   ['dahi-chivda', 'Dahi chivda', 'pan-indian', 'S L', 'vegetarian', 'cold quick lactose no-cook', ['dairy', 'peanuts'], 4, 1, 320, 9, 3, 150, 'flattened rice, curd, peanuts, cucumber, black salt'],
   ['rasam-rice-satvik', 'Rasam rice without garlic', 'south-indian', 'L D', 'vegan', 'warm gentle light low-sodium', ['gluten'], 25, 1, 380, 9, 6, 400, 'rice, tomatoes, toor dal, tamarind, pepper, cumin, hing', 'rasam-rice'],
-  ['sambar-rice-satvik', 'Sambar rice without onion', 'south-indian', 'L D', 'vegan', 'warm comfort fibre', ['gluten'], 30, 2, 480, 15, 10, 300, 'rice, toor dal, drumstick, tomatoes, beans, tamarind, hing', 'sambar-rice'],
+  ['sambar-rice-satvik', 'Sambar rice without onion', 'south-indian', 'L D', 'vegan', 'warm comfort fibre', ['gluten'], 30, 2, 480, 15, 10, 300, 'rice, toor dal, drumstick, tomatoes, beans, tamarind, hing, sambar powder', 'sambar-rice'],
   ['ragi-malt', 'Ragi malt', 'karnataka', 'B S', 'vegetarian', 'warm gentle iron low-gi lactose', ['dairy'], 8, 0, 190, 7, 4, 250, 'ragi, milk, jaggery'],
 ];
 

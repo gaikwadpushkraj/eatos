@@ -196,7 +196,7 @@ const TEXT_ALLERGEN: Record<string, string[]> = {
   nuts: ['almond', 'cashew', 'walnut', 'pistachio', 'pesto'],
   peanuts: ['peanut', 'chikki'],
   dairy: ['milk', 'cheese', 'paneer', 'curd', 'yogurt', 'yoghurt', 'ghee', 'butter', 'lassi', 'kheer', 'ice cream', 'raita', 'rasmalai', 'rasgulla', 'rosogolla', 'mishti doi'],
-  gluten: ['roti', 'naan', 'bread', 'pav', 'pasta', 'pizza', 'noodles', 'maida', 'paratha', 'cake', 'biscuit'],
+  gluten: ['roti', 'naan', 'bread', 'pav', 'pasta', 'pizza', 'noodles', 'maida', 'paratha', 'cake', 'biscuit', 'beer', 'ale', 'lager', 'malt', 'papad', 'papdi', 'papadam', 'sooji', 'semolina', 'rava', 'seviyan', 'vermicelli', 'upma', 'halwa', 'momos', 'hing', 'asafoetida', 'dalia', 'kulcha', 'puri', 'samosa', 'kachori', 'barley', 'wheat'],
   egg: ['egg', 'omelette', 'omelet', 'bhurji', 'mayonnaise'],
   soy: ['soy', 'tofu', 'soya'],
   fish: ['fish', 'ilish', 'hilsa', 'salmon', 'surmai', 'pomfret'],
@@ -240,7 +240,7 @@ export const RESTRICTIVE = /\b(skip(ping)? (a )?(meal|dinner|lunch|breakfast)|lo
 export const RESTRICTIVE_NOTE = 'EatOS does not help with skipping meals or losing weight fast. Regular meals are the plan. If food, weight or eating is on your mind a lot, talking to someone you trust or a doctor can help.';
 
 const INGREDIENT_ALLERGENS: [Allergen, string[]][] = [
-  ['gluten', ['wheat', 'wheat flour', 'maida', 'semolina', 'sooji', 'pasta', 'bread', 'pav', 'naan', 'noodles', 'vermicelli', 'tortilla', 'pizza dough', 'oats', 'broken wheat', 'muesli', 'soy sauce', 'hing', 'barley', 'kulcha', 'malt', 'bhajani', 'rava', 'dalia', 'suji']],
+  ['gluten', ['wheat', 'wheat flour', 'maida', 'semolina', 'sooji', 'pasta', 'bread', 'pav', 'naan', 'noodles', 'vermicelli', 'tortilla', 'pizza dough', 'oats', 'broken wheat', 'muesli', 'soy sauce', 'hing', 'asafoetida', 'papad', 'papadam', 'sambar powder', 'rasam powder', 'biryani masala', 'bhaji masala', 'pav bhaji masala', 'bisi bele bath masala', 'dhansak masala', 'barley', 'kulcha', 'malt', 'bhajani', 'rava', 'dalia', 'suji']],
   ['dairy', ['milk', 'curd', 'yogurt', 'greek yogurt', 'paneer', 'ghee', 'butter', 'cream', 'cheese', 'parmesan', 'mozzarella', 'milk powder', 'khoya', 'dahi', 'malai']],
   ['egg', ['egg', 'eggs', 'mayonnaise']],
   ['peanuts', ['peanut', 'peanuts', 'peanut butter', 'roasted peanuts', 'groundnut']],

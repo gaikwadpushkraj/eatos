@@ -186,7 +186,7 @@ export function alternatives(state: State, catalog: Food[], wish: string, now: n
   let later: string | undefined;
   const kinds = new Set(blockers.map((b) => b.kind));
   const skip = blockers.some((b) => /pregnan/i.test(b.detail) || /gluten/i.test(b.detail));
-  if (skip) later = 'This one is best skipped for now. If you are unsure about anything, ask your clinician.';
+  if (skip) later = blockers.some((b) => /gluten/i.test(b.detail)) ? 'Not for you, not even a little. Even small amounts matter with coeliac disease, so EatOS never says a bite is fine. Check labels on hing, masalas, besan and papad.' : 'This one is best skipped for now. If you are unsure about anything, ask your clinician.';
   else if (kinds.has('allergy')) later = 'This is not safe for you. If a restaurant says they can make it without the allergen, EatOS cannot check that, so ask them directly.';
   else if (kinds.has('religion')) later = 'It stays out while the rule applies. Keep it for a day the rule allows, or ask the cook about the version above.';
   else if (kinds.has('health') && me?.conditions?.includes('kidney')) later = 'Ask your dietitian how this fits your plan. EatOS does not set limits for you.';
