@@ -364,3 +364,13 @@ describe('cook-challenged fixes', () => {
     expect(r.missing).not.toContain('toor dal');
   });
 });
+
+describe('festival calendar', () => {
+  it('finds Navratri and Diwali and returns nothing on a plain day', async () => {
+    const { festivalsOn } = await import('../src/festivals');
+    const IST2 = 330;
+    expect(festivalsOn(Date.UTC(2026, 9, 12, 6) - IST2 * 60_000, IST2).some((f) => f.fasting === 'navratri')).toBe(true);
+    expect(festivalsOn(Date.UTC(2026, 10, 8, 6) - IST2 * 60_000, IST2).length).toBeGreaterThan(0);
+    expect(festivalsOn(Date.UTC(2026, 9, 25, 6) - IST2 * 60_000, IST2).filter((f) => f.fasting === 'navratri')).toEqual([]);
+  });
+});
